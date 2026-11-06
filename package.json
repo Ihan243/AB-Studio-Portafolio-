@@ -1,0 +1,19 @@
+{
+  "name": "ab-studio-web",
+  "version": "1.0.0",
+  "description": "Sitio web oficial de AB Studio — Sitios web, sistemas de reservas y automatización práctica",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ab-studio",
+    "websites",
+    "automation",
+    "booking-systems",
+    "seo"
+  ],
+  "author": "AB Studio",
+  "license": "ISC"
+}
