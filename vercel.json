@@ -2,7 +2,17 @@
   "version": 2,
   "cleanUrls": true,
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "functions": {
+    "server.js": {
+      "includeFiles": "{index.html,assets/brand/**}"
+    }
+  }
 }
