@@ -65,6 +65,32 @@
     .route-plan ul { padding-left:18px; }
     @media(max-width:760px) { .route-grid,.route-plans,.route-columns,.route-faq { grid-template-columns:1fr; } .route-hero {padding-top:54px;} }
 
+
+    #home-inquiry { display:none; padding:70px 0 84px; background:#252522; color:#f2eee5; }
+    body.home-mode #home-inquiry { display:block; }
+    body.home-mode #contact { display:none; }
+    .home-inquiry-intro { max-width:760px; margin-bottom:38px; }
+    .home-inquiry .eyebrow { color:#c5beb2; }
+    .home-inquiry h2 { max-width:760px; margin:17px 0 18px; font:400 clamp(3.1rem,6.5vw,5.6rem)/.94 var(--serif); letter-spacing:-.065em; }
+    .home-inquiry-intro > p { max-width:660px; color:#d0cabe; font-size:.93rem; }
+    .home-inquiry-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); align-items:center; gap:54px; }
+    .home-inquiry-form { padding:24px; border:1px solid #55544f; background:#2e2e2b; }
+    .home-inquiry-form label { display:block; margin-bottom:9px; font-size:.74rem; font-weight:700; }
+    .home-inquiry-form textarea { width:100%; min-height:130px; resize:vertical; padding:16px; border:1px solid #68665f; border-radius:0; background:#393936; color:#f2eee5; font:400 .8rem/1.5 var(--sans); }
+    .home-inquiry-form textarea::placeholder { color:#c2bcb1; }
+    .home-inquiry-picks { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 18px; }
+    .home-inquiry-picks button { min-height:34px; padding:0 12px; border:1px solid #68665f; border-radius:999px; background:transparent; color:#f2eee5; font-size:.66rem; cursor:pointer; }
+    .home-inquiry-picks button:hover { background:#454540; }
+    .home-inquiry-form .button { min-height:42px; }
+    .home-inquiry-note { display:block; margin-top:12px; color:#bdb7ac; font-size:.65rem; }
+    .home-inquiry-aside { color:#d0cabe; font-size:.82rem; }
+    .home-inquiry-aside > p:first-child { max-width:390px; margin:0 0 25px; }
+    .home-inquiry-aside .button { min-height:43px; margin-bottom:22px; }
+    .home-inquiry-aside .button.outline { color:#f2eee5; border-color:#77746c; }
+    .home-inquiry-aside .reply-note { margin:8px 0 2px; }
+    .home-inquiry-aside a:not(.button) { color:#e1dbd0; text-decoration:underline; text-underline-offset:3px; }
+    @media(max-width:760px) { #home-inquiry { padding:54px 0 64px; } .home-inquiry-grid { grid-template-columns:1fr; gap:28px; } .home-inquiry-form { padding:18px; } }
+
     .section-head { display: grid; grid-template-columns: .9fr 1.1fr; align-items: end; gap: 36px; margin-bottom: 44px; }
     .section-head h2 { margin: 12px 0 0; font: 400 clamp(2.3rem, 5vw, 4.45rem)/.98 var(--serif); letter-spacing: -.055em; max-width: 640px; }
     .section-head p { max-width: 480px; color: var(--ink-soft); margin: 0 0 3px; }
@@ -620,6 +646,35 @@
         </div>
       </div>
     </section>
+
+    <section class="home-inquiry" id="home-inquiry">
+      <div class="wrap">
+        <div class="home-inquiry-intro">
+          <div class="eyebrow" data-copy="homeInquiry.kicker">Let’s get started</div>
+          <h2 class="serif" data-copy="homeInquiry.title">Tell us what your website needs.</h2>
+          <p data-copy="homeInquiry.intro">Describe your business and what you want the site to help with. We’ll review your note and reply within one business day with next steps.</p>
+        </div>
+        <div class="home-inquiry-grid">
+          <form class="home-inquiry-form" id="homeInquiryForm">
+            <label for="homeInquiryMessage" data-copy="homeInquiry.label">Describe the website you need</label>
+            <textarea id="homeInquiryMessage" name="message" required data-placeholder="homeInquiry.placeholder" placeholder="Example: I run a dental clinic and want patients to request appointments online."></textarea>
+            <div class="home-inquiry-picks">
+              <button type="button" data-copy="homeInquiry.pick1" data-prompt-en="I need a landing page for a campaign." data-prompt-es="Necesito una página de aterrizaje para una campaña.">A campaign landing page</button>
+              <button type="button" data-copy="homeInquiry.pick2" data-prompt-en="I need a website for my business." data-prompt-es="Necesito un sitio web para mi negocio.">My business website</button>
+              <button type="button" data-copy="homeInquiry.pick3" data-prompt-en="I need a digital catalog for my products." data-prompt-es="Necesito un catálogo digital para mis productos.">A digital product catalog</button>
+            </div>
+            <button class="button" type="submit"><span data-copy="homeInquiry.send">Continue in WhatsApp</span><span class="arrow">↗</span></button>
+            <small class="home-inquiry-note" data-copy="homeInquiry.note">This opens WhatsApp with your draft. Review it there and choose whether to send it.</small>
+          </form>
+          <aside class="home-inquiry-aside">
+            <p data-copy="homeInquiry.emailIntro">Prefer email? Send us a note and tell us what kind of site you have in mind.</p>
+            <a class="button outline" href="mailto:ventas.abstudio@gmail.com?subject=AB%20Studio%20project%20inquiry"><span data-copy="contact.email">Email AB Studio</span></a>
+            <p class="reply-note" data-copy="homeInquiry.reply">We normally reply to new inquiries within one business day.</p>
+            <div><a href="https://wa.me/50686138532" target="_blank" rel="noopener noreferrer">+506 8613 8532</a> · <a href="mailto:ventas.abstudio@gmail.com">ventas.abstudio@gmail.com</a></div>
+          </aside>
+        </div>
+      </div>
+    </section>
   </main>
   <footer>
     <div class="wrap footer-inner">
@@ -632,7 +687,8 @@
     const copy = {
       en: {
         "brand.sub":"Web · Systems · Automation",
-        "nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.company":"Company","nav.blog":"Blog","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Schedule a call",
+        "homeInquiry.kicker":"Let’s get started","homeInquiry.title":"Tell us what your website needs.","homeInquiry.intro":"Describe your business and what you want the site to help with. We’ll review your note and reply within one business day with next steps.","homeInquiry.label":"Describe the website you need","homeInquiry.placeholder":"Example: I run a dental clinic and want patients to request appointments online.","homeInquiry.pick1":"A campaign landing page","homeInquiry.pick2":"My business website","homeInquiry.pick3":"A digital product catalog","homeInquiry.send":"Continue in WhatsApp","homeInquiry.note":"This opens WhatsApp with your draft. Review it there and choose whether to send it.","homeInquiry.emailIntro":"Prefer email? Send us a note and tell us what kind of site you have in mind.","homeInquiry.reply":"We normally reply to new inquiries within one business day.",
+        "nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.company":"Company","nav.blog":"Blog","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Start a project",
         "hero.eyebrow":"Independent digital studio · Costa Rica · US + Mexico",
         "hero.title":"A better web presence.<br><em>Built to move business forward.</em>",
         "hero.body":"We build thoughtful websites, booking systems and practical automation for growing businesses. Clear design, useful technology and a direct path to your next customer.",
@@ -674,7 +730,8 @@
       },
       es: {
         "brand.sub":"Web · Sistemas · Automatización",
-        "nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.company":"Empresa","nav.blog":"Blog","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Agendar una llamada",
+        "homeInquiry.kicker":"Empecemos","homeInquiry.title":"Contanos qué necesita tu sitio web.","homeInquiry.intro":"Describí tu negocio y qué necesitás que resuelva el sitio. Revisaremos tu mensaje y te responderemos dentro de un día hábil con los próximos pasos.","homeInquiry.label":"Describí el sitio web que necesitás","homeInquiry.placeholder":"Ejemplo: Tengo una clínica dental y quiero que mis pacientes soliciten citas en línea.","homeInquiry.pick1":"Una página para una campaña","homeInquiry.pick2":"El sitio de mi negocio","homeInquiry.pick3":"Un catálogo digital de productos","homeInquiry.send":"Continuar en WhatsApp","homeInquiry.note":"Se abrirá WhatsApp con tu borrador. Revisalo y decidí si querés enviarlo.","homeInquiry.emailIntro":"¿Preferís escribirnos por correo? Contanos qué tipo de sitio tenés en mente.","homeInquiry.reply":"Normalmente respondemos las consultas nuevas dentro de un día hábil.",
+        "nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.company":"Empresa","nav.blog":"Blog","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Empezar un proyecto",
         "hero.eyebrow":"Estudio digital independiente · Costa Rica · EE. UU. + México",
         "hero.title":"Una mejor presencia digital.<br><em>Hecha para impulsar tu negocio.</em>",
         "hero.body":"Creamos sitios web, sistemas de reservas y automatizaciones prácticas para negocios en crecimiento. Diseño claro, tecnología útil y un camino directo hacia tus próximos clientes.",
@@ -726,6 +783,10 @@
       document.querySelectorAll("[data-copy-html]").forEach(el => {
         const value = copy[lang][el.dataset.copyHtml];
         if (value) el.innerHTML = value;
+      });
+      document.querySelectorAll("[data-placeholder]").forEach(el => {
+        const value = copy[lang][el.dataset.placeholder];
+        if (value) el.placeholder = value;
       });
       const button = document.getElementById("langToggle");
       button.textContent = lang === "en" ? "ES" : "EN";
@@ -838,6 +899,7 @@
       main.querySelectorAll(':scope > *').forEach(element => element.style.removeProperty('display'));
       const isHome = path === '/';
       document.body.classList.toggle('route-mode', !isHome);
+      document.body.classList.toggle('home-mode', isHome);
       routePage.innerHTML = '';
       document.querySelectorAll('#services .service').forEach(card => card.hidden = false);
       if (path === '/sitios-web/') routePage.innerHTML = websitePageMarkup(currentLang);
@@ -869,6 +931,8 @@
         if (section) section.style.display = 'block';
       }
       if (!isHome) contact.style.display = 'block';
+      const navCta = document.querySelector('.nav-actions a.button.small');
+      if (navCta) navCta.href = isHome ? '#home-inquiry' : '#contact';
     }
     routeAnchors.forEach(link => link.addEventListener('click', event => {
       event.preventDefault(); showRoute(link.dataset.route, link.dataset.target);
@@ -878,6 +942,20 @@
     }));
     window.addEventListener('popstate', () => showRoute(location.pathname, routeTargets[location.pathname], false));
     showRoute(routeTargets[location.pathname] ? location.pathname : '/', routeTargets[location.pathname], false);
+
+    const homeInquiryForm = document.getElementById('homeInquiryForm');
+    const homeInquiryMessage = document.getElementById('homeInquiryMessage');
+    document.querySelectorAll('.home-inquiry-picks button').forEach(button => button.addEventListener('click', () => {
+      homeInquiryMessage.value = currentLang === 'es' ? button.dataset.promptEs : button.dataset.promptEn;
+      homeInquiryMessage.focus();
+    }));
+    homeInquiryForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const opening = currentLang === 'es' ? 'Hola AB Studio, quiero conversar sobre un proyecto web:' : 'Hi AB Studio, I would like to discuss a website project:';
+      const url = `https://wa.me/50686138532?text=${encodeURIComponent(`${opening}\n\n${homeInquiryMessage.value.trim()}`)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+
 
   </script>
 </body>
