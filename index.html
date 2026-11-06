@@ -196,6 +196,35 @@
     .project-meta small { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-size: .6rem; }
     .project-meta h3 { margin: 6px 0 5px; font: 400 1.38rem var(--serif); }
     .project-meta p { color: var(--muted); font-size: .76rem; margin: 0; }
+
+    .case-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .case-card { display:flex; flex-direction:column; overflow:hidden; background:var(--white); border:1px solid var(--line); }
+    .case-image { position:relative; display:block; width:100%; aspect-ratio:2.35/1; padding:0; overflow:hidden; border:0; background:var(--paper-deep); cursor:zoom-in; }
+    .case-image img { width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform .35s ease; }
+    .case-image:hover img,.case-image:focus-visible img { transform:scale(1.025); }
+    .case-image:focus-visible { outline:3px solid var(--green); outline-offset:-3px; }
+    .case-zoom { position:absolute; right:12px; bottom:12px; display:grid; place-items:center; width:35px; height:35px; border-radius:50%; color:var(--ink); background:var(--white); box-shadow:0 4px 14px rgba(0,0,0,.14); }
+    .case-content { display:flex; flex-direction:column; gap:13px; padding:22px 24px 24px; }
+    .case-topline { display:flex; align-items:center; justify-content:space-between; }
+    .case-topline small { color:var(--green); font-size:.62rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+    .case-content h3 { margin:0; font:400 clamp(1.4rem,2.5vw,1.85rem)/1.05 var(--serif); letter-spacing:-.04em; }
+    .case-detail { border-top:1px solid var(--line); padding-top:10px; }
+    .case-detail b { display:block; margin-bottom:3px; font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; }
+    .case-detail p { margin:0; color:var(--ink-soft); font-size:.78rem; line-height:1.5; }
+    .case-outcome { background:rgba(89,99,81,.07); margin:0 -10px -4px; padding:12px 10px 4px; }
+    .project-lightbox { width:min(1100px,calc(100vw - 36px)); max-width:none; max-height:92vh; padding:44px 18px 16px; border:1px solid rgba(255,255,255,.2); color:#f2eee5; background:#252522; box-shadow:0 25px 80px rgba(0,0,0,.5); }
+    .project-lightbox::backdrop { background:rgba(10,10,9,.84); backdrop-filter:blur(5px); }
+    .project-lightbox img { max-width:100%; max-height:78vh; width:auto; height:auto; margin:auto; object-fit:contain; }
+    .project-lightbox p { margin:10px 0 0; text-align:center; color:#d0cabe; font-size:.75rem; }
+    .project-lightbox-close { position:absolute; top:8px; right:10px; width:34px; height:34px; border:1px solid #77746c; border-radius:50%; color:#f2eee5; background:transparent; cursor:pointer; font-size:1.2rem; }
+    .mobile-contact { display:none; }
+    @media(max-width:760px) { .case-grid {grid-template-columns:1fr;} }
+    @media(max-width:680px) {
+      body { padding-bottom:68px; }
+      .mobile-contact { position:fixed; z-index:25; right:15px; bottom:15px; display:inline-flex; align-items:center; gap:10px; min-height:48px; padding:0 18px; border-radius:999px; color:var(--cream); background:var(--ink); box-shadow:0 9px 26px rgba(20,20,18,.25); font-size:.76rem; font-weight:750; }
+      .mobile-contact:hover { transform:translateY(-2px); }
+    }
+
     .privacy-note { margin-top: 22px; color: var(--muted); font-size: .72rem; }
     .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; align-items: stretch; }
     .plan { border: 1px solid var(--line); padding: 25px; display:flex; flex-direction:column; min-height: 380px; background: rgba(255,253,248,.3); }
@@ -447,36 +476,102 @@
     <section class="section work-section" id="work">
       <div class="wrap">
         <div class="section-head">
-          <div><div class="eyebrow" data-copy="work.kicker">Selected work</div><h2 data-copy-html="work.title">Six starting points.<br><em>Built around real needs.</em></h2></div>
-          <div class="work-head-note" data-copy="work.note">These are demonstrations based on website projects developed by AB Studio. Client names and live website details are withheld for privacy.</div>
+          <div><div class="eyebrow" data-copy="work.kicker">Selected case studies</div><h2 data-copy-html="work.title">Clear stories.<br><em>Useful work.</em></h2></div>
+          <div class="work-head-note" data-copy="work.note">Each case explains the need, what AB Studio built, and what the deliverable makes possible. We publish business metrics only when a client has confirmed them.</div>
         </div>
-        <div class="work-grid">
-          <article class="work-card">
-            <div class="project-preview"><div class="mini-window"><div class="mini-head"><span data-copy="work.mock.restaurant">Restaurant</span><div class="mini-nav"><i></i><i></i><i></i></div></div><div class="mini-cover"><div class="mini-copy"><b data-copy="work.mock.table">A table<br>worth sharing.</b><span></span><span></span></div><div class="mini-photo"></div></div></div></div>
-            <div class="project-meta"><small data-copy="work.kind.web">Website concept</small><h3 data-copy="work.restaurant">Restaurant presence</h3><p data-copy="work.restaurantDesc">Menu, location, atmosphere and a clear way to get in touch.</p></div>
+        <div class="work-grid case-grid">
+          <article class="work-card case-card">
+            <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/cuervos-garden-website.jpg" data-aria-en="Open larger screenshot: Cuervos Garden restaurant website" data-aria-es="Ampliar captura: Sitio web del restaurante Cuervos Garden" aria-label="Open larger screenshot: Cuervos Garden restaurant website">
+              <img src="/assets/portfolio/cuervos-garden-website.jpg" alt="Sitio web del restaurante Cuervos Garden" data-alt-en="Cuervos Garden restaurant website" data-alt-es="Sitio web del restaurante Cuervos Garden" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.web"></small></div>
+              <h3 data-copy="work.cuervosWeb.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.cuervosWeb.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.cuervosWeb.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.cuervosWeb.outcome"></p></div>
+            </div>
           </article>
-          <article class="work-card">
-            <div class="project-preview alt1"><div class="mock-dashboard"><div class="dash-head"><span data-copy="work.mock.reservations">Reservations</span><span>09:41</span></div><div class="dash-body"><div class="dash-side"></div><div class="dash-content"><i></i><i></i><i></i><i></i></div></div></div></div>
-            <div class="project-meta"><small data-copy="work.kind.system">System demonstration</small><h3 data-copy="work.booking">Booking & admin panel</h3><p data-copy="work.bookingDesc">A reservation flow connected to an administrative dashboard.</p></div>
+          <article class="work-card case-card">
+            <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/cuervos-garden-reservations.jpg" data-aria-en="Open larger screenshot: Cuervos Garden table reservation flow" data-aria-es="Ampliar captura: Flujo de reservas de Cuervos Garden" aria-label="Open larger screenshot: Cuervos Garden table reservation flow">
+              <img src="/assets/portfolio/cuervos-garden-reservations.jpg" alt="Flujo de reservas de Cuervos Garden" data-alt-en="Cuervos Garden table reservation flow" data-alt-es="Flujo de reservas de Cuervos Garden" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.system"></small></div>
+              <h3 data-copy="work.cuervosSystem.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.cuervosSystem.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.cuervosSystem.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.cuervosSystem.outcome"></p></div>
+            </div>
           </article>
-          <article class="work-card">
-            <div class="project-preview alt2"><div class="mini-window"><div class="mini-head"><span data-copy="work.mock.parts">Parts & service</span><div class="mini-nav"><i></i><i></i><i></i></div></div><div class="mini-cover"><div class="mini-copy"><b data-copy="work.mock.partsTitle">Find the<br>right part.</b><span></span><span></span></div><div class="mini-photo"></div></div></div></div>
-            <div class="project-meta"><small data-copy="work.kind.web">Website concept</small><h3 data-copy="work.auto">Automotive parts</h3><p data-copy="work.autoDesc">A product-category site with a direct path to ask for a quote.</p></div>
+          <article class="work-card case-card">
+            <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/la-esquina-buenos-aires.jpg" data-aria-en="Open larger screenshot: La Esquina de Buenos Aires website" data-aria-es="Ampliar captura: Sitio de La Esquina de Buenos Aires" aria-label="Open larger screenshot: La Esquina de Buenos Aires website">
+              <img src="/assets/portfolio/la-esquina-buenos-aires.jpg" alt="Sitio de La Esquina de Buenos Aires" data-alt-en="La Esquina de Buenos Aires website" data-alt-es="Sitio de La Esquina de Buenos Aires" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.web"></small></div>
+              <h3 data-copy="work.esquina.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.esquina.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.esquina.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.esquina.outcome"></p></div>
+            </div>
           </article>
-          <article class="work-card">
-            <div class="project-preview alt3"><div class="mini-window"><div class="mini-head"><span data-copy="work.mock.floral">Floral studio</span><div class="mini-nav"><i></i><i></i><i></i></div></div><div class="mini-cover"><div class="mini-copy"><b data-copy="work.mock.flowers">Flowers for<br>every moment.</b><span></span><span></span></div><div class="mini-photo"></div></div></div></div>
-            <div class="project-meta"><small data-copy="work.kind.web">Website concept</small><h3 data-copy="work.floral">Flower shop catalog</h3><p data-copy="work.floralDesc">A digital catalog that guides customers to ask about an arrangement.</p></div>
+          <article class="work-card case-card">
+            <button class="case-image case-curiel" type="button" data-lightbox-src="/assets/portfolio/refaccionaria-curiel.jpg" data-aria-en="Open larger screenshot: Refaccionaria Curiel website concept" data-aria-es="Ampliar captura: Concepto web de Refaccionaria Curiel" aria-label="Open larger screenshot: Refaccionaria Curiel website concept">
+              <img src="/assets/portfolio/refaccionaria-curiel.jpg" alt="Concepto web de Refaccionaria Curiel" data-alt-en="Refaccionaria Curiel website concept" data-alt-es="Concepto web de Refaccionaria Curiel" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.concept"></small></div>
+              <h3 data-copy="work.curiel.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.curiel.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.curiel.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.curiel.outcome"></p></div>
+            </div>
           </article>
-          <article class="work-card">
-            <div class="project-preview alt4"><div class="mini-window"><div class="mini-head"><span data-copy="work.mock.studio">Interior studio</span><div class="mini-nav"><i></i><i></i><i></i></div></div><div class="mini-cover"><div class="mini-copy"><b data-copy="work.mock.kitchen">A considered<br>place to live.</b><span></span><span></span></div><div class="mini-photo"></div></div></div></div>
-            <div class="project-meta"><small data-copy="work.kind.web">Website concept</small><h3 data-copy="work.interior">Kitchen & interior design</h3><p data-copy="work.interiorDesc">An editorial portfolio for a design-led home brand.</p></div>
+          <article class="work-card case-card">
+            <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/floreria-muniz.jpg" data-aria-en="Open larger screenshot: Florería Muñiz website concept" data-aria-es="Ampliar captura: Concepto web de Florería Muñiz" aria-label="Open larger screenshot: Florería Muñiz website concept">
+              <img src="/assets/portfolio/floreria-muniz.jpg" alt="Concepto web de Florería Muñiz" data-alt-en="Florería Muñiz website concept" data-alt-es="Concepto web de Florería Muñiz" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.concept"></small></div>
+              <h3 data-copy="work.muniz.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.muniz.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.muniz.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.muniz.outcome"></p></div>
+            </div>
           </article>
-          <article class="work-card">
-            <div class="project-preview alt5"><div class="mini-window"><div class="mini-head"><span data-copy="work.mock.local">Local business</span><div class="mini-nav"><i></i><i></i><i></i></div></div><div class="mini-cover"><div class="mini-copy"><b data-copy="work.mock.localTitle">Good work,<br>clearly told.</b><span></span><span></span></div><div class="mini-photo"></div></div></div></div>
-            <div class="project-meta"><small data-copy="work.kind.web">Website concept</small><h3 data-copy="work.local">Local service business</h3><p data-copy="work.localDesc">A simple, polished home for services, contact details and trust signals.</p></div>
+          <article class="work-card case-card">
+            <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/home-keetchen.jpg" data-aria-en="Open larger screenshot: Home Keetchen website concept" data-aria-es="Ampliar captura: Concepto web de Home Keetchen" aria-label="Open larger screenshot: Home Keetchen website concept">
+              <img src="/assets/portfolio/home-keetchen.jpg" alt="Concepto web de Home Keetchen" data-alt-en="Home Keetchen website concept" data-alt-es="Concepto web de Home Keetchen" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.concept"></small></div>
+              <h3 data-copy="work.keetchen.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.keetchen.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.keetchen.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.keetchen.outcome"></p></div>
+            </div>
           </article>
-        </div>
-        <p class="privacy-note" data-copy="work.privacy">Portfolio note: demonstrations are not presented as published client websites or as proof of business results.</p>
+          <article class="work-card case-card">
+            <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/floreria-magnolia.jpg" data-aria-en="Open larger screenshot: Florería Magnolia website concept" data-aria-es="Ampliar captura: Concepto web de Florería Magnolia" aria-label="Open larger screenshot: Florería Magnolia website concept">
+              <img src="/assets/portfolio/floreria-magnolia.jpg" alt="Concepto web de Florería Magnolia" data-alt-en="Florería Magnolia website concept" data-alt-es="Concepto web de Florería Magnolia" loading="lazy" decoding="async">
+              <span class="case-zoom" aria-hidden="true">↗</span>
+            </button>
+            <div class="case-content">
+              <div class="case-topline"><small data-copy="work.type.concept"></small></div>
+              <h3 data-copy="work.magnolia.title"></h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.magnolia.need"></p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.magnolia.built"></p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.magnolia.outcome"></p></div>
+            </div>
+          </article>        </div>
+        <p class="privacy-note" data-copy="work.privacy">These summaries describe the work shown, not verified sales or booking growth. We add measured client results when the business shares confirmed figures.</p>
       </div>
     </section>
 
@@ -676,6 +771,12 @@
       </div>
     </section>
   </main>
+  <a class="mobile-contact" id="mobileContact" href="https://wa.me/50686138532?text=Hi%20AB%20Studio%2C%20I%27d%20like%20to%20start%20a%20project." target="_blank" rel="noopener noreferrer"><span data-copy="mobileCta">Start a project</span><span aria-hidden="true">↗</span></a>
+  <dialog class="project-lightbox" id="projectLightbox" aria-label="Project screenshot">
+    <button class="project-lightbox-close" id="projectLightboxClose" type="button" aria-label="Close image">×</button>
+    <img id="projectLightboxImage" alt="">
+    <p id="projectLightboxCaption"></p>
+  </dialog>
   <footer>
     <div class="wrap footer-inner">
       <a class="footer-brand" href="#top"><img src="/assets/brand/logo.jpg" alt=""><span>AB STUDIO</span></a>
@@ -692,17 +793,54 @@
         "hero.eyebrow":"Independent digital studio · Costa Rica · US + Mexico",
         "hero.title":"A better web presence.<br><em>Built to move business forward.</em>",
         "hero.body":"We build thoughtful websites, booking systems and practical automation for growing businesses. Clear design, useful technology and a direct path to your next customer.",
-        "hero.primary":"Tell us about your project","hero.secondary":"Explore selected work","hero.proof1":"6 website demos developed","hero.proof2":"English + Spanish",
+        "hero.primary":"Tell us about your project","hero.secondary":"Explore selected work","hero.proof1":"6 website projects + 1 booking system","hero.proof2":"English + Spanish",
         "hero.seal":"Designed with<br>your business<br>in mind","hero.mockBrand":"AB STUDIO · WEB CONCEPT","hero.mockTitle":"Make your first impression count.","hero.mockCaption":"A clear digital home for the work you do best.","hero.mockCta":"Explore","hero.noteTitle":"A useful site, not just a pretty one.","hero.noteBody":"Websites · booking flows · automation",
         "statement.one":"Made for small and growing businesses","statement.two":"United States · Mexico · Costa Rica-based team","statement.three":"Websites, systems & automation",
         "services.kicker":"What we do","services.title":"Digital tools that<br>make work <em>easier.</em>","services.intro":"Start with the right website. Add the systems your business needs when it is ready to do more.",
         "services.numWeb":"01 / WEB","services.numSystems":"02 / SYSTEMS","services.numAutomation":"03 / AUTOMATION","services.webTitle":"Business websites","services.webBody":"A custom, mobile-friendly site that explains what you do, builds trust and makes it easy to contact you.","services.webLink":"Explore website plans",
         "services.systemTitle":"Booking & admin systems","services.systemBody":"Reservation flows, dashboards and admin tools designed around the way your business actually works.","services.systemLink":"Scope a system",
         "services.autoTitle":"Practical automation","services.autoBody":"Connect repetitive steps across forms, messages and business tools, with a human in control where it matters.","services.autoLink":"Talk through an idea",
-        "work.kicker":"Selected work","work.title":"Six starting points.<br><em>Built around real needs.</em>","work.note":"These are demonstrations based on website projects developed by AB Studio. Client names and live website details are withheld for privacy.",
-        "work.mock.restaurant":"Restaurant","work.mock.table":"A table<br>worth sharing.","work.mock.reservations":"Reservations","work.mock.parts":"Parts & service","work.mock.partsTitle":"Find the<br>right part.","work.mock.floral":"Floral studio","work.mock.flowers":"Flowers for<br>every moment.","work.mock.studio":"Interior studio","work.mock.kitchen":"A considered<br>place to live.","work.mock.local":"Local business","work.mock.localTitle":"Good work,<br>clearly told.",
-        "work.kind.web":"Website concept","work.kind.system":"System demonstration","work.restaurant":"Restaurant presence","work.restaurantDesc":"Menu, location, atmosphere and a clear way to get in touch.","work.booking":"Booking & admin panel","work.bookingDesc":"A reservation flow connected to an administrative dashboard.","work.auto":"Automotive parts","work.autoDesc":"A product-category site with a direct path to ask for a quote.","work.floral":"Flower shop catalog","work.floralDesc":"A digital catalog that guides customers to ask about an arrangement.","work.interior":"Kitchen & interior design","work.interiorDesc":"An editorial portfolio for a design-led home brand.","work.local":"Local service business","work.localDesc":"A simple, polished home for services, contact details and trust signals.","work.privacy":"Portfolio note: demonstrations are not presented as published client websites or as proof of business results.",
-        "plans.kicker":"Website plans","plans.title":"A clear place<br>to <em>start.</em>","plans.intro":"Every project starts with a conversation about your goals. These starting prices cover website work; hosting and domain are quoted separately.",
+        "work.kicker":"Proyectos seleccionados",
+        "work.title":"Trabajo claro.<br><em>Soluciones útiles.</em>",
+        "work.note":"Cada caso explica la necesidad, lo que construimos y qué permite hacer la entrega. Solo publicamos métricas comerciales cuando el cliente las confirma.",
+        "work.type.web":"Diseño web",
+        "work.type.system":"Sistema de reservas",
+        "work.type.concept":"Concepto web",
+        "work.label.need":"La necesidad",
+        "work.label.built":"Qué construimos",
+        "work.label.outcome":"Resultado de la entrega",
+        "work.cuervosWeb.title":"Cuervos Garden · Sitio web",
+        "work.cuervosWeb.need":"El restaurante necesitaba mostrar su ambiente al aire libre, menú, ubicación y opciones para reservar en un solo lugar.",
+        "work.cuervosWeb.built":"Sitio adaptable a móviles con portada visual, menú, galería, ubicación y accesos visibles para reservar.",
+        "work.cuervosWeb.outcome":"Las personas pueden conocer el restaurante y llegar a la reserva desde el sitio, sin buscar la información entre publicaciones.",
+        "work.cuervosSystem.title":"Cuervos Garden · Reservas y administración",
+        "work.cuervosSystem.need":"Los clientes necesitaban consultar fechas y horarios disponibles; el equipo, revisar mesas y próximas reservas.",
+        "work.cuervosSystem.built":"Flujo de reservas separado, con disponibilidad por fecha y cantidad de personas, más un panel privado para administrar reservas, mesas y estados.",
+        "work.cuervosSystem.outcome":"Los clientes eligen un horario disponible en línea y el equipo gestiona las reservas y mesas desde un mismo panel.",
+        "work.esquina.title":"La Esquina de Buenos Aires",
+        "work.esquina.need":"El restaurante necesitaba renovar su presencia digital sin perder su identidad porteña y facilitar el acceso a la información clave.",
+        "work.esquina.built":"Sitio en español e inglés con historia, menú, galería, opiniones, reservas, ubicación y contacto.",
+        "work.esquina.outcome":"Las personas pueden cambiar de idioma, conocer el restaurante y consultar cómo reservar o llegar desde el mismo sitio.",
+        "work.curiel.title":"Refaccionaria Curiel",
+        "work.curiel.need":"El amplio surtido necesitaba categorías más claras para quienes buscan refacciones específicas.",
+        "work.curiel.built":"Concepto web por categorías para autos, camionetas, equipo pesado, aceites y refacciones eléctricas, con accesos a WhatsApp y llamadas.",
+        "work.curiel.outcome":"Las personas pueden ubicar el tipo de pieza y enviar una consulta más concreta para cotizar.",
+        "work.muniz.title":"Florería Muñiz",
+        "work.muniz.need":"Quienes buscan flores necesitaban explorar diseños y empezar un pedido personalizado con más claridad.",
+        "work.muniz.built":"Concepto web con catálogo visual de arreglos y un flujo para solicitar cotizaciones por WhatsApp.",
+        "work.muniz.outcome":"Las personas pasan de explorar ideas a enviar una consulta más específica sobre su arreglo.",
+        "work.keetchen.title":"Home Keetchen",
+        "work.keetchen.need":"El estudio de cocinas e interiorismo necesitaba presentar sus servicios y proyectos con el mismo cuidado que sus espacios.",
+        "work.keetchen.built":"Concepto web editorial con secciones para cocinas, clósets, interiorismo, proyectos a medida y accesorios.",
+        "work.keetchen.outcome":"Los posibles clientes pueden explorar servicios y proyectos, y solicitar una cita o cotización.",
+        "work.magnolia.title":"Florería Magnolia",
+        "work.magnolia.need":"La florería necesitaba una vitrina digital cálida para mostrar arreglos personalizados y su presencia local.",
+        "work.magnolia.built":"Concepto web visual con fotografías de arreglos, opiniones, ubicación y opciones de contacto directo.",
+        "work.magnolia.outcome":"Las personas pueden conocer el estilo de la florería y contactarla por WhatsApp o teléfono.",
+        "work.privacy":"Estas fichas describen el trabajo mostrado, no un aumento comprobado en ventas o reservas. Sumaremos resultados medidos cuando el negocio comparta cifras verificadas.",
+        "hero.proof1":"6 proyectos web + 1 sistema de reservas",
+        "mobileCta":"Empezar un proyecto",
+                "plans.kicker":"Website plans","plans.title":"A clear place<br>to <em>start.</em>","plans.intro":"Every project starts with a conversation about your goals. These starting prices cover website work; hosting and domain are quoted separately.",
         "plans.startingAt":"USD · starting at","plans.label1":"For a clear first presence","plans.basic":"Basic","plans.basicDesc":"A focused website that makes the essentials easy to find.","plans.basic1":"Responsive informational website","plans.basic2":"Core business sections and contact details","plans.basic3":"Location and direct contact links","plans.basic4":"Two rounds of minor revisions",
         "plans.label2":"Most requested starting point","plans.pro":"Professional","plans.proDesc":"More room for your services, products and customer questions.","plans.pro1":"Everything in Basic","plans.pro2":"Expanded service or product catalog","plans.pro3":"Contact form and basic on-page SEO","plans.pro4":"Two rounds of minor revisions",
         "plans.label3":"For a more tailored experience","plans.premium":"Premium","plans.premiumDesc":"A more distinctive website with a broader, custom-scoped experience.","plans.premium1":"Custom visual direction and expanded pages","plans.premium2":"Interactive sections and tailored content structure","plans.premium3":"Integrations scoped to your goals","plans.premium4":"Systems and advanced automation quoted separately","plans.cta":"Discuss this plan","plans.note":"Prices shown in USD for clients in the United States and Mexico. Final scope, hosting, domain, third-party subscriptions and taxes are confirmed in the proposal.",
@@ -788,6 +926,12 @@
         const value = copy[lang][el.dataset.placeholder];
         if (value) el.placeholder = value;
       });
+      document.querySelectorAll("[data-alt-en]").forEach(el => { el.alt = lang === "es" ? el.dataset.altEs : el.dataset.altEn; });
+      document.querySelectorAll("[data-aria-en]").forEach(el => el.setAttribute("aria-label", lang === "es" ? el.dataset.ariaEs : el.dataset.ariaEn));
+      const mobileContact = document.getElementById("mobileContact");
+      if (mobileContact) mobileContact.href = lang === "es"
+        ? "https://wa.me/50686138532?text=Hola%20AB%20Studio%2C%20quiero%20conversar%20sobre%20un%20proyecto."
+        : "https://wa.me/50686138532?text=Hi%20AB%20Studio%2C%20I%27d%20like%20to%20start%20a%20project.";
       const button = document.getElementById("langToggle");
       button.textContent = lang === "en" ? "ES" : "EN";
       button.setAttribute("aria-label", lang === "en" ? "Cambiar a español" : "Cambiar al inglés");
@@ -942,6 +1086,19 @@
     }));
     window.addEventListener('popstate', () => showRoute(location.pathname, routeTargets[location.pathname], false));
     showRoute(routeTargets[location.pathname] ? location.pathname : '/', routeTargets[location.pathname], false);
+
+    const projectLightbox = document.getElementById("projectLightbox");
+    const projectLightboxImage = document.getElementById("projectLightboxImage");
+    const projectLightboxCaption = document.getElementById("projectLightboxCaption");
+    document.querySelectorAll(".case-image").forEach(button => button.addEventListener("click", () => {
+      const image = button.querySelector("img");
+      projectLightboxImage.src = button.dataset.lightboxSrc;
+      projectLightboxImage.alt = image.alt;
+      projectLightboxCaption.textContent = image.alt;
+      projectLightbox.showModal();
+    }));
+    document.getElementById("projectLightboxClose").addEventListener("click", () => projectLightbox.close());
+    projectLightbox.addEventListener("click", event => { if (event.target === projectLightbox) projectLightbox.close(); });
 
     const homeInquiryForm = document.getElementById('homeInquiryForm');
     const homeInquiryMessage = document.getElementById('homeInquiryMessage');
