@@ -35,6 +35,36 @@
     .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--taupe); }
     .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -.045em; }
     .section { padding: 78px 0; border-top: 1px solid var(--line); }
+    body.route-mode main > :not(#contact):not(#route-page) { display: none; }
+    body.route-mode #contact { display: block; }
+    body.route-mode #route-page { display: block; }
+    #route-page { display: none; }
+    .route-hero { padding: 90px 0 58px; border-bottom: 1px solid var(--line); }
+    .route-hero h1 { max-width: 900px; margin: 18px 0; font: 400 clamp(3rem, 7vw, 6rem)/.95 var(--serif); letter-spacing: -.065em; }
+    .route-hero p { max-width: 680px; color: var(--ink-soft); font-size: 1.08rem; }
+    .route-hero .hero-actions { margin-top: 25px; }
+    .route-content { padding: 60px 0; border-bottom: 1px solid var(--line); }
+    .route-content h2 { font: 400 clamp(2rem, 4vw, 3.6rem)/1 var(--serif); letter-spacing: -.05em; margin: 10px 0 18px; }
+    .route-content > .wrap > p { max-width: 680px; color: var(--ink-soft); }
+    .route-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 30px; }
+    .route-card { border: 1px solid var(--line); background: rgba(255,253,248,.35); padding: 24px; min-height: 180px; }
+    .route-card b { display: block; font: 400 1.3rem var(--serif); margin-bottom: 8px; }
+    .route-card p { margin: 0; color: var(--muted); font-size: .84rem; }
+    .route-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .route-list { list-style: none; margin: 24px 0 0; padding: 0; border-top: 1px solid var(--line); }
+    .route-list li { padding: 13px 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
+    .route-faq { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px; }
+    .route-faq details { padding:18px; border:1px solid var(--line); }
+    .route-faq summary { font-weight:700; cursor:pointer; }
+    .route-faq p { color:var(--muted); font-size:.84rem; margin-bottom:0; }
+    .route-plans { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px; }
+    .route-plan { padding:22px; border:1px solid var(--line); background:var(--white); }
+    .route-plan h3 { font:400 1.55rem var(--serif); margin:6px 0; }
+    .route-plan .price { font-size:1.7rem; font-weight:750; margin:12px 0; }
+    .route-plan p,.route-plan li { color:var(--muted); font-size:.82rem; }
+    .route-plan ul { padding-left:18px; }
+    @media(max-width:760px) { .route-grid,.route-plans,.route-columns,.route-faq { grid-template-columns:1fr; } .route-hero {padding-top:54px;} }
+
     .section-head { display: grid; grid-template-columns: .9fr 1.1fr; align-items: end; gap: 36px; margin-bottom: 44px; }
     .section-head h2 { margin: 12px 0 0; font: 400 clamp(2.3rem, 5vw, 4.45rem)/.98 var(--serif); letter-spacing: -.055em; max-width: 640px; }
     .section-head p { max-width: 480px; color: var(--ink-soft); margin: 0 0 3px; }
@@ -570,6 +600,8 @@
       </div>
     </section>
 
+    <div id="route-page" aria-live="polite"></div>
+
     <section class="contact" id="contact">
       <div class="wrap contact-inner">
         <div>
@@ -714,7 +746,13 @@
         ? "AB Studio creates thoughtful websites, booking systems, and practical automation for growing businesses in the United States and Mexico."
         : "AB Studio crea sitios web, sistemas de reservas y automatización práctica para negocios en crecimiento en Estados Unidos y México.";
     }
-    document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "en" ? "es" : "en"));
+    document.getElementById("langToggle").addEventListener("click", () => {
+      setLanguage(currentLang === "en" ? "es" : "en");
+      if (location.pathname === "/sitios-web/") {
+        routePage.innerHTML = websitePageMarkup(currentLang);
+        document.title = currentLang === "es" ? "Diseño de páginas web — AB Studio" : "Website design — AB Studio";
+      }
+    });
     try {
       const savedLang = localStorage.getItem("abstudio-lang") || (navigator.language && navigator.language.startsWith("es") ? "es" : "en");
       if (savedLang === "es") { setLanguage("es"); }
@@ -741,32 +779,106 @@
       menuToggle.textContent="☰";
     }));
 
-    // Route-style navigation: each menu destination gets its own URL in the same tab.
+    // Each route gets a focused page view; internal links stay in the same tab.
     const routeAnchors = document.querySelectorAll('a[data-route][data-target]');
-    function goToRoute(path, targetId, addHistory = true) {
-      if (addHistory && location.pathname !== path) {
-        try { history.pushState({ abStudioRoute: path }, "", path); }
-        catch (_) { /* Local file previews cannot change pathnames; section navigation still works. */ }
-      }
-      const target = document.getElementById(targetId);
-      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    routeAnchors.forEach(link => link.addEventListener("click", event => {
-      event.preventDefault();
-      goToRoute(link.dataset.route, link.dataset.target);
-    }));
+    const main = document.querySelector('main');
+    const routePage = document.getElementById('route-page');
     const routeTargets = {
       "/": "top", "/servicios/": "services", "/sitios-web/": "plans",
       "/sistemas/": "systems", "/seo/": "seo", "/automatizacion/": "automation",
       "/empresa/": "company", "/blog/": "blog"
     };
-    window.addEventListener("popstate", () => {
-      goToRoute(location.pathname, routeTargets[location.pathname] || "top", false);
-    });
-    const initialTarget = routeTargets[location.pathname];
-    if (initialTarget && initialTarget !== "top") {
-      requestAnimationFrame(() => document.getElementById(initialTarget)?.scrollIntoView({ block: "start" }));
+    const websitePageCopy = {
+      en: {
+        eyebrow:"WEBSITE DESIGN & DEVELOPMENT", title:"A website that makes it easy to choose you.",
+        intro:"We plan and build custom, mobile-friendly websites that explain your offer, earn trust and turn visits into real inquiries. Clear scope, direct communication and a site shaped around your business.",
+        audienceTitle:"Built for businesses ready to grow online.", audienceIntro:"A focused website helps people understand what you do, trust your business and take the next step.",
+        audiences:[["Local businesses","Restaurants, shops and service providers that need a polished digital home and more direct inquiries."],["Professional services","Clinics, consultants and independent professionals who need to explain their offer and support their reputation."],["Growing companies","Businesses launching a service or replacing an outdated site with a faster, clearer experience."]],
+        problemsTitle:"Solve the friction that costs you customers.", problems:[["Visitors do not understand what you offer","We organize your services, value proposition and contact options so people know what to do next."],["Your site is hard to use on a phone","Responsive layouts and optimized assets make key information easy to reach on mobile."],["Your business looks outdated online","A visual direction built for your brand gives customers a consistent, professional first impression."]],
+        scopeTitle:"What your website can include.", scopeIntro:"We define the pages and features with you before development begins. The final scope is confirmed in your proposal.",
+        deliverables:["Responsive design for mobile, tablet and desktop","Custom structure and visual direction for your business","Core pages for services, about, contact and location","Contact form, WhatsApp and social links as needed","SSL and launch configuration; hosting and domain quoted separately","Basic on-page SEO according to the selected plan","Two rounds of minor revisions, with larger changes scoped separately"],
+        plansTitle:"Choose a starting point.", plans:[["Basic","$1,100","A focused informational website with essential business sections, contact details and direct links."],["Professional","$1,500","More room for services or products, a contact form and basic on-page SEO."],["Premium","$2,500","A custom visual direction, expanded pages and tailored interactive features."]],
+        factorsTitle:"What shapes the final estimate?", factors:["Number of pages and depth of content","Level of visual customization and content preparation","Forms, booking tools, payment gateways or external integrations","Whether you need a blog, ongoing maintenance or third-party services"],
+        faqTitle:"Before we begin", faqs:[["Does the package include hosting and a domain?","Hosting and domain are quoted separately so the plan matches your chosen provider and renewal terms."],["Will the website work on mobile?","Yes. Responsive behavior for phones, tablets and desktop is part of the build."],["Can you guarantee the first place on Google?","No. We can configure on-page SEO foundations, but search positions depend on competition, content and many external factors."],["Who owns the website?","After final payment, we hand over the agreed project files and transferable code, subject to third-party platform terms. The domain is registered to the client when possible."]],
+        cta:"Tell us what your website needs", ctaText:"Share your business, goals and the pages you have in mind. We will reply with a suggested scope and price.",
+        buttons:["Discuss your website","See packages"], details:"The starting prices are for website development. Hosting, domain, paid software, extensive copywriting, photography and advanced integrations are confirmed separately in the proposal."
+      },
+      es: {
+        eyebrow:"DISEÑO Y DESARROLLO WEB", title:"Una web que ayuda a elegirte.",
+        intro:"Planificamos y desarrollamos sitios web propios, adaptables a móviles, que explican tu oferta, generan confianza y convierten visitas en consultas reales. Alcance claro, comunicación directa y una web pensada para tu negocio.",
+        audienceTitle:"Para negocios listos para crecer en internet.", audienceIntro:"Una web clara ayuda a que las personas entiendan qué hacés, confíen en tu negocio y den el siguiente paso.",
+        audiences:[["Negocios locales","Restaurantes, comercios y proveedores de servicios que necesitan una presencia digital profesional y más consultas directas."],["Servicios profesionales","Clínicas, consultores y profesionales que necesitan explicar su oferta y respaldar su reputación."],["Empresas en crecimiento","Negocios que lanzan un servicio o reemplazan una web desactualizada por una experiencia más rápida y clara."]],
+        problemsTitle:"Resolvemos lo que puede hacerte perder clientes.", problems:[["Las visitas no entienden qué ofrecés","Organizamos tus servicios, propuesta de valor y formas de contacto para que sepan cómo avanzar."],["Tu sitio es difícil de usar desde el celular","Diseño adaptable y recursos optimizados para que la información importante se encuentre fácilmente."],["Tu negocio se ve desactualizado en internet","Creamos una dirección visual alineada con tu marca para dar una primera impresión profesional y consistente."]],
+        scopeTitle:"Qué puede incluir tu sitio web.", scopeIntro:"Definimos las páginas y funciones con vos antes de empezar. El alcance final queda detallado en la propuesta.",
+        deliverables:["Diseño adaptable a celular, tablet y computadora","Estructura y estilo visual propios para tu negocio","Páginas principales de servicios, empresa, contacto y ubicación","Formulario, WhatsApp y enlaces a redes sociales según lo acordado","Configuración de publicación y SSL; hosting y dominio se cotizan aparte","SEO básico dentro de la página según el plan elegido","Dos rondas de cambios menores; cambios mayores se cotizan por separado"],
+        plansTitle:"Elegí un punto de partida.", plans:[["Básico","$1,100","Sitio informativo enfocado, con secciones esenciales, datos de contacto y enlaces directos."],["Profesional","$1,500","Más espacio para servicios o productos, formulario de contacto y SEO básico en la página."],["Premium","$2,500","Dirección visual personalizada, más páginas y funciones interactivas a medida."]],
+        factorsTitle:"Qué define el precio final", factors:["Cantidad de páginas y profundidad del contenido","Nivel de personalización visual y preparación del contenido","Formularios, reservas, pagos o integraciones externas","Necesidad de blog, mantenimiento continuo o servicios de terceros"],
+        faqTitle:"Antes de empezar", faqs:[["¿El paquete incluye hosting y dominio?","Se cotizan por separado para ajustar el servicio al proveedor elegido y dejar claras las condiciones de renovación."],["¿La web funciona en celulares?","Sí. La adaptación a celulares, tablets y computadoras forma parte del desarrollo."],["¿Pueden garantizar el primer lugar en Google?","No. Podemos configurar las bases de SEO dentro del sitio, pero el posicionamiento depende de la competencia, el contenido y otros factores externos."],["¿Quién será dueño del sitio?","Al completar el pago entregamos los archivos y el código transferible acordados, sujetos a las condiciones de plataformas externas. El dominio se registra a nombre del cliente cuando sea posible."]],
+        cta:"Contanos qué necesita tu web", ctaText:"Compartinos tu negocio, tus objetivos y las páginas que imaginás. Te respondemos con un alcance y un precio sugerido.",
+        buttons:["Conversar sobre mi web","Ver paquetes"], details:"Los precios desde corresponden al desarrollo del sitio. Hosting, dominio, software de pago, redacción extensa, fotografía e integraciones avanzadas se confirman aparte en la propuesta."
+      }
+    };
+    function websitePageMarkup(lang) {
+      const c = websitePageCopy[lang] || websitePageCopy.en;
+      const cards = list => list.map(item => `<article class="route-card"><b>${item[0]}</b><p>${item[1]}</p></article>`).join('');
+      const list = items => items.map(item => `<li>${item}</li>`).join('');
+      const plans = c.plans.map(plan => `<article class="route-plan"><small>${plan[0]}</small><div class="price">${plan[1]} <small>USD ${lang === 'es' ? 'desde' : 'starting at'}</small></div><p>${plan[2]}</p></article>`).join('');
+      const faqs = c.faqs.map(faq => `<details><summary>${faq[0]}</summary><p>${faq[1]}</p></details>`).join('');
+      return `<section class="route-hero"><div class="wrap"><div class="eyebrow">${c.eyebrow}</div><h1 class="serif">${c.title}</h1><p>${c.intro}</p><div class="hero-actions"><a class="button" href="#contact">${c.buttons[0]} <span class="arrow">↗</span></a><a class="button outline" href="#route-packages">${c.buttons[1]} <span class="arrow">↓</span></a></div></div></section>
+        <section class="route-content"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'PARA QUIÉN' : 'WHO IT IS FOR'}</div><h2>${c.audienceTitle}</h2><p>${c.audienceIntro}</p><div class="route-grid">${cards(c.audiences)}</div></div></section>
+        <section class="route-content"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'LO QUE RESOLVEMOS' : 'WHAT WE SOLVE'}</div><h2>${c.problemsTitle}</h2><div class="route-grid">${cards(c.problems)}</div></div></section>
+        <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">${lang === 'es' ? 'ALCANCE DEL PROYECTO' : 'PROJECT SCOPE'}</div><h2>${c.scopeTitle}</h2><p>${c.scopeIntro}</p></div><ul class="route-list">${list(c.deliverables)}</ul></div></section>
+        <section class="route-content" id="route-packages"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'INVERSIÓN' : 'INVESTMENT'}</div><h2>${c.plansTitle}</h2><div class="route-plans">${plans}</div><p class="fineprint">${c.details}</p></div></section>
+        <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">${lang === 'es' ? 'COTIZACIÓN' : 'ESTIMATE'}</div><h2>${c.factorsTitle}</h2></div><ul class="route-list">${list(c.factors)}</ul></div></section>
+        <section class="route-content"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'PREGUNTAS FRECUENTES' : 'FREQUENT QUESTIONS'}</div><h2>${c.faqTitle}</h2><div class="route-faq">${faqs}</div></div></section>
+        <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">AB STUDIO</div><h2>${c.cta}</h2><p>${c.ctaText}</p></div><div class="hero-actions"><a class="button" href="#contact">${c.buttons[0]} <span class="arrow">↗</span></a></div></div></section>`;
     }
+    function showRoute(path, targetId, addHistory = true) {
+      if (addHistory && location.pathname !== path) history.pushState({ abStudioRoute: path }, "", path);
+      main.querySelectorAll(':scope > *').forEach(element => element.style.removeProperty('display'));
+      const isHome = path === '/';
+      document.body.classList.toggle('route-mode', !isHome);
+      routePage.innerHTML = '';
+      document.querySelectorAll('#services .service').forEach(card => card.hidden = false);
+      if (path === '/sitios-web/') routePage.innerHTML = websitePageMarkup(currentLang);
+      else if (path === '/empresa/') {
+        document.getElementById('company').style.display = 'block';
+        document.getElementById('about').style.display = 'block';
+      } else if (path === '/sistemas/' || path === '/automatizacion/') {
+        const keepId = path === '/sistemas/' ? 'systems' : 'automation';
+        document.querySelectorAll('#services .service').forEach(card => { card.hidden = card.id !== keepId; });
+        document.querySelector('#services').style.display = 'block';
+        document.querySelector('#services').scrollIntoView({ block:'start' });
+      } else if (!isHome && targetId) {
+        const section = document.getElementById(targetId)?.closest('section') || document.getElementById(targetId);
+        if (section) { section.style.display = 'block'; section.scrollIntoView({ block:'start' }); }
+      } else if (isHome) window.scrollTo({ top:0, behavior:'smooth' });
+      if (path === '/sitios-web/') window.scrollTo({ top:0, behavior:'instant' });
+      const titles = {
+        '/':'AB Studio — Websites, systems & automation',
+        '/servicios/': currentLang === 'es' ? 'Servicios digitales — AB Studio' : 'Digital services — AB Studio',
+        '/sitios-web/': currentLang === 'es' ? 'Diseño de páginas web — AB Studio' : 'Website design — AB Studio',
+        '/sistemas/': currentLang === 'es' ? 'Sistemas de reservas — AB Studio' : 'Booking systems — AB Studio',
+        '/seo/':'SEO & local search — AB Studio','/automatizacion/':'Automation — AB Studio',
+        '/empresa/': currentLang === 'es' ? 'Empresa — AB Studio' : 'Company — AB Studio','/blog/':'Blog — AB Studio'
+      };
+      document.title = titles[path] || titles['/'];
+      const contact = document.getElementById('contact');
+      if (!isHome && path !== '/sitios-web/' && path !== '/sistemas/' && path !== '/automatizacion/') {
+        const section = document.getElementById(targetId)?.closest('section') || document.getElementById(targetId);
+        if (section) section.style.display = 'block';
+      }
+      if (!isHome) contact.style.display = 'block';
+    }
+    routeAnchors.forEach(link => link.addEventListener('click', event => {
+      event.preventDefault(); showRoute(link.dataset.route, link.dataset.target);
+      navlinks.classList.remove('open');
+      navlinks.querySelectorAll('details').forEach(details => details.open = false);
+      menuToggle.setAttribute('aria-expanded','false'); menuToggle.textContent='☰';
+    }));
+    window.addEventListener('popstate', () => showRoute(location.pathname, routeTargets[location.pathname], false));
+    showRoute(routeTargets[location.pathname] ? location.pathname : '/', routeTargets[location.pathname], false);
+
   </script>
 </body>
 </html>
