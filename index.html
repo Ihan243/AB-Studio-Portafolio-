@@ -953,7 +953,7 @@
       event.preventDefault();
       const opening = currentLang === 'es' ? 'Hola AB Studio, quiero conversar sobre un proyecto web:' : 'Hi AB Studio, I would like to discuss a website project:';
       const url = `https://wa.me/50686138532?text=${encodeURIComponent(`${opening}\n\n${homeInquiryMessage.value.trim()}`)}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+      window.location.assign(url);
     });
 
 
