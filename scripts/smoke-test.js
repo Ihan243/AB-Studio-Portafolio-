@@ -64,6 +64,21 @@ for (const route of routes) {
   assert.match(doc, /class="route-mode" data-page="/);
   assert.match(doc, /content="[^\"]+"/);
 }
+
+// Verify complementary bilingual content on every dedicated page.
+for (const route of routes) {
+  const detail = read(`public/${route}/index.html`);
+  assert.ok(detail.includes(`AB-STUDIO-COMPLEMENTARY-CONTENT:${route}`), `No complementary content: ${route}`);
+  assert.ok(detail.includes('class="ab-detail-section'), `No detail section: ${route}`);
+  assert.ok(detail.includes('data-ab-locale="en"'), `English detail missing: ${route}`);
+  assert.ok(detail.includes('data-ab-locale="es"'), `Spanish detail missing: ${route}`);
+  assert.ok(detail.includes('class="ab-detail-card"'), `Feature details missing: ${route}`);
+  assert.ok(detail.includes('class="ab-detail-step"'), `Process details missing: ${route}`);
+}
+assert.match(css, /main > \.ab-detail-section \{display:block !important;\}/);
+assert.match(css, /data-ab-locale="es"/);
+assert.match(read('public/sitios-web/index.html'), /floreria-muniz\.webp/);
+
 assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel\.app\/sitios-web\//);
 assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel\.app\/proyectos\//);
 assert.match(read('vercel.json'), /proyectos\/index\.html/);
