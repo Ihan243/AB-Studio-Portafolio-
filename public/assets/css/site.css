@@ -381,3 +381,32 @@
     .inquiry-fields label {font-size:.82rem;}
     .inquiry-fields select {border-radius:8px;background:#fffdf8;border:1px solid #8f8a7f;color:#252522;padding:13px 15px;min-height:46px;width:100%;font:inherit;}
     @media(max-width:760px){.faq-grid{grid-template-columns:1fr;}.faq-grid details{padding:17px;}}
+
+/* Bamboo identity: purely decorative botanical illustration; content stays readable. */
+.hero-art { isolation: isolate; }
+.hero-arch { z-index:0; background:linear-gradient(145deg,#e0e4d5 0%,#e9e1d5 72%,#dedccb 100%); }
+.hero-art::before {
+  content:""; position:absolute; inset:-4% -5% -2%;
+  background:url("/assets/brand/bamboo-grove.svg") center / 100% 100% no-repeat;
+  opacity:.92; z-index:1; pointer-events:none;
+}
+.hero-art .showcase { z-index:2; }
+.hero-art .seal { z-index:3; }
+.hero-art .float-note { z-index:4; }
+.about-mark { position:relative; isolation:isolate; }
+.about-mark::before {
+  content:""; position:absolute; inset:0;
+  background:url("/assets/brand/bamboo-grove.svg") center / cover no-repeat;
+  opacity:.68; pointer-events:none; z-index:0;
+}
+.about-mark img { position:relative; z-index:1; }
+body.theme-dark .hero-arch { background:linear-gradient(145deg,#303d32,#30332b); }
+body.theme-dark .hero-art::before { opacity:.67; filter:brightness(1.12) saturate(.75); }
+body.theme-dark .about-mark::before { opacity:.55; filter:brightness(1.12); }
+@media(max-width:680px) {
+  .hero-art::before { inset:0 -1% -2%; opacity:.74; background-size:100% 100%; }
+  .about-mark::before { opacity:.52; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-art::before,.about-mark::before { transition:none; }
+}
