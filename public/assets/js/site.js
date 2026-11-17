@@ -1,6 +1,24 @@
 const copy = {
       en: {
+        "systems.detailsTitle":"What a custom booking system can include",
+        "systems.detailsIntro":"The exact features depend on how your business handles appointments, staff availability and customer requests.",
+        "systems.f1title":"Reservation requests",
+        "systems.f1body":"Collect dates, services and important details in a structured flow.",
+        "systems.f2title":"Operations dashboard",
+        "systems.f2body":"Review incoming requests and organize follow-up tasks in one place.",
+        "systems.f3title":"Custom workflows",
+        "systems.f3body":"Plan confirmation, change and cancellation steps around your team's process.",
+        "automation.detailsTitle":"Where automation helps",
+        "automation.detailsIntro":"Start by identifying repeated steps. We map the process before deciding what should be automated and what should stay manual.",
+        "automation.f1title":"Structured inquiries",
+        "automation.f1body":"Route information from forms into a clear follow-up process.",
+        "automation.f2title":"Notifications",
+        "automation.f2body":"Connect messages and reminders when they fit the workflow.",
+        "automation.f3title":"Human control",
+        "automation.f3body":"Keep review and approval steps for decisions that need a person.",
         "nav.work":"Work",
+        "work.viewAll":"See all projects",
+        "services.viewAll":"Explore all services",
         "nav.cta":"Request a consultation",
         "footer.privacy":"Privacy",
         "footer.terms":"Project terms",
@@ -84,7 +102,25 @@ const copy = {
         "footer.copy":"Independent digital studio · Serving the U.S."
       },
       es: {
+        "systems.detailsTitle":"Qué puede incluir un sistema de reservas",
+        "systems.detailsIntro":"Las funciones se definen según cómo tu negocio gestione citas, disponibilidad del personal y solicitudes de clientes.",
+        "systems.f1title":"Solicitudes de reserva",
+        "systems.f1body":"Recopila fechas, servicios y detalles importantes con un formulario estructurado.",
+        "systems.f2title":"Panel de gestión",
+        "systems.f2body":"Revisa solicitudes y organiza seguimientos desde un mismo lugar.",
+        "systems.f3title":"Procesos personalizados",
+        "systems.f3body":"Planifica confirmaciones, cambios y cancelaciones según tu equipo.",
+        "automation.detailsTitle":"Dónde ayuda la automatización",
+        "automation.detailsIntro":"Primero identificamos tareas repetitivas y diseñamos el proceso antes de decidir qué automatizar y qué mantener manual.",
+        "automation.f1title":"Consultas organizadas",
+        "automation.f1body":"Conecta la información de formularios con un proceso de seguimiento.",
+        "automation.f2title":"Notificaciones",
+        "automation.f2body":"Conecta mensajes y recordatorios cuando encajen con tu operación.",
+        "automation.f3title":"Control humano",
+        "automation.f3body":"Conserva revisiones y aprobaciones para las decisiones que necesitan una persona.",
         "nav.work":"Proyectos",
+        "work.viewAll":"Ver todos los proyectos",
+        "services.viewAll":"Explorar todos los servicios",
         "nav.cta":"Solicitar asesoría",
         "footer.privacy":"Privacidad",
         "footer.terms":"Condiciones",
@@ -167,11 +203,14 @@ const copy = {
         "footer.copy":"Estudio digital independiente · Atención en EE. UU."
       }
     };
+    const pageIntroCopy = {"en":{"services":["WHAT WE DO","Digital services built around your business.","Explore websites, reservation systems, local visibility and automation. Each service has its own page with more details."],"projects":["SELECTED WORK","Explore our work.","Browse website concepts and projects, their features, and the problems they are designed to solve."],"systems":["BOOKING & ADMIN SYSTEMS","Less manual work. Better organization.","We plan reservation and management tools around how your team actually works—from customer inquiries to administration."],"seo":["SEARCH & LOCAL VISIBILITY","Help the right people discover you.","Technical foundations, business information and useful content to support visibility in search and local results."],"automation":["PRACTICAL AUTOMATION","Simplify repetitive tasks.","Connect forms, follow-ups and workflows so your business can spend less time repeating the same steps."],"company":["ABOUT AB STUDIO","Meet the team behind the work.","Learn about our approach, the people building your project and what collaboration with AB Studio looks like."],"blog":["IDEAS & GUIDES","Useful ideas for growing businesses.","Practical notes on websites, reservations and visibility, written with small-business owners in mind."]},"es":{"services":["NUESTROS SERVICIOS","Soluciones digitales para tu negocio.","Descubre páginas web, sistemas de reservas, visibilidad local y automatización. Cada servicio tiene su propia página con más información."],"projects":["NUESTROS PROYECTOS","Conoce nuestros trabajos.","Explora conceptos y proyectos web, sus funciones y los problemas que ayudan a resolver."],"systems":["RESERVAS Y ADMINISTRACIÓN","Menos tareas manuales. Más organización.","Diseñamos herramientas de reservas y gestión según la forma en que trabaja tu equipo, desde las consultas hasta la administración."],"seo":["SEO Y VISIBILIDAD LOCAL","Haz que más personas puedan encontrarte.","Bases técnicas, información comercial y contenido útil para apoyar la visibilidad en buscadores y resultados locales."],"automation":["AUTOMATIZACIÓN PRÁCTICA","Simplifica tareas repetitivas.","Conecta formularios, seguimientos y procesos para dedicar menos tiempo a repetir los mismos pasos."],"company":["SOBRE AB STUDIO","Conoce al equipo detrás de cada proyecto.","Descubre cómo trabajamos, quién desarrolla tu proyecto y cómo es colaborar con AB Studio."],"blog":["IDEAS Y GUÍAS","Consejos útiles para tu negocio.","Notas prácticas sobre sitios web, reservas y visibilidad, pensadas para pequeños negocios."]}};
     let currentLang = "en";
     function setLanguage(lang) {
       currentLang = lang;
       try { localStorage.setItem("abstudio-lang", lang); } catch (_) {}
       document.documentElement.lang = lang;
+      const intro = pageIntroCopy[lang]?.[document.body.dataset.page];
+      if(intro) document.querySelectorAll('[data-subpage-field]').forEach(el => { const i = {kicker:0,title:1,body:2}[el.dataset.subpageField]; if(i!==undefined) el.textContent = intro[i]; });
       document.querySelectorAll("[data-copy]").forEach(el => {
         const value = copy[lang][el.dataset.copy];
         if (value) el.textContent = value;
@@ -246,7 +285,7 @@ const copy = {
     const routeTargets = {
       "/": "top", "/servicios/": "services", "/sitios-web/": "plans",
       "/sistemas/": "systems", "/seo/": "seo", "/automatizacion/": "automation",
-      "/empresa/": "company", "/blog/": "blog"
+      "/empresa/": "company", "/blog/": "blog", "/proyectos/": "work"
     };
     const websitePageCopy = {
       en: {
@@ -309,10 +348,10 @@ const copy = {
         const keepId = path === '/sistemas/' ? 'systems' : 'automation';
         document.querySelectorAll('#services .service').forEach(card => { card.hidden = card.id !== keepId; });
         document.querySelector('#services').style.display = 'block';
-        document.querySelector('#services').scrollIntoView({ block:'start' });
+        /* Dedicated pages begin at their own introduction. */
       } else if (!isHome && targetId) {
         const section = document.getElementById(targetId)?.closest('section') || document.getElementById(targetId);
-        if (section) { section.style.display = 'block'; section.scrollIntoView({ block:'start' }); }
+        if (section) { section.style.display = 'block'; }
       } else if (isHome) window.scrollTo({ top:0, behavior:'smooth' });
       if (path === '/sitios-web/') window.scrollTo({ top:0, behavior:'instant' });
       const titles = {
@@ -321,7 +360,8 @@ const copy = {
         '/sitios-web/': currentLang === 'es' ? 'Diseño de páginas web — AB Studio' : 'Website design — AB Studio',
         '/sistemas/': currentLang === 'es' ? 'Sistemas de reservas — AB Studio' : 'Booking systems — AB Studio',
         '/seo/':'SEO & local search — AB Studio','/automatizacion/':'Automation — AB Studio',
-        '/empresa/': currentLang === 'es' ? 'Empresa — AB Studio' : 'Company — AB Studio','/blog/':'Blog — AB Studio'
+        '/empresa/': currentLang === 'es' ? 'Empresa — AB Studio' : 'Company — AB Studio','/blog/':'Blog — AB Studio',
+        '/proyectos/': currentLang === 'es' ? 'Proyectos — AB Studio' : 'Our work — AB Studio'
       };
       document.title = titles[path] || titles['/'];
       const metaDescriptions = {
@@ -332,7 +372,8 @@ const copy = {
         '/seo/': currentLang === 'es' ? 'SEO técnico y visibilidad local para que más clientes encuentren tu negocio.' : 'SEO and local search visibility services for small businesses.',
         '/automatizacion/': currentLang === 'es' ? 'Automatizaciones prácticas para formularios, mensajes y procesos de negocios.' : 'Practical automation for forms, messages and small business workflows.',
         '/empresa/': currentLang === 'es' ? 'Conoce al equipo y proceso de trabajo de AB Studio.' : 'Meet the team and learn how AB Studio approaches web and software projects.',
-        '/blog/': currentLang === 'es' ? 'Consejos prácticos sobre páginas web, reservas y visibilidad online.' : 'Practical articles on websites, booking tools and local visibility for business owners.'
+        '/blog/': currentLang === 'es' ? 'Consejos prácticos sobre páginas web, reservas y visibilidad online.' : 'Practical articles on websites, booking tools and local visibility for business owners.',
+        '/proyectos/': currentLang === 'es' ? 'Explora los proyectos, conceptos web y sistemas desarrollados por AB Studio.' : 'See the websites, concepts and digital systems showcased in the AB Studio portfolio.'
       };
       const descriptionTag = document.querySelector('meta[name="description"]');
       if (descriptionTag) descriptionTag.setAttribute('content',metaDescriptions[path] || metaDescriptions['/']);
@@ -354,13 +395,7 @@ const copy = {
       const navCta = document.querySelector('.nav-actions a.button.small');
       if (navCta) navCta.href = isHome ? '#home-inquiry' : '#contact';
     }
-    routeAnchors.forEach(link => link.addEventListener('click', event => {
-      event.preventDefault(); showRoute(link.dataset.route, link.dataset.target);
-      navlinks.classList.remove('open');
-      navlinks.querySelectorAll('details').forEach(details => details.open = false);
-      menuToggle.setAttribute('aria-expanded','false'); menuToggle.textContent='☰';
-    }));
-    window.addEventListener('popstate', () => showRoute(location.pathname, routeTargets[location.pathname], false));
+    // Normal links navigate to real, independent HTML pages. No client-side URL rewriting.
     showRoute(routeTargets[location.pathname] ? location.pathname : '/', routeTargets[location.pathname], false);
 
     const projectLightbox = document.getElementById("projectLightbox");

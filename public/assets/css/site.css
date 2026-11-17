@@ -410,3 +410,48 @@ body.theme-dark .about-mark::before { opacity:.55; filter:brightness(1.12); }
 @media(prefers-reduced-motion:reduce) {
   .hero-art::before,.about-mark::before { transition:none; }
 }
+
+
+/* Site structure: a concise overview on Home, complete details on dedicated pages. */
+body.home-mode #plans,
+body.home-mode #faq,
+body.home-mode #seo,
+body.home-mode #company,
+body.home-mode #about,
+body.home-mode #blog,
+body.home-mode #contact {display:none !important;}
+body.home-mode #work .case-card {display:none !important;}
+body.home-mode #work .case-card:first-child,
+body.home-mode #work .case-card:last-child {display:flex !important;}
+body.home-mode #work .demo-note,
+body.home-mode #work .privacy-note,
+body.home-mode #work .work-head-note {display:none !important;}
+.section-more {margin-top:26px;display:flex;justify-content:flex-start;}
+.section-more .button {padding:12px 20px;}
+body.route-mode main > .subpage-intro {display:block !important;}
+body.home-mode main > .subpage-intro {display:none !important;}
+.subpage-intro {position:relative;isolation:isolate;overflow:hidden;background:var(--paper-deep);padding:66px 0 62px;border-bottom:1px solid var(--line);}
+.subpage-intro::before {content:"";position:absolute;inset:0 0 0 auto;width:min(38vw,360px);background:url("/assets/brand/bamboo-grove.svg") center/cover no-repeat;opacity:.18;pointer-events:none;z-index:-1;}
+.subpage-intro-inner {position:relative;z-index:1;}
+.subpage-intro h1 {max-width:890px;font:400 clamp(3.05rem,6.2vw,5.7rem)/.99 var(--serif);letter-spacing:-.055em;margin:16px 0 22px;}
+.subpage-intro .eyebrow {color:var(--green);}
+.subpage-intro .subpage-copy {max-width:725px;color:var(--ink-soft);font-size:1rem;line-height:1.75;}
+.subpage-intro .hero-actions {margin-top:25px;}
+body.theme-dark .subpage-intro {background:#30362f;}
+body.theme-dark .subpage-intro::before {opacity:.22;filter:brightness(1.12);}
+@media(max-width:680px) {
+  .subpage-intro {padding:48px 0 46px;}
+  .subpage-intro::before {width:52vw;opacity:.11;}
+  .subpage-intro h1 {font-size:clamp(2.7rem,12vw,4.2rem);}
+  .subpage-intro .subpage-copy {font-size:.94rem;}
+  .section-more .button {width:100%;justify-content:center;}
+}
+
+/* Dedicated service-page details (kept separate from the concise Home). */
+body.route-mode main > .subpage-detail {display:block !important;}
+.subpage-detail-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.subpage-feature {padding:27px;border:1px solid var(--line);background:var(--white);border-radius:8px;}
+.subpage-feature > span {color:var(--green);font-size:.72rem;letter-spacing:.15em;font-weight:800;}
+.subpage-feature h3 {margin:15px 0 8px;font:400 1.56rem/1.1 var(--serif);}
+.subpage-feature p {color:var(--ink-soft);font-size:.84rem;line-height:1.65;margin:0;}
+@media(max-width:760px){.subpage-detail-grid{grid-template-columns:1fr;}.subpage-feature{padding:21px;}}

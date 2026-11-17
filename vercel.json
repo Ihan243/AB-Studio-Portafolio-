@@ -11,6 +11,10 @@
       "dest": "/servicios/index.html"
     },
     {
+      "src": "^/proyectos/?$",
+      "dest": "/proyectos/index.html"
+    },
+    {
       "src": "^/sitios-web/?$",
       "dest": "/sitios-web/index.html"
     },
