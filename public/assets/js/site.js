@@ -19,7 +19,7 @@ const copy = {
         "nav.work":"Work",
         "work.viewAll":"See all projects",
         "services.viewAll":"Explore all services",
-        "nav.cta":"Request a consultation",
+        "nav.cta":"Book a consultation",
         "footer.privacy":"Privacy",
         "footer.terms":"Project terms",
         "faq.kicker":"Before we begin",
@@ -137,7 +137,7 @@ const copy = {
         "nav.work":"Proyectos",
         "work.viewAll":"Ver todos los proyectos",
         "services.viewAll":"Explorar todos los servicios",
-        "nav.cta":"Solicitar asesoría",
+        "nav.cta":"Agendar una asesoría",
         "footer.privacy":"Privacidad",
         "footer.terms":"Condiciones",
         "faq.kicker":"Antes de comenzar",
@@ -271,6 +271,8 @@ const copy = {
       if (mobileContact) mobileContact.href = lang === "es"
         ? "https://wa.me/15513129791?text=Hola%20AB%20Studio%2C%20quiero%20conversar%20sobre%20un%20proyecto."
         : "https://wa.me/15513129791?text=Hi%20AB%20Studio%2C%20I%27d%20like%20to%20start%20a%20project.";
+      const consultationBooking = document.querySelector('.consultation-booking');
+      if (consultationBooking) consultationBooking.textContent = lang === 'es' ? 'Agendar una consulta ↗' : 'Book a consultation ↗';
       const button = document.getElementById("langToggle");
       button.textContent = lang === "en" ? "ES" : "EN";
       button.setAttribute("aria-label", lang === "en" ? "Cambiar a español" : "Cambiar al inglés");
@@ -437,7 +439,18 @@ const copy = {
       }
       if (!isHome) contact.style.display = 'block';
       const navCta = document.querySelector('.nav-actions a.button.small');
-      if (navCta) navCta.href = isHome ? '#home-inquiry' : '#contact';
+      if (navCta) { navCta.href = 'https://calendar.app.google/DKwYiEnNF2YFDXtq7'; navCta.target = '_blank'; navCta.rel = 'noopener noreferrer'; }
+    }
+    // Consultation booking is a direct, verified owner-provided Google Calendar link.
+    const bookingAside = document.querySelector('.home-inquiry-aside');
+    if (bookingAside && !bookingAside.querySelector('.consultation-booking')) {
+      const bookingLink = document.createElement('a');
+      bookingLink.className = 'button consultation-booking';
+      bookingLink.href = 'https://calendar.app.google/DKwYiEnNF2YFDXtq7';
+      bookingLink.target = '_blank';
+      bookingLink.rel = 'noopener noreferrer';
+      bookingLink.textContent = currentLang === 'es' ? 'Agendar una consulta ↗' : 'Book a consultation ↗';
+      bookingAside.prepend(bookingLink);
     }
     // Normal links navigate to real, independent HTML pages. No client-side URL rewriting.
     const initialPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
