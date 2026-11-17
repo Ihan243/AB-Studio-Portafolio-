@@ -7,6 +7,31 @@ const home = read('index.html');
 const js = read('public/assets/js/site.js');
 const css = read('public/assets/css/site.css');
 const routes = ['servicios', 'sitios-web', 'sistemas', 'seo', 'automatizacion', 'empresa', 'blog', 'proyectos'];
+
+const effects = read('public/assets/js/effects.js');
+const entrance = read('public/assets/js/entrance.js');
+const entranceCss = read('public/assets/css/entrance.css');
+const projects = read('public/proyectos/index.html');
+new Function(effects);
+new Function(entrance);
+assert.match(home, /id="ab-entry"/);
+assert.match(home, /ab-entry-engraved-rail/);
+assert.match(home, /ab-entry-rays/);
+assert.match(home, /ab-entry-mist/);
+assert.match(home, /ab-entry-falling-leaves/);
+assert.match(home, /src="\/assets\/js\/effects\.js" defer/);
+assert.match(home, /src="\/assets\/js\/entrance\.js" defer/);
+assert.match(projects, /id="portfolio-filters"/);
+assert.match(projects, /data-portfolio-filter="websites"/);
+assert.match(projects, /data-portfolio-filter="systems"/);
+assert.match(projects, /data-portfolio-filter="concepts"/);
+assert.match(effects, /IntersectionObserver/);
+assert.match(effects, /ArrowRight/);
+assert.match(css, /scroll-reveal\.is-revealed/);
+assert.match(entranceCss, /ab-entry-engraved-text/);
+assert.match(entranceCss, /ab-entry-leaf-fall/);
+assert.match(entranceCss, /prefers-reduced-motion/);
+
 assert.match(home, /href="\/assets\/css\/site\.css"/);
 assert.match(home, /src="\/assets\/js\/site\.js" defer/);
 assert.match(home, /id="homeInquiryForm"/);
@@ -31,4 +56,4 @@ assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel
 assert.match(read('vercel.json'), /proyectos\/index\.html/);
 assert.match(read('public/robots.txt'), /Sitemap:/);
 assert.ok(fs.existsSync(path.join(root,'public/assets/portfolio/floreria-muniz.webp')));
-console.log('AB Studio smoke tests passed (homepage, routes, SEO, images, CTA).');
+console.log('AB Studio smoke tests passed (routes, SEO, bamboo entrance, scroll and portfolio).');

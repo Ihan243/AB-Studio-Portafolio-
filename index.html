@@ -42,9 +42,25 @@
   <section class="ab-entry-overlay" id="ab-entry" role="dialog" aria-modal="true" aria-labelledby="ab-entry-title" aria-describedby="ab-entry-description">
     <div class="ab-entry-garden" aria-hidden="true"></div>
     <div class="ab-entry-garden-glow" aria-hidden="true"></div>
+    <div class="ab-entry-rays" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="ab-entry-mist" aria-hidden="true"><span></span><span></span></div>
+    <div class="ab-entry-falling-leaves" aria-hidden="true">
+      <span style="--leaf-x:8%;--drift:92px;--duration:10s;--delay:-2s"></span>
+      <span style="--leaf-x:22%;--drift:-55px;--duration:13s;--delay:-9s"></span>
+      <span style="--leaf-x:36%;--drift:86px;--duration:11s;--delay:-4s"></span>
+      <span style="--leaf-x:49%;--drift:-95px;--duration:14s;--delay:-11s"></span>
+      <span style="--leaf-x:62%;--drift:64px;--duration:12s;--delay:-7s"></span>
+      <span style="--leaf-x:76%;--drift:-70px;--duration:15s;--delay:-3s"></span>
+      <span style="--leaf-x:87%;--drift:88px;--duration:11s;--delay:-6s"></span>
+      <span style="--leaf-x:94%;--drift:-45px;--duration:13s;--delay:-10s"></span>
+    </div>
     <div class="ab-entry-doorframe" aria-hidden="true">
-      <div class="ab-entry-leaf ab-entry-leaf--left"><div class="ab-entry-window"></div><span class="ab-entry-handle"></span></div>
-      <div class="ab-entry-leaf ab-entry-leaf--right"><div class="ab-entry-window"></div><span class="ab-entry-handle"></span></div>
+      <div class="ab-entry-leaf ab-entry-leaf--left">
+        <div class="ab-entry-window"></div><div class="ab-entry-engraved-rail"><span class="ab-entry-engraved-text">AB</span></div><span class="ab-entry-handle"></span>
+      </div>
+      <div class="ab-entry-leaf ab-entry-leaf--right">
+        <div class="ab-entry-window"></div><div class="ab-entry-engraved-rail"><span class="ab-entry-engraved-text">STUDIO</span></div><span class="ab-entry-handle"></span>
+      </div>
       <div class="ab-entry-join"></div>
     </div>
     <div class="ab-entry-plaque">
@@ -512,6 +528,7 @@
     </div>
   </footer>
   <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/effects.js" defer></script>
 </body>
 </html>
 

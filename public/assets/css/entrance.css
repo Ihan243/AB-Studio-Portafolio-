@@ -62,3 +62,120 @@ html.ab-entry-active .ab-entry-overlay { display:block; }
 }
 .ab-entry-plaque-logo {display:block;width:60px;height:60px;object-fit:contain;border-radius:50%;background:#f3eee3;margin:0 auto 18px;border:2px solid rgba(194,203,174,.65);padding:3px;box-shadow:0 0 24px rgba(0,0,0,.36);}
 @media(max-width:680px){.ab-entry-plaque-logo{width:50px;height:50px;margin-bottom:13px;}}
+
+/* Cinematic bamboo entrance v2 — carved wood, layered atmosphere and depth. */
+.ab-entry-doorframe { z-index:3; perspective:1900px; }
+.ab-entry-leaf {
+  background:
+    linear-gradient(100deg,rgba(254,232,162,.08),transparent 22% 76%,rgba(0,0,0,.45)),
+    repeating-linear-gradient(92deg,transparent 0 10px,rgba(188,167,106,.045) 12px 13px,transparent 15px 27px,rgba(0,0,0,.16) 29px 30px),
+    linear-gradient(110deg,#0b120e,#2c3529 24%,#151e16 53%,#222b20 80%,#080d09);
+  box-shadow:inset -15px 0 25px rgba(0,0,0,.42),0 0 48px rgba(0,0,0,.6);
+  transition:transform 1.8s cubic-bezier(.2,.78,.19,1);
+}
+.ab-entry-leaf--right {box-shadow:inset 17px 0 30px rgba(0,0,0,.46),0 0 48px rgba(0,0,0,.65);}
+.ab-entry-leaf::before {
+  background:
+    repeating-linear-gradient(90deg,rgba(241,227,172,.055) 0 1px,transparent 1px 35px),
+    linear-gradient(180deg,rgba(216,197,140,.08),transparent 25% 72%,rgba(0,0,0,.45));
+  border-color:#111a13;
+  box-shadow:inset 0 0 0 2px rgba(190,182,126,.13),inset 0 0 43px rgba(0,0,0,.58),0 0 4px rgba(0,0,0,.55);
+}
+.ab-entry-window {filter:saturate(.84);box-shadow:inset 0 0 32px rgba(0,0,0,.88),0 0 0 2px rgba(180,158,110,.19),0 9px 15px rgba(0,0,0,.48);}
+.ab-entry-leaf--left .ab-entry-window {background-position:30% center;}
+.ab-entry-leaf--right .ab-entry-window {background-position:70% center;}
+/* This rail is physically attached to each leaf, so the engraving splits as the doors open. */
+.ab-entry-engraved-rail {
+  position:absolute;z-index:4;left:0;right:0;top:42%;
+  height:clamp(112px,17vh,185px);
+  display:flex;align-items:center;
+  background:
+    repeating-linear-gradient(92deg,rgba(197,178,121,.045) 0 1px,transparent 2px 18px),
+    linear-gradient(180deg,#293427 0%,#1a271c 10%,#111d15 52%,#273326 90%,#111a13 100%);
+  border-top:5px solid rgba(5,13,8,.9);
+  border-bottom:5px solid rgba(5,13,8,.88);
+  box-shadow:0 -8px 18px rgba(0,0,0,.58),0 12px 18px rgba(0,0,0,.62),inset 0 3px 1px rgba(205,184,119,.13);
+  pointer-events:none;
+}
+.ab-entry-leaf--left .ab-entry-engraved-rail {justify-content:flex-end;padding-right:clamp(10px,1.8vw,30px);}
+.ab-entry-leaf--right .ab-entry-engraved-rail {justify-content:flex-start;padding-left:clamp(10px,1.8vw,30px);}
+.ab-entry-engraved-text {
+  color:#9e9975;
+  font:500 clamp(1.6rem,4.4vw,4.6rem)/1 Georgia,"Times New Roman",serif;
+  letter-spacing:-.055em;
+  text-shadow:0 1px 1px #050c06,0 -1px rgba(237,220,160,.28),1px 2px 3px rgba(0,0,0,.85);
+  opacity:.94;
+}
+.ab-entry-leaf--left .ab-entry-engraved-text {letter-spacing:.08em;}
+.ab-entry-plaque {
+  top:78%;width:min(360px,calc(100vw - 40px));padding:14px 16px;
+  background:rgba(8,18,11,.46);backdrop-filter:blur(5px);
+  border:1px solid rgba(192,191,146,.31);outline:none;
+  border-radius:11px;box-shadow:0 9px 34px rgba(0,0,0,.32);
+}
+.ab-entry-plaque-logo {display:none;}
+.ab-entry-plaque h2 {
+  position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;
+  white-space:nowrap;clip-path:inset(50%);margin:0;padding:0;
+}
+.ab-entry-plaque-eyebrow {letter-spacing:.23em;font-size:.6rem;}
+.ab-entry-plaque-sub {letter-spacing:.12em;font-size:.62rem;}
+.ab-entry-plaque-rule {margin:11px auto 11px;width:58px;}
+.ab-entry-plaque-action {font-size:.76rem;}
+.ab-entry-garden {background-position:center 42%;}
+.ab-entry-rays,.ab-entry-mist,.ab-entry-falling-leaves {position:absolute;inset:-15%;pointer-events:none;}
+.ab-entry-rays {z-index:1;overflow:hidden;opacity:.32;mix-blend-mode:screen;transition:opacity 1.6s ease;}
+.ab-entry-rays span {
+  position:absolute;width:35vw;min-width:260px;height:145%;top:-17%;
+  background:linear-gradient(90deg,transparent,rgba(243,255,200,.25) 47%,rgba(247,249,219,.03) 76%,transparent);
+  filter:blur(25px);transform-origin:top center;animation:ab-entry-rays-drift 12s ease-in-out infinite alternate;
+}
+.ab-entry-rays span:nth-child(1){left:15%;transform:rotate(27deg);animation-delay:-4s;}
+.ab-entry-rays span:nth-child(2){left:39%;opacity:.72;transform:rotate(-22deg);animation-delay:-8s;}
+.ab-entry-rays span:nth-child(3){left:67%;opacity:.46;transform:rotate(36deg);animation-delay:-2s;}
+@keyframes ab-entry-rays-drift {0%{translate:-28px 0;opacity:.5;}100%{translate:26px 0;opacity:1;}}
+.ab-entry-mist {z-index:2;overflow:hidden;opacity:.32;transition:opacity 1.3s ease;}
+.ab-entry-mist span {
+  position:absolute;left:-28%;bottom:4%;width:125%;height:48%;
+  background:radial-gradient(ellipse at 47% 60%,rgba(219,235,209,.38),rgba(173,206,163,.13) 43%,transparent 71%);
+  filter:blur(36px);
+  animation:ab-entry-mist-shift 16s ease-in-out infinite alternate;
+}
+.ab-entry-mist span:nth-child(2){left:14%;bottom:24%;width:96%;height:55%;opacity:.7;animation-duration:21s;animation-delay:-10s;}
+@keyframes ab-entry-mist-shift {0%{transform:translate3d(-7%,1%,0) scale(1);}100%{transform:translate3d(12%,-3%,0) scale(1.22);}}
+.ab-entry-falling-leaves {z-index:4;overflow:hidden;opacity:0;transition:opacity .85s ease .15s;}
+.ab-entry-falling-leaves span {
+  position:absolute;left:var(--leaf-x);top:-10%;
+  width:clamp(9px,1.3vw,20px);height:clamp(24px,3vw,42px);
+  border-radius:1% 100% 1% 100%;
+  background:linear-gradient(130deg,#8da47c,#2f593a);
+  box-shadow:0 2px 5px rgba(0,0,0,.23);
+  filter:blur(.3px);
+  transform-origin:50% 100%;
+  animation:ab-entry-leaf-fall var(--duration) linear var(--delay) infinite;
+}
+.ab-entry-falling-leaves span:nth-child(2n){opacity:.67;scale:.72;}
+.ab-entry-falling-leaves span:nth-child(3n){opacity:.48;scale:.54;}
+@keyframes ab-entry-leaf-fall {
+  0% {transform:translate3d(0,-5vh,0) rotate(-25deg) rotateY(0);}
+  45% {transform:translate3d(calc(var(--drift) * .42),53vh,0) rotate(28deg) rotateY(160deg);}
+  100% {transform:translate3d(var(--drift),115vh,0) rotate(-12deg) rotateY(350deg);}
+}
+.ab-entry-overlay.is-opening .ab-entry-falling-leaves {opacity:.85;}
+.ab-entry-overlay.is-opening .ab-entry-rays {opacity:1;}
+.ab-entry-overlay.is-opening .ab-entry-mist {opacity:.75;}
+.ab-entry-overlay.is-opening .ab-entry-leaf--left {transform:rotateY(-114deg);}
+.ab-entry-overlay.is-opening .ab-entry-leaf--right {transform:rotateY(114deg);}
+.ab-entry-overlay.is-opening {animation:ab-entry-dissolve .7s ease-in 1.65s forwards;}
+@media(max-width:680px) {
+  .ab-entry-engraved-rail {top:43%;height:118px;}
+  .ab-entry-engraved-text {font-size:clamp(1.45rem,5.4vw,2.25rem);letter-spacing:-.07em;}
+  .ab-entry-leaf--left .ab-entry-engraved-rail {padding-right:7px;}
+  .ab-entry-leaf--right .ab-entry-engraved-rail {padding-left:7px;}
+  .ab-entry-plaque {top:75%;padding:12px 11px;width:min(80vw,310px);}
+  .ab-entry-falling-leaves span {width:10px;height:24px;}
+}
+@media(prefers-reduced-motion:reduce) {
+ .ab-entry-rays span,.ab-entry-mist span,.ab-entry-falling-leaves span {animation:none!important;}
+ .ab-entry-rays,.ab-entry-mist,.ab-entry-falling-leaves {transition:none!important;}
+}

@@ -53,7 +53,7 @@
     openButton.disabled = true;
     if (reduceMotion.matches) {finish();return;}
     gate.classList.add('is-opening');
-    completeTimeout = window.setTimeout(finish, 2080);
+    completeTimeout = window.setTimeout(finish, 2480);
   }
   function show() {
     if (active && !opening) return;

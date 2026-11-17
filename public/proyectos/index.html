@@ -135,6 +135,13 @@
           <div><div class="eyebrow" data-copy="work.kicker">Selected case studies</div><h2 data-copy-html="work.title">Clear stories.<br><em>Useful work.</em></h2></div>
           <div class="work-head-note" data-copy="work.note">Each case explains the need, what AB Studio built, and what the deliverable makes possible. We publish business metrics only when a client has confirmed them.</div>
         </div>
+        <div class="portfolio-filters" id="portfolio-filters" role="group" aria-label="Filter portfolio projects">
+          <button type="button" class="portfolio-filter" data-portfolio-filter="all" aria-pressed="true">All projects</button>
+          <button type="button" class="portfolio-filter" data-portfolio-filter="websites" aria-pressed="false">Websites</button>
+          <button type="button" class="portfolio-filter" data-portfolio-filter="systems" aria-pressed="false">Systems</button>
+          <button type="button" class="portfolio-filter" data-portfolio-filter="concepts" aria-pressed="false">Concepts</button>
+          <span class="portfolio-filter-status" id="portfolio-filter-status" role="status" aria-live="polite">7 projects shown</span>
+        </div>
         <div class="work-grid case-grid">
           <article class="work-card case-card">
             <button class="case-image " type="button" data-lightbox-src="/assets/portfolio/cuervos-garden-website.jpg" data-aria-en="Open larger screenshot: Cuervos Garden restaurant website" data-aria-es="Ampliar captura: Sitio web del restaurante Cuervos Garden" aria-label="Open larger screenshot: Cuervos Garden restaurant website">
@@ -481,6 +488,7 @@
     </div>
   </footer>
   <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/effects.js" defer></script>
 </body>
 </html>
 
