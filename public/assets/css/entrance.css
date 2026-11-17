@@ -1,0 +1,64 @@
+/* AB Studio — interactive bamboo-door entrance, homepage only. */
+.ab-entry-overlay { display:none; position:fixed; inset:0; z-index:9000; isolation:isolate; overflow:hidden; background:#0b170d; color:#f4f0e2; }
+html.ab-entry-active { overflow:hidden; }
+html.ab-entry-active .ab-entry-overlay { display:block; }
+.ab-entry-garden { position:absolute; inset:-3%; background: url('/assets/brand/abstudio-bamboo-entry.webp') center 48% / cover no-repeat; filter:brightness(.70) saturate(.95); transform:scale(1.075); transition:filter 1.9s ease,transform 2.3s ease; }
+.ab-entry-garden::after { content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 39%,transparent 15%,rgba(4,11,5,.50) 100%),linear-gradient(90deg,rgba(3,8,4,.52),transparent 30% 70%,rgba(3,8,4,.35)); }
+.ab-entry-garden-glow { position:absolute;inset:0;opacity:.32;pointer-events:none;background:radial-gradient(ellipse at 51% 45%,rgba(248,251,198,.54),transparent 41%);transition:opacity 1.5s ease;mix-blend-mode:screen; }
+.ab-entry-doorframe { position:absolute;inset:0;perspective:1500px;transform-style:preserve-3d; }
+.ab-entry-leaf { position:absolute;top:0;bottom:0;width:50.16%;z-index:2;backface-visibility:hidden;transform-style:preserve-3d;transition:transform 1.55s cubic-bezier(.6,.04,.15,.99);will-change:transform;background:linear-gradient(90deg,#0a100c 0%,#283326 8%,#121c14 21%,#232a20 64%,#070e09 100%);box-shadow:0 0 35px rgba(0,0,0,.65),inset 0 0 28px rgba(0,0,0,.65); }
+.ab-entry-leaf--left { left:0;transform-origin:0% 50%;border-right:7px solid #0b130d; }
+.ab-entry-leaf--right { right:0;transform-origin:100% 50%;border-left:7px solid #0b130d; }
+.ab-entry-leaf::before { content:""; position:absolute;inset:0;pointer-events:none;border:clamp(10px,1.6vw,22px) solid rgba(13,23,15,.99);box-shadow:inset 0 0 0 3px rgba(149,144,104,.16),inset 0 0 35px rgba(0,0,0,.6);background:repeating-linear-gradient(90deg,transparent 0 16px,rgba(136,148,100,.035) 17px,transparent 20px);z-index:2; }
+.ab-entry-window { position:absolute;inset:clamp(25px,5vh,65px) clamp(18px,4vw,58px);border:clamp(8px,1.15vw,16px) solid #131f16;background:linear-gradient(120deg,rgba(13,27,16,.64),rgba(48,75,48,.28),rgba(8,24,10,.67)),url('/assets/brand/abstudio-bamboo-entry.webp') center/cover no-repeat;box-shadow:inset 0 0 24px rgba(0,0,0,.85),0 0 0 2px rgba(171,156,111,.19); }
+.ab-entry-window::before { content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 17.5%,#142019 17.5% 20%),repeating-linear-gradient(0deg,transparent 0 15%,#142019 15% 17%);filter:drop-shadow(1px 1px 3px #050b06);opacity:.97; }
+.ab-entry-window::after { content:""; position:absolute;inset:0;background:linear-gradient(105deg,rgba(233,245,197,.075),transparent 52%,rgba(0,0,0,.25));pointer-events:none; }
+.ab-entry-handle { position:absolute;top:51%;width:9px;height:clamp(52px,9vh,98px);transform:translateY(-50%);z-index:5;border-radius:10px;background:linear-gradient(90deg,#776e49,#d0c79d,#5f6146);box-shadow:0 2px 7px rgba(0,0,0,.9); }
+.ab-entry-leaf--left .ab-entry-handle {right:clamp(20px,3vw,60px)}
+.ab-entry-leaf--right .ab-entry-handle {left:clamp(20px,3vw,60px)}
+.ab-entry-join { position:absolute;z-index:3;top:0;bottom:0;left:calc(50% - 3px);width:6px;background:linear-gradient(90deg,#020704,#37442f,#020704);box-shadow:0 0 16px rgba(0,0,0,.7);pointer-events:none;transition:opacity .25s ease; }
+.ab-entry-plaque {position:absolute;z-index:5;left:50%;top:47%;transform:translate(-50%,-50%);width:min(590px,calc(100vw - 48px));padding:clamp(28px,5vw,58px) 22px clamp(28px,5vw,48px);border:1px solid rgba(205,200,156,.7);outline:1px solid rgba(205,200,156,.3);outline-offset:7px;text-align:center;box-shadow:0 22px 75px rgba(0,0,0,.6),inset 0 0 0 1px rgba(190,192,153,.13);background:linear-gradient(140deg,rgba(16,27,18,.96),rgba(11,20,14,.94));pointer-events:none;transition:opacity .34s ease,transform .65s ease; }
+.ab-entry-plaque-eyebrow {margin:0;color:#b8c4a9;font:600 clamp(.59rem,1vw,.72rem)/1.5 ui-sans-serif,system-ui,sans-serif;letter-spacing:.28em;text-transform:uppercase;}
+.ab-entry-plaque h2 {margin:14px 0 8px;font:400 clamp(3rem,7vw,6.5rem)/1.02 Georgia,'Times New Roman',serif;letter-spacing:-.065em;color:#f2efe5;}
+.ab-entry-plaque h2 span {color:#c6d0b9;font-style:italic;}
+.ab-entry-plaque-sub {margin:0;font-size:clamp(.65rem,1.2vw,.84rem);letter-spacing:.19em;color:#c6c9b9;text-transform:uppercase;}
+.ab-entry-plaque-rule {display:block;width:74px;height:1px;background:#a8b396;margin:26px auto 18px;}
+.ab-entry-plaque-action {margin:0;color:#f2efe5;font-size:clamp(.73rem,1.3vw,.88rem);letter-spacing:.08em;font-weight:650;}
+.ab-entry-plaque-action span {font-size:1.25em;margin-left:8px;}
+.ab-entry-open {position:absolute;inset:0;display:block;z-index:6;border:0;background:transparent;color:transparent;cursor:pointer;touch-action:manipulation;}
+.ab-entry-open:focus-visible {outline:3px solid #e9e3bc;outline-offset:-18px;}
+.ab-entry-skip {position:absolute;right:clamp(19px,3vw,50px);bottom:clamp(23px,4vh,42px);z-index:9;border:1px solid rgba(227,226,201,.65);border-radius:100px;background:rgba(5,15,8,.64);color:#f0eedf;padding:11px 18px;cursor:pointer;font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;backdrop-filter:blur(8px);}
+.ab-entry-skip:hover,.ab-entry-skip:focus-visible {background:#f0eedf;color:#192219;}
+.ab-entry-footnote {position:absolute;left:clamp(22px,3vw,51px);bottom:clamp(23px,4vh,42px);z-index:5;margin:0;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:#b5bfaa;text-shadow:0 2px 10px #050805;pointer-events:none;}
+.ab-entry-overlay.is-opening .ab-entry-leaf--left {transform:rotateY(-108deg);}
+.ab-entry-overlay.is-opening .ab-entry-leaf--right {transform:rotateY(108deg);}
+.ab-entry-overlay.is-opening .ab-entry-plaque {opacity:0;transform:translate(-50%,-50%) scale(.93);}
+.ab-entry-overlay.is-opening .ab-entry-join {opacity:0;}
+.ab-entry-overlay.is-opening .ab-entry-garden {filter:brightness(1.04) saturate(1.08);transform:scale(1);}
+.ab-entry-overlay.is-opening .ab-entry-garden-glow {opacity:.82;}
+.ab-entry-overlay.is-opening .ab-entry-open {pointer-events:none;}
+.ab-entry-overlay.is-opening .ab-entry-skip,.ab-entry-overlay.is-opening .ab-entry-footnote {opacity:0;transition:opacity .25s ease;pointer-events:none;}
+.ab-entry-overlay.is-opening {animation:ab-entry-dissolve .65s ease-in 1.36s forwards;}
+@keyframes ab-entry-dissolve {from{opacity:1}to{opacity:0}}
+.ab-entry-replay {font:inherit;color:inherit;cursor:pointer;border:0;padding:0;background:transparent;letter-spacing:inherit;}
+.ab-entry-replay:hover,.ab-entry-replay:focus-visible {color:#f0ece2;text-decoration:underline;}
+@media (max-width:680px){
+ .ab-entry-window {inset:4.5% 11px;border-width:8px;}
+ .ab-entry-window::before {background:repeating-linear-gradient(90deg,transparent 0 29%,#142019 29% 32%),repeating-linear-gradient(0deg,transparent 0 13.7%,#142019 13.7% 15.5%);}
+ .ab-entry-leaf::before {border-width:10px;}
+ .ab-entry-plaque {top:45%;width:min(88vw,440px);padding:32px 15px;outline-offset:5px;}
+ .ab-entry-plaque h2 {font-size:clamp(2.8rem,11vw,4.3rem);letter-spacing:-.075em;}
+ .ab-entry-plaque-eyebrow {letter-spacing:.18em;font-size:.55rem;}
+ .ab-entry-plaque-sub {font-size:.61rem;letter-spacing:.1em;}
+ .ab-entry-plaque-rule {margin:20px auto 16px;}
+ .ab-entry-skip {bottom:22px;right:18px;}
+ .ab-entry-footnote {bottom:30px;left:15px;max-width:45vw;line-height:1.5;font-size:.51rem;}
+ .ab-entry-handle {width:6px;}
+ .ab-entry-leaf--left .ab-entry-handle {right:12px;}
+ .ab-entry-leaf--right .ab-entry-handle {left:12px;}
+}
+@media (prefers-reduced-motion:reduce){
+ .ab-entry-overlay *, .ab-entry-overlay::before,.ab-entry-overlay::after {transition:none !important;animation:none !important;}
+}
+.ab-entry-plaque-logo {display:block;width:60px;height:60px;object-fit:contain;border-radius:50%;background:#f3eee3;margin:0 auto 18px;border:2px solid rgba(194,203,174,.65);padding:3px;box-shadow:0 0 24px rgba(0,0,0,.36);}
+@media(max-width:680px){.ab-entry-plaque-logo{width:50px;height:50px;margin-bottom:13px;}}

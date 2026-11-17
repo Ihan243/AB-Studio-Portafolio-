@@ -24,8 +24,41 @@
   <link rel="icon" type="image/png" href="/assets/brand/favicon.png">
   <link rel="apple-touch-icon" href="/assets/brand/favicon.png">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <!-- Make the introduction visible on first entry only; subsequent page loads stay fast. -->
+  <script>
+    (() => {
+      if (location.pathname !== '/' && location.pathname !== '/index.html') return;
+      try {
+        if (sessionStorage.getItem('abstudio-intro-seen-v1') === '1') return;
+      } catch (_) {}
+      document.documentElement.classList.add('ab-entry-active');
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/entrance.css">
+  <script src="/assets/js/entrance.js" defer></script>
 </head>
 <body class="home-mode" data-page="home">
+  <!-- First-visit interactive entrance: tap the wooden doors to reveal AB Studio. -->
+  <section class="ab-entry-overlay" id="ab-entry" role="dialog" aria-modal="true" aria-labelledby="ab-entry-title" aria-describedby="ab-entry-description">
+    <div class="ab-entry-garden" aria-hidden="true"></div>
+    <div class="ab-entry-garden-glow" aria-hidden="true"></div>
+    <div class="ab-entry-doorframe" aria-hidden="true">
+      <div class="ab-entry-leaf ab-entry-leaf--left"><div class="ab-entry-window"></div><span class="ab-entry-handle"></span></div>
+      <div class="ab-entry-leaf ab-entry-leaf--right"><div class="ab-entry-window"></div><span class="ab-entry-handle"></span></div>
+      <div class="ab-entry-join"></div>
+    </div>
+    <div class="ab-entry-plaque">
+      <img class="ab-entry-plaque-logo" src="/assets/brand/logo.jpg" alt="" width="62" height="62">
+      <p class="ab-entry-plaque-eyebrow">WELCOME TO</p>
+      <h2 id="ab-entry-title">AB <span>STUDIO</span></h2>
+      <p class="ab-entry-plaque-sub">WEB · SYSTEMS · AUTOMATION</p>
+      <span class="ab-entry-plaque-rule"></span>
+      <p class="ab-entry-plaque-action" id="ab-entry-description"><span class="ab-entry-plaque-action-label">CLICK TO ENTER</span><span aria-hidden="true">↗</span></p>
+    </div>
+    <button class="ab-entry-open" id="ab-entry-open" type="button" aria-label="Open the AB Studio doors"></button>
+    <p class="ab-entry-footnote">A quieter way to begin</p>
+    <button class="ab-entry-skip" id="ab-entry-skip" type="button">Skip intro</button>
+  </section>
   <a class="skip-link" href="#top">Skip to main content</a>
   <header class="topbar">
     <div class="wrap nav">
@@ -475,7 +508,7 @@
     <div class="wrap footer-inner">
       <a class="footer-brand" href="/"><img src="/assets/brand/logo.jpg" alt="" width="1024" height="1024"><span>AB STUDIO</span></a>
       <span data-copy="footer.copy">Independent digital studio · Serving the U.S.</span>
-      <div class="footer-links"><a href="/servicios/" data-copy="nav.services">Services</a><a href="/proyectos/" data-copy="nav.work">Selected work</a><a href="/blog/" data-copy="nav.blog">Blog</a><a href="mailto:sales.abstudio@gmail.com" data-copy="contact.email">Email</a><a href="/privacidad/" data-copy="footer.privacy">Privacy</a><a href="/condiciones/" data-copy="footer.terms">Project terms</a></div>
+      <div class="footer-links"><button type="button" class="ab-entry-replay" id="ab-entry-replay">Replay entrance</button><a href="/servicios/" data-copy="nav.services">Services</a><a href="/proyectos/" data-copy="nav.work">Selected work</a><a href="/blog/" data-copy="nav.blog">Blog</a><a href="mailto:sales.abstudio@gmail.com" data-copy="contact.email">Email</a><a href="/privacidad/" data-copy="footer.privacy">Privacy</a><a href="/condiciones/" data-copy="footer.terms">Project terms</a></div>
     </div>
   </footer>
   <script src="/assets/js/site.js" defer></script>
