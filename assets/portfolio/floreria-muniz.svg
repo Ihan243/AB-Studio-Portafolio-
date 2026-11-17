@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 680" role="img" aria-labelledby="title desc">
+<title id="title">Composición floral para Florería Muñiz</title><desc id="desc">Rosas rojas y rosadas con hojas verdes sobre un fondo cálido y elegante.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#eee7dc"/><stop offset="1" stop-color="#d8cfc1"/></linearGradient>
+ <radialGradient id="red"><stop stop-color="#f7b0a7"/><stop offset=".55" stop-color="#bd4050"/><stop offset="1" stop-color="#762b3a"/></radialGradient>
+ <radialGradient id="pink"><stop stop-color="#fff0e9"/><stop offset=".55" stop-color="#e8a4ad"/><stop offset="1" stop-color="#a95c70"/></radialGradient>
+ <linearGradient id="leaf" x2="1" y2="1"><stop stop-color="#87917a"/><stop offset="1" stop-color="#35483d"/></linearGradient>
+ <filter id="shadow"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1600" height="680" fill="url(#bg)"/>
+<ellipse cx="810" cy="610" rx="610" ry="34" fill="#5b493e" opacity=".17" filter="url(#shadow)"/>
+<g opacity=".95" fill="url(#leaf)" stroke="#314238" stroke-width="3">
+ <path d="M180 570Q230 310 500 190Q455 430 180 570Z"/><path d="M290 625Q410 340 700 300Q610 535 290 625Z"/>
+ <path d="M1320 610Q1180 330 1000 190Q1000 450 1320 610Z"/><path d="M1450 570Q1320 330 1160 260Q1220 480 1450 570Z"/>
+ <path d="M550 650Q640 420 850 340Q810 560 550 650Z"/>
+</g>
+<g fill="none" stroke="#596c58" stroke-width="12" stroke-linecap="round"><path d="M790 620Q760 390 560 170"/><path d="M840 620Q900 390 1120 150"/><path d="M720 620Q660 420 390 300"/><path d="M900 620Q970 420 1300 300"/></g>
+<g stroke="#9b3548" stroke-width="5" fill="url(#red)">
+ <g transform="translate(550 190)"><circle r="118"/><path d="M-82 -22Q-60 -105 20 -90Q95 -70 76 5Q45 65 -15 42Q-60 25 -45 -20Q-25 -60 15 -42Q48 -20 25 12Q4 30 -12 8Q-18 -7 0 -14" fill="none" stroke="#f3a0a0" stroke-width="16" stroke-linecap="round"/></g>
+ <g transform="translate(1030 180) scale(.92)"><circle r="120"/><path d="M-82 -22Q-60 -105 20 -90Q95 -70 76 5Q45 65 -15 42Q-60 25 -45 -20Q-25 -60 15 -42Q48 -20 25 12Q4 30 -12 8" fill="none" stroke="#f3a0a0" stroke-width="16" stroke-linecap="round"/></g>
+ <g transform="translate(790 360) scale(1.15)"><circle r="125"/><path d="M-82 -22Q-60 -105 20 -90Q95 -70 76 5Q45 65 -15 42Q-60 25 -45 -20Q-25 -60 15 -42Q48 -20 25 12Q4 30 -12 8" fill="none" stroke="#f3a0a0" stroke-width="17" stroke-linecap="round"/></g>
+</g>
+<g stroke="#a85e70" stroke-width="4" fill="url(#pink)">
+ <g transform="translate(350 390) scale(.68)"><circle r="110"/><path d="M-75 -20Q-55 -95 18 -82Q85 -60 68 5Q40 55 -12 35Q-55 20 -38 -18Q-20 -52 14 -36Q42 -18 22 10" fill="none" stroke="#fff0e9" stroke-width="15" stroke-linecap="round"/></g>
+ <g transform="translate(1190 390) scale(.7)"><circle r="110"/><path d="M-75 -20Q-55 -95 18 -82Q85 -60 68 5Q40 55 -12 35Q-55 20 -38 -18Q-20 -52 14 -36Q42 -18 22 10" fill="none" stroke="#fff0e9" stroke-width="15" stroke-linecap="round"/></g>
+</g>
+<g fill="#f7eee2" opacity=".72"><circle cx="190" cy="155" r="5"/><circle cx="1380" cy="135" r="7"/><circle cx="1260" cy="540" r="4"/><circle cx="420" cy="90" r="4"/></g>
+</svg>
