@@ -247,6 +247,15 @@ const copy = {
         const value = copy[lang][el.dataset.copy];
         if (value) el.textContent = value;
       });
+      // Derive portfolio totals from the actual cards so the proof stays accurate.
+      const projectCount = document.querySelectorAll('#work [data-project], #work .case-card').length;
+      const distinctCards = document.querySelectorAll('#work .case-card').length;
+      const proof = document.querySelector('[data-copy="hero.proof1"]');
+      if (proof && distinctCards) {
+        proof.textContent = lang === 'es'
+          ? distinctCards + ' proyectos y conceptos seleccionados'
+          : distinctCards + ' selected projects & concepts';
+      }
       document.querySelectorAll("[data-copy-html]").forEach(el => {
         const value = copy[lang][el.dataset.copyHtml];
         if (value) el.innerHTML = value;
