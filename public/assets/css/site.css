@@ -468,3 +468,33 @@ body.route-mode[data-page="company"] main > #about,
 body.route-mode[data-page="blog"] main > #blog {display:block !important;}
 body.route-mode[data-page="systems"] #services .service:not(#systems),
 body.route-mode[data-page="automation"] #services .service:not(#automation) {display:none !important;}
+
+
+/* NFC review plaque: separate, one-time product inside the SEO page. */
+.nfc-review-panel { margin-top:38px; display:grid;grid-template-columns:minmax(0,1.15fr) minmax(270px,.85fr);gap:28px;align-items:center;padding:clamp(25px,4vw,48px);border:1px solid var(--line);border-radius:15px;overflow:hidden;position:relative;background:linear-gradient(120deg,rgba(110,138,94,.12),rgba(245,240,229,.87));}
+.nfc-review-copy {position:relative;z-index:2;}
+.nfc-review-panel h3 {font:400 clamp(2.2rem,4.4vw,4rem)/1.02 var(--serif);letter-spacing:-.055em;max-width:680px;margin:13px 0 17px;}
+.nfc-review-description {color:var(--ink-soft);font-size:.9rem;line-height:1.75;max-width:560px;}
+.nfc-review-features {display:flex;flex-wrap:wrap;gap:9px;margin:23px 0;}
+.nfc-review-features span {font-size:.7rem;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:9px 11px;background:rgba(255,255,255,.32);}
+.nfc-review-price {display:flex;align-items:baseline;flex-wrap:wrap;gap:9px;margin:0 0 9px;}
+.nfc-review-price .nfc-from {font-size:.77rem;color:var(--ink-soft);}
+.nfc-review-price strong {font-size:clamp(2.4rem,4vw,3.1rem);font-weight:700;letter-spacing:-.07em;}
+.nfc-review-price .nfc-unit {color:var(--muted);font-size:.71rem;}
+.nfc-review-note {color:var(--muted);font-size:.72rem;line-height:1.5;max-width:480px;margin:0 0 22px;}
+.nfc-review-policy {display:block;font-size:.66rem;color:var(--muted);line-height:1.6;max-width:520px;margin-top:16px;}
+.nfc-review-art {display:flex;align-items:center;justify-content:center;min-height:320px;position:relative;}
+.nfc-review-art::before {content:"";position:absolute;width:85%;height:85%;border-radius:50%;background:radial-gradient(circle,rgba(102,128,94,.21),transparent 70%);}
+.nfc-sample-plaque {position:relative;width:min(100%,280px);min-height:315px;box-sizing:border-box;border-radius:18px;background:#fffdf8;color:#27352c;padding:24px 24px 18px;border:1px solid rgba(43,63,45,.18);box-shadow:0 22px 55px rgba(33,40,30,.18);transform:rotate(4deg);text-align:center;display:flex;flex-direction:column;align-items:center;}
+.nfc-sample-tag {align-self:stretch;display:flex;justify-content:space-between;align-items:center;font-size:.53rem;letter-spacing:.16em;text-transform:uppercase;color:#647464;font-weight:800;}
+.nfc-sample-roundel {width:47px;height:47px;border:2px solid #6f886b;border-radius:50%;display:grid;place-items:center;margin:18px auto 10px;font-size:1.15rem;letter-spacing:-.15em;}
+.nfc-sample-plaque strong {font:500 1.45rem/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 8px;}
+.nfc-sample-plaque p {font-size:.7rem;color:#607060;margin:0 0 14px;max-width:180px;line-height:1.5;}
+.nfc-qr-preview {width:92px;height:92px;border:8px solid #fffdf8;box-shadow:0 0 0 1px rgba(40,56,45,.18);background:repeating-conic-gradient(#344835 0 25%,transparent 0 50%) 0 0/18px 18px;position:relative;opacity:.95;}
+.nfc-qr-preview::before {content:"";position:absolute;inset:30px;background:#fffdf8;border:6px solid #344835;}
+.nfc-sample-caption {font-size:.59rem;color:#657766;letter-spacing:.08em;margin-top:13px;text-transform:uppercase;}
+.nfc-sample-disclaimer {font-size:.59rem;color:var(--muted);text-align:center;margin-top:14px;max-width:260px;}
+body.theme-dark .nfc-review-panel {background:linear-gradient(125deg,#303a30,#272c28);}
+body.theme-dark .nfc-review-features span {background:rgba(255,255,255,.06);}
+body.theme-dark .nfc-sample-disclaimer {color:#c7c4b9;}
+@media(max-width:760px){.nfc-review-panel{grid-template-columns:1fr;gap:12px;padding:24px 20px;}.nfc-review-art{min-height:320px;}.nfc-sample-plaque{transform:rotate(2deg);}.nfc-review-features{margin:18px 0;}}
