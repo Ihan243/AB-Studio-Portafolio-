@@ -1,56 +1,50 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "cleanUrls": true,
-  "routes": [
+  "framework": null,
+  "outputDirectory": "public",
+  "cleanUrls": false,
+  "trailingSlash": true,
+  "rewrites": [
     {
-      "handle": "filesystem"
+      "source": "/servicios/",
+      "destination": "/servicios/index.html"
     },
     {
-      "src": "^/servicios/?$",
-      "dest": "/servicios/index.html"
+      "source": "/proyectos/",
+      "destination": "/proyectos/index.html"
     },
     {
-      "src": "^/proyectos/?$",
-      "dest": "/proyectos/index.html"
+      "source": "/sitios-web/",
+      "destination": "/sitios-web/index.html"
     },
     {
-      "src": "^/sitios-web/?$",
-      "dest": "/sitios-web/index.html"
+      "source": "/sistemas/",
+      "destination": "/sistemas/index.html"
     },
     {
-      "src": "^/sistemas/?$",
-      "dest": "/sistemas/index.html"
+      "source": "/seo/",
+      "destination": "/seo/index.html"
     },
     {
-      "src": "^/seo/?$",
-      "dest": "/seo/index.html"
+      "source": "/automatizacion/",
+      "destination": "/automatizacion/index.html"
     },
     {
-      "src": "^/automatizacion/?$",
-      "dest": "/automatizacion/index.html"
+      "source": "/empresa/",
+      "destination": "/empresa/index.html"
     },
     {
-      "src": "^/empresa/?$",
-      "dest": "/empresa/index.html"
+      "source": "/blog/",
+      "destination": "/blog/index.html"
     },
     {
-      "src": "^/blog/?$",
-      "dest": "/blog/index.html"
+      "source": "/privacidad/",
+      "destination": "/privacidad/index.html"
     },
     {
-      "src": "^/(privacidad|condiciones)/?$",
-      "dest": "/$1/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "status": 404,
-      "dest": "/404.html"
+      "source": "/condiciones/",
+      "destination": "/condiciones/index.html"
     }
-  ],
-  "functions": {
-    "server.js": {
-      "includeFiles": "{index.html,assets/brand/**,assets/portfolio/**,public/assets/css/**,public/assets/js/**}"
-    }
-  }
+  ]
 }

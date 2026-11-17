@@ -455,3 +455,16 @@ body.route-mode main > .subpage-detail {display:block !important;}
 .subpage-feature h3 {margin:15px 0 8px;font:400 1.56rem/1.1 var(--serif);}
 .subpage-feature p {color:var(--ink-soft);font-size:.84rem;line-height:1.65;margin:0;}
 @media(max-width:760px){.subpage-detail-grid{grid-template-columns:1fr;}.subpage-feature{padding:21px;}}
+
+
+/* Pages remain visible even if scripts are unavailable or fail to initialize. */
+body.route-mode[data-page="services"] main > #services,
+body.route-mode[data-page="projects"] main > #work,
+body.route-mode[data-page="systems"] main > #services,
+body.route-mode[data-page="seo"] main > #seo,
+body.route-mode[data-page="automation"] main > #services,
+body.route-mode[data-page="company"] main > #company,
+body.route-mode[data-page="company"] main > #about,
+body.route-mode[data-page="blog"] main > #blog {display:block !important;}
+body.route-mode[data-page="systems"] #services .service:not(#systems),
+body.route-mode[data-page="automation"] #services .service:not(#automation) {display:none !important;}

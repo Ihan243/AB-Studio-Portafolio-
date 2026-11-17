@@ -234,7 +234,8 @@ const copy = {
       button.setAttribute("aria-label", lang === "en" ? "Cambiar a español" : "Cambiar al inglés");
       document.getElementById("themeToggle").setAttribute("aria-label", lang === "en" ? "Toggle dark mode" : "Cambiar modo oscuro");
       const menuToggle = document.getElementById("menuToggle");
-      if (!navlinks.classList.contains("open")) menuToggle.setAttribute("aria-label", lang === "en" ? "Open menu" : "Abrir menú");
+      const languageNav = document.getElementById("navlinks");
+      if (languageNav && !languageNav.classList.contains("open")) menuToggle.setAttribute("aria-label", lang === "en" ? "Open menu" : "Abrir menú");
       const whatsapp = document.querySelector('a[href^="https://wa.me/15513129791?"]');
       if (whatsapp) whatsapp.href = lang === "en"
         ? "https://wa.me/15513129791?text=Hi%20AB%20Studio%2C%20I%27d%20like%20to%20talk%20about%20a%20project."
@@ -250,7 +251,8 @@ const copy = {
     }
     document.getElementById("langToggle").addEventListener("click", () => {
       setLanguage(currentLang === "en" ? "es" : "en");
-      if (routeTargets[location.pathname]) showRoute(location.pathname, routeTargets[location.pathname], false);
+      const path = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
+      if (routeTargets[path]) showRoute(path, routeTargets[path], false);
     });
     try {
       const savedLang = localStorage.getItem("abstudio-lang") || (navigator.language && navigator.language.startsWith("es") ? "es" : "en");
@@ -396,7 +398,8 @@ const copy = {
       if (navCta) navCta.href = isHome ? '#home-inquiry' : '#contact';
     }
     // Normal links navigate to real, independent HTML pages. No client-side URL rewriting.
-    showRoute(routeTargets[location.pathname] ? location.pathname : '/', routeTargets[location.pathname], false);
+    const initialPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
+    showRoute(routeTargets[initialPath] ? initialPath : '/', routeTargets[initialPath], false);
 
     const projectLightbox = document.getElementById("projectLightbox");
     const projectLightboxImage = document.getElementById("projectLightboxImage");
