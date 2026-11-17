@@ -450,7 +450,9 @@ const copy = {
       bookingLink.target = '_blank';
       bookingLink.rel = 'noopener noreferrer';
       bookingLink.textContent = currentLang === 'es' ? 'Agendar una consulta ↗' : 'Book a consultation ↗';
-      bookingAside.prepend(bookingLink);
+      const intro = bookingAside.querySelector('p');
+      if (intro) intro.insertAdjacentElement('afterend', bookingLink);
+      else bookingAside.prepend(bookingLink);
     }
     // Normal links navigate to real, independent HTML pages. No client-side URL rewriting.
     const initialPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
