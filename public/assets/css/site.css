@@ -808,3 +808,50 @@ body.theme-dark .case-card:hover {box-shadow:0 19px 36px rgba(0,0,0,.25);}
     animation-duration: 0.01ms !important;
   }
 }
+
+
+/* Desktop immersive layout: each main panel fills at least one browser viewport.
+   Natural content height always wins; smaller screens keep the flowing layout. */
+@media (min-width: 901px) {
+  :root { --ab-desktop-header: 76px; --ab-statement-height: 66px; }
+  body.home-mode main > .hero {
+    min-height: calc(100vh - var(--ab-desktop-header) - var(--ab-statement-height));
+    min-height: calc(100svh - var(--ab-desktop-header) - var(--ab-statement-height));
+    padding-block: clamp(48px, 6vh, 96px);
+  }
+  body.home-mode main > .statement { min-height: var(--ab-statement-height); align-items: center; }
+  body.home-mode main > .section,
+  body.home-mode main > #home-inquiry,
+  body.home-mode main > .contact,
+  body.route-mode main > .subpage-intro,
+  body.route-mode main > #route-page .route-hero,
+  body.route-mode main > #route-page .route-content {
+    min-height: calc(100vh - var(--ab-desktop-header));
+    min-height: calc(100svh - var(--ab-desktop-header));
+    box-sizing: border-box;
+  }
+  body.home-mode main > .section,
+  body.home-mode main > #home-inquiry,
+  body.home-mode main > .contact,
+  body.route-mode main > .subpage-intro,
+  body.route-mode main > #route-page .route-hero,
+  body.route-mode main > #route-page .route-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.route-mode main > .subpage-intro { padding-block: clamp(70px, 9vh, 140px); }
+  body.route-mode main > .subpage-intro .wrap,
+  body.route-mode main > #route-page .route-content .wrap,
+  body.route-mode main > #route-page .route-hero .wrap { width: min(var(--max), calc(100% - 48px)); }
+}
+/* A short desktop window must scroll naturally instead of cropping content. */
+@media (min-width: 901px) and (max-height: 640px) {
+  body.home-mode main > .hero { min-height: 590px; }
+  body.home-mode main > .section,
+  body.home-mode main > #home-inquiry,
+  body.home-mode main > .contact,
+  body.route-mode main > .subpage-intro,
+  body.route-mode main > #route-page .route-hero,
+  body.route-mode main > #route-page .route-content { min-height: 560px; }
+}
