@@ -6,6 +6,19 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const home = read('index.html');
 const js = read('public/assets/js/site.js');
 const css = read('public/assets/css/site.css');
+
+const projectsPage = read('proyectos/index.html');
+const effectsJS = read('public/assets/js/effects.js');
+assert.match(home, /data-project="la-patarata"/);
+assert.match(home, /https:\/\/lapatarata\.vercel\.app\//);
+assert.doesNotMatch(home, /data-copy="work\.cuervosWeb\.title"/);
+assert.match(projectsPage, /data-project="la-patarata"/);
+assert.match(projectsPage, /id="portfolio-filters"/);
+assert.match(js, /work\.patarata\.title/);
+assert.match(js, /case-image\[data-lightbox-src\]/);
+assert.match(effectsJS, /case-image\[data-lightbox-src\]/);
+assert.match(css, /\.case-live-website iframe/);
+
 const routes = ['servicios', 'sitios-web', 'sistemas', 'seo', 'automatizacion', 'empresa', 'blog', 'proyectos'];
 
 const effects = read('public/assets/js/effects.js');

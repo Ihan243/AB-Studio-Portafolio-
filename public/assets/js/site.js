@@ -67,6 +67,11 @@ const copy = {
         "work.type.web":"Reference demo · not official","work.type.system":"Reservation system · demo","work.type.concept":"Reference demo · not official","work.type.curiel":"Two demos · Basic + Premium",
         "work.label.need":"The need","work.label.built":"What we made","work.label.outcome":"What the demo shows",
         "work.demo.open":"Open demo ↗","work.demo.reservations":"View reservation demo ↗","work.demo.basic":"Basic version ↗","work.demo.premium":"Premium version ↗",
+        "work.patarata.type":"Website · live preview",
+        "work.patarata.title":"La Patarata · Website",
+        "work.patarata.need":"Give visitors a direct way to discover La Patarata online.",
+        "work.patarata.built":"A preview linked directly to La Patarata's published website.",
+        "work.patarata.outcome":"Visitors can open and explore the live La Patarata website.",
         "work.cuervosWeb.title":"Cuervos Garden · Website","work.cuervosWeb.need":"The restaurant needed one place to introduce its outdoor setting, menu, location and reservation options.","work.cuervosWeb.built":"A mobile-friendly website concept with a visual homepage, menu, gallery, location and clear reservation links.","work.cuervosWeb.outcome":"Visitors can explore the restaurant and reach the reservation flow from its website.",
         "work.cuervosSystem.title":"Cuervos Garden · Reservations & admin","work.cuervosSystem.need":"Guests needed to check dates and times; staff needed a way to review tables and upcoming reservations.","work.cuervosSystem.built":"A separate reservation flow with availability by date and party size, plus a private admin panel for reservations, tables and statuses.","work.cuervosSystem.outcome":"Guests can choose an available time online, while staff manage reservations and tables in one panel.",
         "work.esquina.title":"La Esquina de Buenos Aires","work.esquina.need":"The restaurant wanted to refresh its online presence while keeping its porteño identity and making key information easy to find.","work.esquina.built":"A Spanish and English website concept with the story, menu, gallery, reviews, reservations, location and contact details.","work.esquina.outcome":"Visitors can switch languages, learn about the restaurant and find how to reserve or get there.",
@@ -180,6 +185,11 @@ const copy = {
         "work.type.web":"Demo de referencia · no oficial","work.type.system":"Demo de sistema de reservas","work.type.concept":"Demo de referencia · no oficial","work.type.curiel":"Dos demos · Básica + Premium",
         "work.label.need":"La necesidad","work.label.built":"Qué construimos","work.label.outcome":"Qué muestra la demo",
         "work.demo.open":"Abrir demo ↗","work.demo.reservations":"Ver demo de reservas ↗","work.demo.basic":"Versión básica ↗","work.demo.premium":"Versión premium ↗",
+        "work.patarata.type":"Sitio web · vista en vivo",
+        "work.patarata.title":"La Patarata · Sitio web",
+        "work.patarata.need":"Facilitar que las personas descubran La Patarata en internet.",
+        "work.patarata.built":"Una vista previa enlazada directamente al sitio publicado de La Patarata.",
+        "work.patarata.outcome":"Las personas pueden abrir y explorar la página de La Patarata.",
         "work.cuervosWeb.title":"Cuervos Garden · Sitio web","work.cuervosWeb.need":"El restaurante necesitaba mostrar su ambiente al aire libre, menú, ubicación y opciones para reservar en un solo lugar.","work.cuervosWeb.built":"Un concepto adaptable a móviles, con portada visual, menú, galería, ubicación y accesos claros a las reservas.","work.cuervosWeb.outcome":"Las personas pueden conocer el restaurante y llegar al flujo de reservas desde el sitio.",
         "work.cuervosSystem.title":"Cuervos Garden · Reservas y administración","work.cuervosSystem.need":"Los clientes necesitaban consultar fechas y horarios disponibles; el equipo, revisar mesas y próximas reservas.","work.cuervosSystem.built":"Un flujo de reservas separado, con disponibilidad por fecha y cantidad de personas, más un panel privado para administrar reservas, mesas y estados.","work.cuervosSystem.outcome":"Los clientes eligen un horario disponible en línea y el equipo gestiona las reservas y mesas desde un mismo panel.",
         "work.esquina.title":"La Esquina de Buenos Aires","work.esquina.need":"El restaurante quería renovar su presencia digital sin perder su identidad porteña y facilitar el acceso a la información clave.","work.esquina.built":"Un concepto bilingüe con historia, menú, galería, opiniones, reservas, ubicación y datos de contacto.","work.esquina.outcome":"Las personas pueden cambiar de idioma, conocer el restaurante y consultar cómo reservar o llegar.",
@@ -428,7 +438,7 @@ const copy = {
     const projectLightbox = document.getElementById("projectLightbox");
     const projectLightboxImage = document.getElementById("projectLightboxImage");
     const projectLightboxCaption = document.getElementById("projectLightboxCaption");
-    document.querySelectorAll(".case-image").forEach(button => button.addEventListener("click", () => {
+    document.querySelectorAll(".case-image[data-lightbox-src]").forEach(button => button.addEventListener("click", () => {
       const image = button.querySelector("img");
       projectLightboxImage.src = button.dataset.lightboxSrc;
       projectLightboxImage.alt = image.alt;

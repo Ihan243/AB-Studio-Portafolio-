@@ -109,7 +109,7 @@
     nav.append(prev,counter,next);
     dialog.append(nav);
 
-    const buttons = () => activeCards().map(card => card.querySelector('.case-image')).filter(Boolean);
+    const buttons = () => activeCards().map(card => card.querySelector('.case-image[data-lightbox-src]')).filter(Boolean);
     function render(index) {
       const set = buttons();
       if (!set.length) return;
@@ -122,7 +122,7 @@
       counter.textContent = `${current+1} / ${set.length}`;
       prev.disabled = next.disabled = set.length < 2;
     }
-    document.querySelectorAll('.case-image').forEach(button => {
+    document.querySelectorAll('.case-image[data-lightbox-src]').forEach(button => {
       button.setAttribute('data-preview-label', 'View screenshot');
       button.addEventListener('click', () => {
         current = buttons().indexOf(button);

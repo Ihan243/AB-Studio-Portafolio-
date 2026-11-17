@@ -750,3 +750,19 @@ body.theme-dark .case-card:hover {box-shadow:0 19px 36px rgba(0,0,0,.25);}
  .case-card {transition:none!important;transform:none!important;}
  .case-image::after,.case-image::before {transition:none!important;}
 }
+
+
+/* Live La Patarata project: a real site embed, with a branded fallback.
+   The overlay is a link rather than an image lightbox. */
+.case-live-website {display:block;isolation:isolate;cursor:pointer;background:linear-gradient(140deg,#392824 0%,#785747 50%,#dfc3a3 100%);color:#fff4e8;}
+.case-live-fallback {position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;padding:clamp(20px,4vw,50px);background:radial-gradient(circle at 80% 25%,rgba(255,218,166,.24),transparent 40%);}
+.case-live-fallback strong {font:400 clamp(2.4rem,5.4vw,4.8rem)/.97 var(--serif);letter-spacing:-.06em;color:#fff5eb;}
+.case-live-eyebrow {font-size:.62rem;font-weight:750;letter-spacing:.19em;color:#f1d4b5;}
+.case-live-fallback small {font-size:.81rem;letter-spacing:.03em;color:#fff0de;}
+.case-live-website iframe {position:absolute;z-index:1;left:0;top:0;width:240%;height:240%;border:0;transform:scale(.416666667);transform-origin:top left;pointer-events:none;background:transparent;}
+.case-live-website::before {content:"";position:absolute;z-index:2;inset:60% 0 0;background:linear-gradient(180deg,transparent,rgba(13,13,12,.27));pointer-events:none;}
+.case-live-link {position:absolute;z-index:3;right:12px;bottom:12px;width:35px;height:35px;display:grid;place-items:center;border-radius:50%;background:#fffdf8;color:#273027;box-shadow:0 4px 16px rgba(0,0,0,.18);font-size:1.1rem;transition:transform .2s ease;}
+.case-live-website:hover .case-live-link,.case-live-website:focus-visible .case-live-link {transform:translate(2px,-2px);}
+.case-live-website:focus-visible {outline:3px solid var(--green);outline-offset:-3px;}
+@media (max-width:680px) {.case-live-fallback {padding:19px;}.case-live-fallback strong {font-size:2.4rem;}.case-live-eyebrow {font-size:.5rem;}}
+@media (prefers-reduced-motion:reduce) {.case-live-link {transition:none;}}
