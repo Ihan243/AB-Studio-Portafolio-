@@ -7,6 +7,8 @@ const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
@@ -33,10 +35,13 @@ function handler(req, res) {
 
   // Attempt to serve exact file from disk
   const safePath = path.normalize(cleanUrl).replace(/^(\.\.[\/\\])+/, '');
-  const filePath = path.join(__dirname, safePath);
+  const rootFile = path.resolve(__dirname, '.' + (safePath.startsWith('/') ? safePath : '/' + safePath));
+  const publicFile = path.resolve(__dirname, 'public', '.' + (safePath.startsWith('/') ? safePath : '/' + safePath));
+  const filePath = [rootFile, path.join(rootFile, 'index.html'), publicFile]
+    .find(p => (p === __dirname || p.startsWith(__dirname + path.sep)) && fs.existsSync(p) && fs.statSync(p).isFile());
 
   try {
-    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    if (filePath) {
       const ext = path.extname(filePath).toLowerCase();
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
       res.writeHead(200, {
@@ -47,17 +52,10 @@ function handler(req, res) {
     }
   } catch (err) {}
 
-  // Fallback to index.html for client-side routing (/servicios/, /sitios-web/, etc.)
-  const fallbackPath = path.join(__dirname, 'index.html');
-  if (fs.existsSync(fallbackPath)) {
-    res.writeHead(200, {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Cache-Control': 'no-cache',
-    });
-    return fs.createReadStream(fallbackPath).pipe(res);
-  }
-
-  res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+  // Known routes already have dedicated static pages. Unknown routes are proper 404s.
+  const notFound = path.join(__dirname, '404.html');
+  res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
+  if (fs.existsSync(notFound)) return fs.createReadStream(notFound).pipe(res);
   res.end('404 Not Found');
 }
 

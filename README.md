@@ -65,3 +65,14 @@ El proyecto está configurado para desplegarse instantáneamente en **Vercel** o
 
 - Solo sube la carpeta o conecta el repositorio a Vercel.
 - `vercel.json` ya incluye la reescritura de rutas para mantener la navegación SPA intacta.
+
+
+## Maintenance notes (2026-11-17)
+
+- The canonical source is `index.html` plus `public/assets/css/site.css` and `public/assets/js/site.js`.
+- Dedicated route HTML (`servicios/`, `sitios-web/`, `sistemas/`, `seo/`, `automatizacion/`, `empresa/`, `blog/`) contains route-specific SEO metadata and initial content for search engines. When editing visible HTML in `index.html`, keep the static route copies in sync.
+- Internal navigation and bilingual language switching run through `site.js`. The inquiry form prepares a WhatsApp message; the website does not transmit that inquiry by itself.
+- Edit `public/sitemap.xml` when adding/removing public routes. `public/robots.txt` points to it.
+- Legal notices are published under `/privacidad/` and `/condiciones/` and should be reviewed with the actual operations as they evolve.
+- Run `npm test` before publishing. Check the site visually on desktop and mobile and confirm Vercel deployment status.
+- No customer testimonials, case study metrics or service SLAs should be added without verification.

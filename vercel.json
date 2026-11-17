@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "cleanUrls": true,
   "routes": [
@@ -6,13 +7,46 @@
       "handle": "filesystem"
     },
     {
+      "src": "^/servicios/?$",
+      "dest": "/servicios/index.html"
+    },
+    {
+      "src": "^/sitios-web/?$",
+      "dest": "/sitios-web/index.html"
+    },
+    {
+      "src": "^/sistemas/?$",
+      "dest": "/sistemas/index.html"
+    },
+    {
+      "src": "^/seo/?$",
+      "dest": "/seo/index.html"
+    },
+    {
+      "src": "^/automatizacion/?$",
+      "dest": "/automatizacion/index.html"
+    },
+    {
+      "src": "^/empresa/?$",
+      "dest": "/empresa/index.html"
+    },
+    {
+      "src": "^/blog/?$",
+      "dest": "/blog/index.html"
+    },
+    {
+      "src": "^/(privacidad|condiciones)/?$",
+      "dest": "/$1/index.html"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "status": 404,
+      "dest": "/404.html"
     }
   ],
   "functions": {
     "server.js": {
-      "includeFiles": "{index.html,assets/brand/**,assets/portfolio/**}"
+      "includeFiles": "{index.html,assets/brand/**,assets/portfolio/**,public/assets/css/**,public/assets/js/**}"
     }
   }
 }
