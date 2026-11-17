@@ -840,7 +840,7 @@ body.theme-dark .case-card:hover {box-shadow:0 19px 36px rgba(0,0,0,.25);}
     flex-direction: column;
     justify-content: center;
   }
-  body.route-mode main > .subpage-intro { padding-block: clamp(70px, 9vh, 140px); }
+  body.route-mode main > .subpage-intro { display: flex !important; padding-block: clamp(70px, 9vh, 140px); }
   body.route-mode main > .subpage-intro .wrap,
   body.route-mode main > #route-page .route-content .wrap,
   body.route-mode main > #route-page .route-hero .wrap { width: min(var(--max), calc(100% - 48px)); }
