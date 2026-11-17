@@ -248,7 +248,6 @@ const copy = {
         if (value) el.textContent = value;
       });
       // Derive portfolio totals from the actual cards so the proof stays accurate.
-      const projectCount = document.querySelectorAll('#work [data-project], #work .case-card').length;
       const distinctCards = document.querySelectorAll('#work .case-card').length;
       const proof = document.querySelector('[data-copy="hero.proof1"]');
       if (proof && distinctCards) {
