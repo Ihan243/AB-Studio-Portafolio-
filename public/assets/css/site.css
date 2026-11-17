@@ -766,3 +766,45 @@ body.theme-dark .case-card:hover {box-shadow:0 19px 36px rgba(0,0,0,.25);}
 .case-live-website:focus-visible {outline:3px solid var(--green);outline-offset:-3px;}
 @media (max-width:680px) {.case-live-fallback {padding:19px;}.case-live-fallback strong {font-size:2.4rem;}.case-live-eyebrow {font-size:.5rem;}}
 @media (prefers-reduced-motion:reduce) {.case-live-link {transition:none;}}
+
+
+/* AB Studio 2026 refinement: polish without changing the existing identity. */
+:root { --ease-editorial: cubic-bezier(.22, 1, .36, 1); }
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 3px solid #8caa7c;
+  outline-offset: 4px;
+}
+.button, .case-demo-link, .service, .plan, .case-card {
+  transition: transform .28s var(--ease-editorial), box-shadow .28s ease, border-color .28s ease, background-color .28s ease;
+}
+@media (hover:hover) and (prefers-reduced-motion:no-preference) {
+  .case-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(37,37,34,.10); }
+  .case-card:hover .case-image img { transform: scale(1.045); }
+  .service:hover { transform: translateY(-3px); }
+  .plan:hover { transform: translateY(-4px); box-shadow: 0 18px 45px rgba(37,37,34,.1); }
+  .case-demo-link:hover { transform: translateY(-2px); }
+}
+.case-image img { transition: transform .65s var(--ease-editorial); }
+.case-demo-link { min-height: 44px; }
+.case-content h3 { text-wrap: balance; }
+.hero h1, .section-head h2, .route-hero h1 { text-wrap: balance; }
+.hero-copy, .section-head > p { text-wrap: pretty; }
+.work-section .case-card { border-radius: 13px; }
+.work-section .case-card .case-image { border-radius: 12px 12px 0 0; }
+.case-content { flex: 1; }
+.case-demo-links { margin-top: auto; padding-top: 8px; }
+.plan { position: relative; }
+.plan.featured { box-shadow: 0 14px 35px rgba(37,37,34,.08); }
+@media (max-width: 640px) {
+  .case-content { padding: 22px 20px 24px; }
+  .case-image { aspect-ratio: 1.75 / 1; }
+  .hero-actions .button { min-height: 48px; }
+  .hero h1 { overflow-wrap: break-word; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .button, .case-demo-link, .service, .plan, .case-card, .case-image img {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
