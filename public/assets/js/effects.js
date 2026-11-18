@@ -9,7 +9,10 @@
       '.section-head', '.services-grid .service', '.case-grid .case-card',
       '.pricing-grid .plan', '.process .step', '.insight-grid > *',
       '.about-block', '.nfc-review-panel', '.subpage-detail .subpage-feature',
-      '.home-inquiry-inner', '.route-hero > .wrap'
+      '.home-inquiry-inner', '.route-hero > .wrap',
+      '.route-content .route-card', '.route-content .route-plan',
+      '.ab-detail-section .ab-detail-card', '.ab-detail-section .ab-detail-step',
+      '.ab-detail-section .ab-detail-visual', '.subpage-intro .intro-art'
     ];
     const candidates = [...new Set(selectors.flatMap(s => [...document.querySelectorAll(s)]))];
     const observer = new IntersectionObserver((entries, instance) => {

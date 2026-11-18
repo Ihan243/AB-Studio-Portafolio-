@@ -369,7 +369,13 @@ const copy = {
       const list = items => items.map(item => `<li>${item}</li>`).join('');
       const plans = c.plans.map(plan => `<article class="route-plan"><small>${plan[0]}</small><div class="price">${plan[1]} <small>USD ${lang === 'es' ? 'desde' : 'starting at'}</small></div><p>${plan[2]}</p></article>`).join('');
       const faqs = c.faqs.map(faq => `<details><summary>${faq[0]}</summary><p>${faq[1]}</p></details>`).join('');
-      return `<section class="route-hero"><div class="wrap"><div class="eyebrow">${c.eyebrow}</div><h1 class="serif">${c.title}</h1><p>${c.intro}</p><div class="hero-actions"><a class="button" href="#contact">${c.buttons[0]} <span class="arrow">↗</span></a><a class="button outline" href="#route-packages">${c.buttons[1]} <span class="arrow">↓</span></a></div></div></section>
+      return `<section class="route-hero route-hero--visual"><div class="wrap route-hero-split"><div class="route-hero-copy"><div class="eyebrow">${c.eyebrow}</div><h1 class="serif">${c.title}</h1><p>${c.intro}</p><div class="hero-actions"><a class="button" href="#contact">${c.buttons[0]} <span class="arrow">↗</span></a><a class="button outline" href="#route-packages">${c.buttons[1]} <span class="arrow">↓</span></a></div></div><div class="route-hero-showcase" aria-label="AB Studio website portfolio preview">
+  <div class="route-showcase-glow"></div><div class="route-showcase-frame">
+    <div class="route-showcase-bar"><span class="route-showcase-dots"><i></i><i></i><i></i></span><small>AB STUDIO / WEB DESIGN</small><span>↗</span></div>
+    <img src="/assets/portfolio/floreria-muniz.webp" alt="Florería Muñiz website example" width="1061" height="684" loading="eager" decoding="async">
+    <div class="route-showcase-caption"><span>SELECTED PROJECT</span><strong>Florería Muñiz</strong></div>
+  </div><span class="route-showcase-stamp">MADE TO<br>BE USEFUL ✳</span>
+</div></div></section>
         <section class="route-content"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'PARA QUIÉN' : 'WHO IT IS FOR'}</div><h2>${c.audienceTitle}</h2><p>${c.audienceIntro}</p><div class="route-grid">${cards(c.audiences)}</div></div></section>
         <section class="route-content"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'LO QUE RESOLVEMOS' : 'WHAT WE SOLVE'}</div><h2>${c.problemsTitle}</h2><div class="route-grid">${cards(c.problems)}</div></div></section>
         <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">${lang === 'es' ? 'ALCANCE DEL PROYECTO' : 'PROJECT SCOPE'}</div><h2>${c.scopeTitle}</h2><p>${c.scopeIntro}</p></div><ul class="route-list">${list(c.deliverables)}</ul></div></section>

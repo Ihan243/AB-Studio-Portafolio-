@@ -79,6 +79,23 @@ assert.match(css, /main > \.ab-detail-section \{display:block !important;\}/);
 assert.match(css, /data-ab-locale="es"/);
 assert.match(read('public/sitios-web/index.html'), /floreria-muniz\.webp/);
 
+
+// Ensure every detail page keeps a natural height and a visual hero.
+const modernCss = read('public/assets/css/site.css');
+assert.match(modernCss, /AB editorial redesign: eliminate empty full-page sections/);
+assert.match(modernCss, /min-height:0 !important/);
+assert.match(modernCss, /route-hero-showcase/);
+assert.match(modernCss, /subpage-intro-inner/);
+assert.match(modernCss, /ab-detail-section--alternate/);
+const modernJs = read('public/assets/js/site.js');
+assert.match(modernJs, /route-hero--visual/);
+assert.match(read('public/sitios-web/index.html'), /route-hero-showcase/);
+for (const page of ['servicios','sistemas','seo','automatizacion','empresa','blog','proyectos']) {
+  const content = read(`public/${page}/index.html`);
+  assert.match(content, /class="subpage-intro-copy"/);
+  assert.match(content, /class="intro-art intro-art--/);
+}
+
 assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel\.app\/sitios-web\//);
 assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel\.app\/proyectos\//);
 assert.match(read('vercel.json'), /proyectos\/index\.html/);
