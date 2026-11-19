@@ -45,6 +45,10 @@
     {
       "source": "/condiciones/",
       "destination": "/condiciones/index.html"
+    },
+    {
+      "source": "/faq/",
+      "destination": "/faq/index.html"
     }
   ]
 }

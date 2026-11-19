@@ -50,7 +50,7 @@ const copy = {
         "homeInquiry.note":"This opens WhatsApp with a prepared message; nothing is sent until you choose to send it there.",
         "brand.sub":"Web · Systems · Automation",
         "homeInquiry.kicker":"Let’s get started","homeInquiry.title":"Tell us what your website needs.","homeInquiry.intro":"Describe your business and what you want the site to help with. We’ll review your note and reply within one business day with next steps.","homeInquiry.label":"Describe the website you need","homeInquiry.placeholder":"Example: I run a dental clinic and want patients to request appointments online.","homeInquiry.pick1":"A campaign landing page","homeInquiry.pick2":"My business website","homeInquiry.pick3":"A digital product catalog","homeInquiry.send":"Continue in WhatsApp","homeInquiry.note":"This opens WhatsApp with your draft. Review it there and choose whether to send it.","homeInquiry.emailIntro":"Prefer email? Send us a note and tell us what kind of site you have in mind.","homeInquiry.reply":"We normally reply to new inquiries within one business day.",
-        "nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.company":"Company","nav.blog":"Blog","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Start a project",
+        "nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.company":"Company","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Start a project",
         "hero.eyebrow":"Independent digital studio · Serving the U.S.",
         "hero.title":"A better web presence.<br><em>Built to move business forward.</em>",
         "hero.body":"We build thoughtful websites, booking systems and practical automation for small businesses across the United States. Clear design, useful technology and a direct path to your next customer.",
@@ -168,7 +168,7 @@ const copy = {
         "homeInquiry.note":"Se abrirá WhatsApp con un mensaje preparado; nada se envía hasta que tú decidas enviarlo allí.",
         "brand.sub":"Web · Sistemas · Automatización",
         "homeInquiry.kicker":"Empecemos","homeInquiry.title":"Contanos qué necesita tu sitio web.","homeInquiry.intro":"Describí tu negocio y qué necesitás que resuelva el sitio. Revisaremos tu mensaje y te responderemos dentro de un día hábil con los próximos pasos.","homeInquiry.label":"Describí el sitio web que necesitás","homeInquiry.placeholder":"Ejemplo: Tengo una clínica dental y quiero que mis pacientes soliciten citas en línea.","homeInquiry.pick1":"Una página para una campaña","homeInquiry.pick2":"El sitio de mi negocio","homeInquiry.pick3":"Un catálogo digital de productos","homeInquiry.send":"Continuar en WhatsApp","homeInquiry.note":"Se abrirá WhatsApp con tu borrador. Revisalo y decidí si querés enviarlo.","homeInquiry.emailIntro":"¿Preferís escribirnos por correo? Contanos qué tipo de sitio tenés en mente.","homeInquiry.reply":"Normalmente respondemos las consultas nuevas dentro de un día hábil.",
-        "nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.company":"Empresa","nav.blog":"Blog","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Empezar un proyecto",
+        "nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.company":"Empresa","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Empezar un proyecto",
         "hero.eyebrow":"Estudio digital independiente · Atención a negocios de EE. UU.",
         "hero.title":"Una mejor presencia digital.<br><em>Hecha para impulsar tu negocio.</em>",
         "hero.body":"Creamos sitios web, sistemas de reservas y automatizaciones prácticas para pequeños negocios de Estados Unidos. Diseño claro, tecnología útil y un camino directo hacia tus próximos clientes.",
@@ -331,7 +331,7 @@ const copy = {
     const routeTargets = {
       "/": "top", "/servicios/": "services", "/sitios-web/": "plans",
       "/sistemas/": "systems", "/seo/": "seo", "/automatizacion/": "automation",
-      "/empresa/": "company", "/blog/": "blog", "/proyectos/": "work"
+      "/empresa/": "company", "/blog/": "blog", "/proyectos/": "work", "/faq/": "faq-page"
     };
     const websitePageCopy = {
       en: {
@@ -413,7 +413,8 @@ const copy = {
         '/sistemas/': currentLang === 'es' ? 'Sistemas de reservas — AB Studio' : 'Booking systems — AB Studio',
         '/seo/':'SEO & local search — AB Studio','/automatizacion/':'Automation — AB Studio',
         '/empresa/': currentLang === 'es' ? 'Empresa — AB Studio' : 'Company — AB Studio','/blog/':'Blog — AB Studio',
-        '/proyectos/': currentLang === 'es' ? 'Proyectos — AB Studio' : 'Our work — AB Studio'
+        '/proyectos/': currentLang === 'es' ? 'Proyectos — AB Studio' : 'Our work — AB Studio',
+        '/faq/': currentLang === 'es' ? 'Preguntas frecuentes — AB Studio' : 'Frequently Asked Questions — AB Studio'
       };
       document.title = titles[path] || titles['/'];
       const metaDescriptions = {
@@ -425,7 +426,8 @@ const copy = {
         '/automatizacion/': currentLang === 'es' ? 'Automatizaciones prácticas para formularios, mensajes y procesos de negocios.' : 'Practical automation for forms, messages and small business workflows.',
         '/empresa/': currentLang === 'es' ? 'Conoce al equipo y proceso de trabajo de AB Studio.' : 'Meet the team and learn how AB Studio approaches web and software projects.',
         '/blog/': currentLang === 'es' ? 'Consejos prácticos sobre páginas web, reservas y visibilidad online.' : 'Practical articles on websites, booking tools and local visibility for business owners.',
-        '/proyectos/': currentLang === 'es' ? 'Explora los proyectos, conceptos web y sistemas desarrollados por AB Studio.' : 'See the websites, concepts and digital systems showcased in the AB Studio portfolio.'
+        '/proyectos/': currentLang === 'es' ? 'Explora los proyectos, conceptos web y sistemas desarrollados por AB Studio.' : 'See the websites, concepts and digital systems showcased in the AB Studio portfolio.',
+        '/faq/': currentLang === 'es' ? 'Respuestas sobre precios, tiempos, dominio, hosting, revisiones y soporte de proyectos en AB Studio.' : 'Questions and answers about AB Studio website pricing, timelines, domains, revisions and support.'
       };
       const descriptionTag = document.querySelector('meta[name="description"]');
       if (descriptionTag) descriptionTag.setAttribute('content',metaDescriptions[path] || metaDescriptions['/']);

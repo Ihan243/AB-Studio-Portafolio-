@@ -19,6 +19,22 @@ assert.match(js, /case-image\[data-lightbox-src\]/);
 assert.match(effectsJS, /case-image\[data-lightbox-src\]/);
 assert.match(css, /\.case-live-website iframe/);
 
+
+const faqPage = read('public/faq/index.html');
+const faqConfig = JSON.parse(read('vercel.json'));
+assert.match(home, /href="\/faq\/" data-route="\/faq\/" data-target="faq-page"/);
+assert.match(faqPage, /id="faq-page"/);
+assert.match(faqPage, /data-page="faq"/);
+assert.match(faqPage, /data-ab-locale="en"/);
+assert.match(faqPage, /data-ab-locale="es"/);
+assert.equal((faqPage.match(/class="ab-faq-questions"/g) || []).length, 6);
+assert.equal((faqPage.match(/class="ab-faq-plus"/g) || []).length, 24);
+assert.match(js, /"\/faq\/": "faq-page"/);
+assert.match(js, /"nav.faq":"FAQ"/);
+assert.match(css, /AB Studio dedicated FAQ page and navigation/);
+assert.ok(faqConfig.rewrites.some(rule => rule.source === '/faq/' && rule.destination === '/faq/index.html'));
+assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel\.app\/faq\//);
+
 const routes = ['servicios', 'sitios-web', 'sistemas', 'seo', 'automatizacion', 'empresa', 'blog', 'proyectos'];
 
 const effects = read('public/assets/js/effects.js');
