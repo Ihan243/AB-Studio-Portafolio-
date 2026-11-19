@@ -49,7 +49,7 @@ const copy = {
         "inquiry.optionOther":"Something else",
         "homeInquiry.note":"This opens WhatsApp with a prepared message; nothing is sent until you choose to send it there.",
         "brand.sub":"Web · Systems · Automation",
-        "homeInquiry.kicker":"Let’s get started","homeInquiry.title":"Tell us what your website needs.","homeInquiry.intro":"Describe your business and what you want the site to help with. We’ll review your note and reply within one business day with next steps.","homeInquiry.label":"Describe the website you need","homeInquiry.placeholder":"Example: I run a dental clinic and want patients to request appointments online.","homeInquiry.pick1":"A campaign landing page","homeInquiry.pick2":"My business website","homeInquiry.pick3":"A digital product catalog","homeInquiry.send":"Continue in WhatsApp","homeInquiry.note":"This opens WhatsApp with your draft. Review it there and choose whether to send it.","homeInquiry.emailIntro":"Prefer email? Send us a note and tell us what kind of site you have in mind.","homeInquiry.reply":"We normally reply to new inquiries within one business day.",
+        "homeInquiry.kicker":"Let’s get started","homeInquiry.title":"Tell us what your website needs.","homeInquiry.intro":"Describe your business and what you want the site to help with. We’ll review your note and reply within one business day with next steps.","homeInquiry.label":"Describe the website you need","homeInquiry.placeholder":"Example: I run a dental clinic and want patients to request appointments online.","homeInquiry.pick1":"A campaign landing page","homeInquiry.pick2":"My business website","homeInquiry.pick3":"A digital product catalog","homeInquiry.send":"Continue in WhatsApp","homeInquiry.sendEmail":"Continue by email","homeInquiry.note":"Choose WhatsApp or email to open a prefilled draft. You decide when to send it.","homeInquiry.emailIntro":"Prefer email? Send us a note and tell us what kind of site you have in mind.","homeInquiry.reply":"We normally reply to new inquiries within one business day.",
         "nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.company":"Company","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Start a project",
         "hero.eyebrow":"Independent digital studio · Serving the U.S.",
         "hero.title":"A better web presence.<br><em>Built to move business forward.</em>",
@@ -66,7 +66,7 @@ const copy = {
         "work.note":"The links below open portfolio demos for review. They are reference versions, not the clients’ official live websites.",
         "work.type.web":"Reference demo · not official","work.type.system":"Reservation system · demo","work.type.concept":"Reference demo · not official","work.type.curiel":"Two demos · Basic + Premium",
         "work.label.need":"The need","work.label.built":"What we made","work.label.outcome":"What the demo shows",
-        "work.demo.open":"Open demo ↗","work.demo.reservations":"View reservation demo ↗","work.demo.basic":"Basic version ↗","work.demo.premium":"Premium version ↗",
+        "work.demo.open":"Open demo ↗","work.demo.reservations":"View reservation demo ↗","work.demo.basic":"Basic version ↗","work.demo.premium":"Premium version ↗","work.demo.preview":"View project screenshot ↗","work.demo.basicPreview":"Basic — screenshot ↗",
         "work.patarata.type":"Website · live preview",
         "work.patarata.title":"La Patarata · Website",
         "work.patarata.need":"Give visitors a direct way to discover La Patarata online.",
@@ -167,7 +167,7 @@ const copy = {
         "inquiry.optionOther":"Otra idea",
         "homeInquiry.note":"Se abrirá WhatsApp con un mensaje preparado; nada se envía hasta que tú decidas enviarlo allí.",
         "brand.sub":"Web · Sistemas · Automatización",
-        "homeInquiry.kicker":"Empecemos","homeInquiry.title":"Contanos qué necesita tu sitio web.","homeInquiry.intro":"Describí tu negocio y qué necesitás que resuelva el sitio. Revisaremos tu mensaje y te responderemos dentro de un día hábil con los próximos pasos.","homeInquiry.label":"Describí el sitio web que necesitás","homeInquiry.placeholder":"Ejemplo: Tengo una clínica dental y quiero que mis pacientes soliciten citas en línea.","homeInquiry.pick1":"Una página para una campaña","homeInquiry.pick2":"El sitio de mi negocio","homeInquiry.pick3":"Un catálogo digital de productos","homeInquiry.send":"Continuar en WhatsApp","homeInquiry.note":"Se abrirá WhatsApp con tu borrador. Revisalo y decidí si querés enviarlo.","homeInquiry.emailIntro":"¿Preferís escribirnos por correo? Contanos qué tipo de sitio tenés en mente.","homeInquiry.reply":"Normalmente respondemos las consultas nuevas dentro de un día hábil.",
+        "homeInquiry.kicker":"Empecemos","homeInquiry.title":"Contanos qué necesita tu sitio web.","homeInquiry.intro":"Describí tu negocio y qué necesitás que resuelva el sitio. Revisaremos tu mensaje y te responderemos dentro de un día hábil con los próximos pasos.","homeInquiry.label":"Describí el sitio web que necesitás","homeInquiry.placeholder":"Ejemplo: Tengo una clínica dental y quiero que mis pacientes soliciten citas en línea.","homeInquiry.pick1":"Una página para una campaña","homeInquiry.pick2":"El sitio de mi negocio","homeInquiry.pick3":"Un catálogo digital de productos","homeInquiry.send":"Continuar en WhatsApp","homeInquiry.sendEmail":"Continuar por correo","homeInquiry.note":"Elige WhatsApp o correo para abrir un borrador preparado. Tú decides cuándo enviarlo.","homeInquiry.emailIntro":"¿Preferís escribirnos por correo? Contanos qué tipo de sitio tenés en mente.","homeInquiry.reply":"Normalmente respondemos las consultas nuevas dentro de un día hábil.",
         "nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.company":"Empresa","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Empezar un proyecto",
         "hero.eyebrow":"Estudio digital independiente · Atención a negocios de EE. UU.",
         "hero.title":"Una mejor presencia digital.<br><em>Hecha para impulsar tu negocio.</em>",
@@ -184,7 +184,7 @@ const copy = {
         "work.note":"Los enlaces abren demos del portafolio para que las revisés. Son referencias, no los sitios oficiales publicados de los clientes.",
         "work.type.web":"Demo de referencia · no oficial","work.type.system":"Demo de sistema de reservas","work.type.concept":"Demo de referencia · no oficial","work.type.curiel":"Dos demos · Básica + Premium",
         "work.label.need":"La necesidad","work.label.built":"Qué construimos","work.label.outcome":"Qué muestra la demo",
-        "work.demo.open":"Abrir demo ↗","work.demo.reservations":"Ver demo de reservas ↗","work.demo.basic":"Versión básica ↗","work.demo.premium":"Versión premium ↗",
+        "work.demo.open":"Abrir demo ↗","work.demo.reservations":"Ver demo de reservas ↗","work.demo.basic":"Versión básica ↗","work.demo.premium":"Versión premium ↗","work.demo.preview":"Ver captura del proyecto ↗","work.demo.basicPreview":"Básico — captura ↗",
         "work.patarata.type":"Sitio web · vista en vivo",
         "work.patarata.title":"La Patarata · Sitio web",
         "work.patarata.need":"Facilitar que las personas descubran La Patarata en internet.",
@@ -299,9 +299,10 @@ const copy = {
       if (routeTargets[path]) showRoute(path, routeTargets[path], false);
     });
     try {
-      const savedLang = localStorage.getItem("abstudio-lang") || (navigator.language && navigator.language.startsWith("es") ? "es" : "en");
-      if (savedLang === "es") { setLanguage("es"); }
-    } catch (_) {}
+      const storedLang = localStorage.getItem("abstudio-lang");
+      const savedLang = storedLang === "en" || storedLang === "es" ? storedLang : ((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en");
+      setLanguage(savedLang === "es" ? "es" : "en");
+    } catch (_) { setLanguage((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en"); }
     const themeToggle = document.getElementById("themeToggle");
     if ((() => {try{return localStorage.getItem("abstudio-theme")}catch(_){return null}})() === "dark") { document.body.classList.add("theme-dark"); themeToggle.textContent = "☀"; }
     themeToggle.addEventListener("click", () => {
@@ -477,6 +478,10 @@ const copy = {
       projectLightbox.showModal();
     }));
     document.getElementById("projectLightboxClose").addEventListener("click", () => projectLightbox.close());
+    // Avoid sending visitors to ChatGPT-authenticated concept previews.
+    document.querySelectorAll('[data-preview-project]').forEach(button => button.addEventListener('click', () => {
+      button.closest('.case-card')?.querySelector('.case-image[data-lightbox-src]')?.click();
+    }));
     projectLightbox.addEventListener("click", event => { if (event.target === projectLightbox) projectLightbox.close(); });
 
     const homeInquiryForm = document.getElementById('homeInquiryForm');
@@ -518,6 +523,12 @@ const copy = {
       const description = homeInquiryMessage.value.trim();
       if (!description) { homeInquiryMessage.focus(); return; }
       const message = [opening,service ? `${currentLang === 'es' ? 'Servicio' : 'Service'}: ${service}` : '', description].filter(Boolean).join('\n\n');
-      const url = `https://wa.me/15513129791?text=${encodeURIComponent(message)}`;
-      window.location.assign(url);
+      const channel = event.submitter?.dataset.inquiryChannel === 'email' ? 'email' : 'whatsapp';
+      if (channel === 'email') {
+        const subject = currentLang === 'es' ? 'Solicitud de proyecto web — AB Studio' : 'Website project inquiry — AB Studio';
+        window.location.href = `mailto:sales.abstudio@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      } else {
+        const url = `https://wa.me/15513129791?text=${encodeURIComponent(message)}`;
+        window.location.assign(url);
+      }
     });
