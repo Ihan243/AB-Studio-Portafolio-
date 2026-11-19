@@ -1429,3 +1429,47 @@ body[data-page="faq"] .ab-faq-hero-inner {
 @media(prefers-reduced-motion:reduce) {
   .ab-faq-plus::after,.ab-faq-shortcuts a {transition:none;}
 }
+
+/* Business management and CRM pricing on the services and systems routes. */
+body[data-page="services"].route-mode #services .services-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.crm-section,.crm-pricing{padding:clamp(70px,8vw,110px) 0;border-top:1px solid var(--line)}
+.crm-section{background:var(--paper)}.crm-pricing{background:var(--paper-deep);scroll-margin-top:88px}
+.crm-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(35px,5vw,70px);align-items:center}
+.crm-hero h2,.crm-pricing-heading h2{font:400 clamp(2.6rem,4.8vw,4.8rem)/1.05 var(--serif);letter-spacing:-.055em;margin:20px 0}
+.crm-hero p,.crm-pricing-heading p{max-width:620px;font-size:.98rem;line-height:1.77;color:var(--ink-soft)}
+.crm-hero .text-link{display:inline-flex;gap:16px;margin-top:18px;font-weight:750}
+.crm-preview{background:#2d3b31;color:#f7f3e9;border-radius:13px;border:1px solid rgba(255,255,255,.16);overflow:hidden;box-shadow:0 26px 60px rgba(29,39,30,.18);transform:rotate(-1.2deg)}
+.crm-preview-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 21px;border-bottom:1px solid rgba(255,255,255,.17);font-size:.58rem;font-weight:800;letter-spacing:.13em}
+.crm-preview-bar span{color:#abcf94}.crm-preview-main{padding:29px}
+.crm-preview-main h3{font:400 1.85rem var(--serif);margin:0 0 22px}
+.crm-preview-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.crm-preview-metrics span{min-height:64px;padding:12px 8px;border:1px solid rgba(255,255,255,.2);border-radius:6px;font-size:.7rem}
+.crm-preview-rows{display:grid;gap:8px;margin-top:20px}
+.crm-preview-rows>div{display:flex;gap:12px;align-items:center;background:#f4f0e7;color:#333b31;border-radius:7px;padding:12px}
+.crm-preview-rows>div>span{background:#e2e9dc;border-radius:6px;color:#50694b;padding:5px 7px;font-size:.67rem}
+.crm-preview-rows b{font-size:.79rem;font-weight:650;flex:1}
+.crm-preview-rows small{font-size:.66rem;color:#58614f;white-space:nowrap}
+.crm-preview-caption{border-top:1px solid rgba(255,255,255,.17);padding:12px 21px;color:#d2ddcf;font-size:.64rem}
+.crm-benefits-heading{margin:75px 0 24px}.crm-benefits-heading h3,.crm-questions h3{font:400 clamp(2rem,3vw,2.8rem)/1.05 var(--serif);letter-spacing:-.04em;margin:0}
+.crm-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.crm-benefit{padding:28px;border:1px solid var(--line);background:var(--white);border-radius:8px}
+.crm-benefit small{color:var(--green);font-weight:800;letter-spacing:.13em}.crm-benefit h3{font:400 1.48rem var(--serif);margin:22px 0 10px}
+.crm-benefit p{font-size:.85rem;line-height:1.7;color:var(--ink-soft);margin:0}
+.crm-pricing-heading{display:flex;align-items:end;justify-content:space-between;gap:35px;margin-bottom:34px}.crm-pricing-heading p{max-width:370px}
+.crm-pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.crm-plan{padding:28px;background:var(--white);border:1px solid var(--line);border-radius:9px;display:flex;flex-direction:column;min-height:470px}
+.crm-plan--featured{border-color:var(--green);box-shadow:0 20px 40px rgba(31,53,35,.1)}
+.crm-plan-tag{color:var(--green);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.64rem}
+.crm-plan h3{font:400 2rem var(--serif);margin:14px 0 8px}
+.crm-plan-desc{font-size:.83rem;line-height:1.65;color:var(--ink-soft);min-height:65px;margin:0}
+.crm-amount{font-weight:780;font-size:clamp(1.7rem,2.4vw,2.4rem);letter-spacing:-.04em;margin:22px 0}
+.crm-amount small{color:var(--muted);font-size:.68rem;letter-spacing:0}
+.crm-plan ul{border-top:1px solid var(--line);list-style:none;padding:15px 0 0;margin:0 0 25px;flex:1}
+.crm-plan li{display:flex;gap:10px;font-size:.79rem;line-height:1.6;margin:10px 0}.crm-plan li:before{content:"✓";color:var(--green);font-weight:800}
+.crm-plan .button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;font-size:.72rem}
+.crm-note{font-size:.78rem;line-height:1.75;max-width:980px;color:var(--ink-soft);margin:21px 0 0}
+.crm-questions{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:50px;border-top:1px solid var(--line);margin-top:62px;padding-top:42px}
+.crm-questions details{border-bottom:1px solid var(--line);padding:15px 0}.crm-questions summary{cursor:pointer;font-size:.91rem;font-weight:700}
+.crm-questions p{font-size:.85rem;line-height:1.7;color:var(--ink-soft)}
+@media(max-width:950px){.crm-hero,.crm-questions{grid-template-columns:1fr;gap:30px}.crm-preview{transform:none}.crm-pricing-heading{display:block}.crm-pricing-grid{grid-template-columns:1fr}.crm-plan{min-height:0}.crm-plan-desc{min-height:0}.crm-benefits{grid-template-columns:1fr}}
+@media(max-width:760px){body[data-page="services"].route-mode #services .services-grid{grid-template-columns:1fr}.crm-section,.crm-pricing{padding:56px 0}.crm-preview-main{padding:18px}.crm-preview-bar{padding:12px;font-size:.52rem}.crm-preview-metrics span{font-size:.62rem;padding:10px 5px}.crm-preview-rows>div{gap:8px}.crm-plan{padding:24px}.crm-benefits-heading{margin-top:55px}.crm-questions{margin-top:42px;padding-top:30px}}
