@@ -1495,3 +1495,51 @@ body.theme-dark .crm-fee--monthly{background:#373f33}
 body.theme-dark .crm-fee>small,body.theme-dark .crm-fee>strong,body.theme-dark .crm-fee>strong span,body.theme-dark .crm-fee em{color:#f1efe8}
 @media(max-width:950px){.crm-pricing-grid>.crm-plan{min-height:0}.crm-plan-ideal,.crm-plan .crm-plan-desc{min-height:0}}
 @media(max-width:760px){.crm-plan-heading{flex-wrap:wrap}.crm-fee>strong{font-size:1.9rem}}
+
+/* Bespoke administrative dashboard service - AB Studio */
+body[data-page="services"].route-mode #services .service--admin{grid-column:1 / -1;display:grid;grid-template-columns:210px minmax(0,1fr) auto;gap:24px;align-items:center;background:var(--paper-deep);border-color:var(--green)}
+body[data-page="services"].route-mode #services .service--admin .service-top{align-self:stretch}
+body[data-page="services"].route-mode #services .service--admin h3{margin:0}
+body[data-page="services"].route-mode #services .service--admin p{margin:0}
+body[data-page="services"].route-mode #services .service--admin .text-link{white-space:nowrap}
+.admin-panel-section{background:var(--paper);padding:clamp(70px,8vw,120px) 0;border-top:1px solid var(--line);scroll-margin-top:90px}
+.admin-panel-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);align-items:center;gap:clamp(36px,5vw,80px)}
+.admin-panel-copy h2{font:400 clamp(2.8rem,5vw,5.5rem)/1.02 var(--serif);letter-spacing:-.06em;margin:21px 0;max-width:740px}
+.admin-panel-tagline{font-size:clamp(1.15rem,1.8vw,1.55rem);line-height:1.35;color:var(--ink);font-weight:570;margin:20px 0}
+.admin-panel-description{max-width:610px;color:var(--ink-soft);line-height:1.8}
+.admin-panel-context{max-width:610px;color:var(--muted);font-size:.86rem;line-height:1.72}
+.admin-panel-copy .button{display:inline-flex;gap:15px;align-items:center;margin-top:16px}
+.admin-preview{border:1px solid rgba(255,255,255,.17);border-radius:15px;overflow:hidden;background:#29352d;color:#f4f0e9;box-shadow:0 24px 60px rgba(25,35,27,.18)}
+.admin-preview-header{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;border-bottom:1px solid rgba(255,255,255,.2);font-size:.63rem;font-weight:800;letter-spacing:.1em}
+.admin-preview-online{width:10px;height:10px;border-radius:50%;background:#b4d3a8;box-shadow:0 0 0 5px rgba(180,211,168,.1)}
+.admin-preview-content{padding:26px}
+.admin-preview-content h3{font:400 1.95rem var(--serif);margin:0 0 22px}
+.admin-preview-labels,.admin-preview-row{display:grid;grid-template-columns:minmax(0,1fr) 70px 80px;gap:10px;align-items:center}
+.admin-preview-labels{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.22);color:#e4ece1;font-size:.66rem}
+.admin-preview-labels span:first-child{margin-left:40px}
+.admin-preview-rows{display:grid;gap:8px;margin-top:12px}
+.admin-preview-row{border-radius:6px;background:#f5f2eb;color:#253426;padding:13px 12px;grid-template-columns:34px minmax(0,1fr) 55px 66px}
+.admin-preview-row .admin-thumb{background:#dce8d7;border-radius:6px;display:grid;place-items:center;width:30px;height:30px;font-size:.67rem;color:#5c6c58}
+.admin-preview-row strong{font-size:.78rem}.admin-preview-row>span:nth-of-type(2){font-size:.77rem;color:#4f614f}
+.admin-preview-row small{font-size:.65rem;color:#456b43;white-space:nowrap}
+.admin-preview-footer{display:flex;justify-content:space-between;align-items:center;margin-top:20px;font-size:.6rem;color:#d4dbce;letter-spacing:.08em}
+.admin-preview-caption{border-top:1px solid rgba(255,255,255,.2);padding:14px 20px;color:#d0d9cb;font-size:.65rem}
+.admin-features-heading{margin:clamp(60px,7vw,100px) 0 26px}
+.admin-features-heading h3{font:400 clamp(2rem,3.5vw,3.5rem)/1.06 var(--serif);letter-spacing:-.05em;margin:14px 0 0}
+.admin-features-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.admin-feature{padding:29px;border:1px solid var(--line);background:var(--white);border-radius:9px;min-height:190px}
+.admin-feature-index{font-size:.7rem;letter-spacing:.12em;font-weight:800;color:var(--green)}
+.admin-feature h3{font:400 clamp(1.45rem,2.15vw,1.9rem) var(--serif);margin:17px 0 10px}
+.admin-feature p{font-size:.86rem;line-height:1.75;color:var(--ink-soft);max-width:540px;margin:0}
+.admin-investment{margin-top:clamp(60px,6vw,95px);padding:clamp(30px,5vw,55px);border-radius:12px;background:#2d382e;color:#f1efe7;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:50px;scroll-margin-top:88px}
+.admin-investment .eyebrow{color:#cad5bf}
+.admin-investment h3{font:400 clamp(2rem,3.4vw,3.5rem)/1.1 var(--serif);letter-spacing:-.04em;margin:17px 0}
+.admin-investment p{font-size:.88rem;line-height:1.75;color:#dce4d6;max-width:650px}
+.admin-investment-price{font:400 clamp(1.7rem,2.7vw,2.8rem)/1.15 var(--serif);margin:24px 0;color:#fbf7ec}
+.admin-investment .button{display:inline-flex;gap:22px;align-items:center;background:#f2eee5;color:#252b24}
+.admin-modules{border-left:1px solid rgba(255,255,255,.2);padding-left:38px}
+.admin-modules h4{font:400 1.45rem var(--serif);margin:3px 0 14px}
+.admin-modules ul{list-style:none;padding:0;margin:0}.admin-modules li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.18);font-size:.82rem;line-height:1.55;color:#e2e9db}
+.admin-panel-note{color:var(--ink-soft);font-size:.75rem;max-width:960px;line-height:1.75;margin:21px 0 0}
+@media(max-width:1020px){body[data-page="services"].route-mode #services .service--admin{grid-template-columns:1fr;gap:14px}body[data-page="services"].route-mode #services .service--admin .text-link{white-space:normal}.admin-panel-intro{grid-template-columns:1fr}.admin-investment{grid-template-columns:1fr;gap:30px}.admin-modules{border-left:0;border-top:1px solid rgba(255,255,255,.2);padding-left:0;padding-top:22px}}
+@media(max-width:750px){.admin-panel-section{padding:54px 0}.admin-features-grid{grid-template-columns:1fr}.admin-feature{min-height:0}.admin-preview-content{padding:15px}.admin-preview-row{grid-template-columns:30px minmax(0,1fr) 35px 55px;gap:4px;padding:10px 8px}.admin-preview-labels{grid-template-columns:minmax(0,1fr) 35px 55px;gap:5px;padding:10px 7px}.admin-preview-labels span:first-child{margin-left:28px}.admin-preview-row strong{font-size:.7rem}.admin-preview-row small{font-size:.58rem}.admin-investment{padding:25px}.admin-panel-copy h2{font-size:clamp(2.7rem,10vw,4rem)}}
