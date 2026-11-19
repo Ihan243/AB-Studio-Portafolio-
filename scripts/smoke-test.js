@@ -19,6 +19,22 @@ assert.match(js, /case-image\[data-lightbox-src\]/);
 assert.match(effectsJS, /case-image\[data-lightbox-src\]/);
 assert.match(css, /\.case-live-website iframe/);
 
+new Function(js); // Catch syntax errors before deployment.
+assert.match(js, /setLanguage\(savedLang === "es" \? "es" : "en"\)/);
+assert.match(js, /event\.submitter\?\.dataset\.inquiryChannel/);
+assert.match(js, /mailto:sales\.abstudio@gmail\.com\?subject=/);
+assert.match(css, /\.home-inquiry-actions/);
+for (const document of [home, read('public/index.html'), projectsPage, read('public/proyectos/index.html')]) {
+  assert.match(document, /data-inquiry-channel="email"/);
+  assert.match(document, /data-inquiry-channel="whatsapp"/);
+  assert.match(document, /data-preview-project="home-keetchen"/);
+  assert.match(document, /data-preview-project="curiel-basic"/);
+  assert.doesNotMatch(document, /quickpixie21\.chatgpt\.site/);
+  assert.doesNotMatch(document, /<([a-z]+)[^>]*data-copy="work\.[^"]+"[^>]*>\s*<\/\1>/);
+  assert.match(document, /data-copy="work\.patarata\.title">La Patarata · Website</);
+}
+
+
 
 const faqPage = read('public/faq/index.html');
 const faqConfig = JSON.parse(read('vercel.json'));
