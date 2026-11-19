@@ -187,16 +187,16 @@
           <article class="work-card case-card" data-project="la-patarata">
             <a class="case-image case-live-website" href="https://lapatarata.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Open La Patarata website in a new tab">
               <span class="case-live-fallback" aria-hidden="true"><span class="case-live-eyebrow">AB STUDIO · WEB PROJECT</span><strong>La Patarata</strong><small>Live website preview</small></span>
-              <iframe src="https://lapatarata.vercel.app/" loading="lazy" tabindex="-1" aria-hidden="true" title="Vista previa de la página web de La Patarata" referrerpolicy="no-referrer"></iframe>
+              <iframe src="https://lapatarata.vercel.app/" loading="lazy" tabindex="-1" aria-hidden="true" title="La Patarata website preview" referrerpolicy="no-referrer"></iframe>
               <span class="case-live-link" aria-hidden="true">↗</span>
             </a>
             <div class="case-content">
               <div class="case-topline"><small data-copy="work.patarata.type">Website · live preview</small></div>
-              <h3 data-copy="work.patarata.title">La Patarata · Sitio web</h3>
-              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.patarata.need">Presentar La Patarata mediante una experiencia web accesible desde su propia dirección.</p></div>
-              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.patarata.built">Vista previa del sitio publicado con acceso directo a la página.</p></div>
-              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.patarata.outcome">Las personas pueden abrir y explorar el sitio de La Patarata.</p></div>
-              <div class="case-demo-links"><a class="case-demo-link" href="https://lapatarata.vercel.app/" target="_blank" rel="noopener noreferrer" data-copy="work.demo.open">Abrir demo ↗</a></div>
+              <h3 data-copy="work.patarata.title">La Patarata · Website</h3>
+              <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.patarata.need">Give visitors a direct way to discover La Patarata online.</p></div>
+              <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.patarata.built">A preview linked directly to La Patarata's published website.</p></div>
+              <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.patarata.outcome">Visitors can open and explore the live La Patarata website.</p></div>
+              <div class="case-demo-links"><a class="case-demo-link" href="https://lapatarata.vercel.app/" target="_blank" rel="noopener noreferrer" data-copy="work.demo.open">Open demo ↗</a></div>
             </div>
           </article>
           <article class="work-card case-card">
@@ -238,7 +238,7 @@
               <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.curiel.need"></p></div>
               <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.curiel.built"></p></div>
               <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.curiel.outcome"></p></div>
-              <div class="case-demo-links"><a class="case-demo-link" href="https://refaccionaria-curiel-valles.quickpixie21.chatgpt.site/" target="_blank" rel="noopener noreferrer" data-copy="work.demo.basic"></a><a class="case-demo-link" href="https://cotiza-curiel--3fv9p1n9.preview.emergentagent.com/?utm_source=share" target="_blank" rel="noopener noreferrer" data-copy="work.demo.premium"></a></div>
+              <div class="case-demo-links"><button class="case-demo-link" type="button" data-preview-project="curiel-basic" data-copy="work.demo.basicPreview">Basic — screenshot ↗</button><a class="case-demo-link" href="https://cotiza-curiel--3fv9p1n9.preview.emergentagent.com/?utm_source=share" target="_blank" rel="noopener noreferrer" data-copy="work.demo.premium"></a></div>
             </div>
           </article>
           <article class="work-card case-card">
@@ -252,7 +252,7 @@
               <div class="case-detail"><b data-copy="work.label.need"></b><p data-copy="work.keetchen.need"></p></div>
               <div class="case-detail"><b data-copy="work.label.built"></b><p data-copy="work.keetchen.built"></p></div>
               <div class="case-detail case-outcome"><b data-copy="work.label.outcome"></b><p data-copy="work.keetchen.outcome"></p></div>
-              <div class="case-demo-links"><a class="case-demo-link" href="https://home-keetchen.quickpixie21.chatgpt.site/" target="_blank" rel="noopener noreferrer" data-copy="work.demo.open"></a></div>
+              <div class="case-demo-links"><button class="case-demo-link" type="button" data-preview-project="home-keetchen" data-copy="work.demo.preview">View project screenshot ↗</button></div>
             </div>
           </article>
           <article class="work-card case-card">
@@ -503,8 +503,11 @@
                 <option value="other" data-copy="inquiry.optionOther">Something else</option>
               </select>
             </div>
-            <button class="button" type="submit"><span data-copy="homeInquiry.send">Continue in WhatsApp</span><span class="arrow">↗</span></button>
-            <small class="home-inquiry-note" data-copy="homeInquiry.note">This opens WhatsApp with a prepared message; nothing is sent until you choose to send it there.</small>
+            <div class="home-inquiry-actions">
+              <button class="button" type="submit" data-inquiry-channel="whatsapp"><span data-copy="homeInquiry.send">Continue in WhatsApp</span><span class="arrow">↗</span></button>
+              <button class="button outline" type="submit" data-inquiry-channel="email"><span data-copy="homeInquiry.sendEmail">Continue by email</span><span class="arrow">↗</span></button>
+            </div>
+            <small class="home-inquiry-note" data-copy="homeInquiry.note">Choose WhatsApp or email to open a prefilled draft. You decide when to send it.</small>
           </form>
           <aside class="home-inquiry-aside">
             <p data-copy="homeInquiry.emailIntro">Prefer email? Send us a note and tell us what kind of site you have in mind.</p>
