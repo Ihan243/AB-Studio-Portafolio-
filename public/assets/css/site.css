@@ -1473,3 +1473,25 @@ body[data-page="services"].route-mode #services .services-grid{grid-template-col
 .crm-questions p{font-size:.85rem;line-height:1.7;color:var(--ink-soft)}
 @media(max-width:950px){.crm-hero,.crm-questions{grid-template-columns:1fr;gap:30px}.crm-preview{transform:none}.crm-pricing-heading{display:block}.crm-pricing-grid{grid-template-columns:1fr}.crm-plan{min-height:0}.crm-plan-desc{min-height:0}.crm-benefits{grid-template-columns:1fr}}
 @media(max-width:760px){body[data-page="services"].route-mode #services .services-grid{grid-template-columns:1fr}.crm-section,.crm-pricing{padding:56px 0}.crm-preview-main{padding:18px}.crm-preview-bar{padding:12px;font-size:.52rem}.crm-preview-metrics span{font-size:.62rem;padding:10px 5px}.crm-preview-rows>div{gap:8px}.crm-plan{padding:24px}.crm-benefits-heading{margin-top:55px}.crm-questions{margin-top:42px;padding-top:30px}}
+
+/* CRM setup + monthly support breakdown (2026-11-19) */
+.crm-plan-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:24px}
+.crm-popular{border:1px solid var(--green);border-radius:99px;color:var(--green);font-size:.56rem;font-weight:850;letter-spacing:.08em;padding:5px 8px;white-space:nowrap}
+.crm-plan-kind{font-size:.78rem;font-weight:750;color:var(--green);margin-bottom:12px}
+.crm-plan-ideal{font-size:.76rem;line-height:1.67;color:var(--ink-soft);min-height:82px;margin:7px 0 19px}
+.crm-plan-ideal strong{color:var(--ink)}
+.crm-fees{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:20px}
+.crm-fee{display:flex;flex-direction:column;gap:5px;padding:17px 16px;border:1px solid var(--line);border-radius:7px;background:var(--paper)}
+.crm-fee--monthly{background:#e8ece2;border-color:rgba(89,99,81,.28)}
+.crm-fee>small{font-size:.6rem;font-weight:800;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.crm-fee>strong{display:block;font-weight:800;letter-spacing:-.04em;font-size:clamp(1.65rem,2.25vw,2.1rem);line-height:1.16;color:var(--ink)}
+.crm-fee>strong span{font-size:.66rem;font-weight:550;letter-spacing:0;color:var(--ink-soft)}
+.crm-fee em{font-size:.67rem;color:var(--ink-soft);font-style:normal}
+.crm-plan .crm-plan-desc{min-height:58px}
+.crm-plan ul{margin-bottom:22px}
+.crm-pricing-grid>.crm-plan{min-height:665px}
+body.theme-dark .crm-fee{background:#2f342d;border-color:#596351}
+body.theme-dark .crm-fee--monthly{background:#373f33}
+body.theme-dark .crm-fee>small,body.theme-dark .crm-fee>strong,body.theme-dark .crm-fee>strong span,body.theme-dark .crm-fee em{color:#f1efe8}
+@media(max-width:950px){.crm-pricing-grid>.crm-plan{min-height:0}.crm-plan-ideal,.crm-plan .crm-plan-desc{min-height:0}}
+@media(max-width:760px){.crm-plan-heading{flex-wrap:wrap}.crm-fee>strong{font-size:1.9rem}}
