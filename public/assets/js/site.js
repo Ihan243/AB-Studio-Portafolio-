@@ -410,8 +410,8 @@ const copy = {
       document.body.classList.toggle('home-mode', isHome);
       routePage.innerHTML = '';
       document.querySelectorAll('#services .service').forEach(card => card.hidden = false);
-      if (path === '/sitios-web/') routePage.innerHTML = websitePageMarkup(currentLang);
       if (path === '/servicios/' || path === '/sistemas/') routePage.innerHTML = crmPanelMarkup(currentLang);
+      if (path === '/sitios-web/') routePage.innerHTML = websitePageMarkup(currentLang);
       else if (path === '/empresa/') {
         document.getElementById('company').style.display = 'block';
         document.getElementById('about').style.display = 'block';
