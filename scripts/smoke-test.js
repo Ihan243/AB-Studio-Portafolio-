@@ -340,4 +340,48 @@ for (const slug of ['business-management','crm']) {
 assert.match(js,/href="\/crm\/#crm-plans"/);
 assert.ok(!js.includes('bmServiceSpotlightMarkup(currentLang) + servicesChooserMarkup(currentLang)'));
 
+/* Regression coverage for the 2026-11 UX/SEO/accessibility review. */
+for (const slug of ['business-management','crm']) {
+  const source=read(slug+'/index.html'),output=read('public/'+slug+'/index.html');
+  assert.equal(output,source);
+  for (const channel of ['email','whatsapp']) assert.ok(source.includes('data-inquiry-channel="'+channel+'"'),slug+' must support '+channel);
+  assert.match(source,/<noscript>/);
+  assert.match(source,/id="homeInquiryForm"/);
+}
+assert.match(js,/function updateServiceInquiryContext\(\)/);
+assert.match(js,/service-form-enabled/);
+assert.match(js,/contact\.style\.display = 'none'/);
+assert.match(js,/CRM inquiry/);
+assert.match(js,/Business Management inquiry/);
+assert.match(js,/twitterTitle/);
+assert.match(js,/twitterDescription/);
+assert.match(js,/aria-current/);
+assert.match(css,/service-form-enabled\[data-page="crm"\]/);
+assert.match(css,/service-form-enabled\[data-page="management"\]/);
+for (const lang of ['en','es']) {
+  const managementEstimate=quoteTools.quoteMarkup(lang,'services');
+  const regularEstimate=quoteTools.quoteMarkup(lang,'test');
+  assert.match(managementEstimate,/href="\/crm\/"/);
+  assert.match(managementEstimate,/data-q-crm id="quote-crm-services" hidden/);
+  assert.match(managementEstimate,/data-q-admin checked/);
+  assert.match(regularEstimate,/<option value="enterprise">/);
+}
+for (const file of ['index.html','public/index.html','proyectos/index.html','public/proyectos/index.html']) {
+  const page=read(file);
+  assert.ok((page.match(/data-preview-project="screenshot"/g)||[]).length>=2,'Missing safe screenshot CTAs: '+file);
+  assert.ok((page.match(/data-copy="work.demo.external"/g)||[]).length>=2,'External demos not labeled: '+file);
+}
+assert.match(js,/"work\.demo\.external":"Open external demo/);
+assert.match(js,/"work\.demo\.external":"Abrir demo externa/);
+
+/* Public and source pages should never send visitors to login-only ChatGPT previews. */
+for (const prefix of ['', 'public/']) {
+  for (const name of ['servicios','sitios-web','sistemas','seo','automatizacion','empresa','blog','faq']) {
+    const page=read(prefix+name+'/index.html');
+    assert.doesNotMatch(page,/quickpixie21\.chatgpt\.site/,'Private preview leaked into '+prefix+name);
+    assert.ok(page.includes('href="/assets/portfolio/home-keetchen.jpg"'));
+    assert.ok(page.includes('href="/assets/portfolio/refaccionaria-curiel.jpg"'));
+  }
+}
+
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');

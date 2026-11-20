@@ -65,10 +65,10 @@ const copy = {
         "services.autoTitle":"Practical automation","services.autoBody":"Connect repetitive steps across forms, messages and business tools, with a human in control where it matters.","services.autoLink":"Talk through an idea",
         "work.kicker":"Selected projects",
         "work.title":"Seven web demos.<br><em>Made for different needs.</em>",
-        "work.note":"The links below open portfolio demos for review. They are reference versions, not the clients’ official live websites.",
+        "work.note":"Explore the project screenshots first. External interactive demos are optional previews and may have limited availability.",
         "work.type.web":"Reference demo · not official","work.type.system":"Reservation system · demo","work.type.concept":"Reference demo · not official","work.type.curiel":"Two demos · Basic + Premium",
         "work.label.need":"The need","work.label.built":"What we made","work.label.outcome":"What the demo shows",
-        "work.demo.open":"Open demo ↗","work.demo.reservations":"View reservation demo ↗","work.demo.basic":"Basic version ↗","work.demo.premium":"Premium version ↗","work.demo.preview":"View project screenshot ↗","work.demo.basicPreview":"Basic — screenshot ↗",
+        "work.demo.open":"Open demo ↗","work.demo.reservations":"View reservation demo ↗","work.demo.basic":"Basic version ↗","work.demo.premium":"Premium version ↗","work.demo.preview":"View project screenshot ↗","work.demo.basicPreview":"Basic — screenshot ↗","work.demo.external":"Open external demo ↗",
         "work.patarata.type":"Website · live preview",
         "work.patarata.title":"La Patarata · Website",
         "work.patarata.need":"Give visitors a direct way to discover La Patarata online.",
@@ -185,10 +185,10 @@ const copy = {
         "services.autoTitle":"Automatización práctica","services.autoBody":"Conectamos pasos repetitivos entre formularios, mensajes y herramientas, con supervisión humana donde importa.","services.autoLink":"Conversar sobre una idea",
         "work.kicker":"Proyectos seleccionados",
         "work.title":"Siete demos web.<br><em>Para necesidades distintas.</em>",
-        "work.note":"Los enlaces abren demos del portafolio para que las revisés. Son referencias, no los sitios oficiales publicados de los clientes.",
+        "work.note":"Primero revisa las capturas de los proyectos. Las demos interactivas externas son opcionales y pueden tener disponibilidad limitada.",
         "work.type.web":"Demo de referencia · no oficial","work.type.system":"Demo de sistema de reservas","work.type.concept":"Demo de referencia · no oficial","work.type.curiel":"Dos demos · Básica + Premium",
         "work.label.need":"La necesidad","work.label.built":"Qué construimos","work.label.outcome":"Qué muestra la demo",
-        "work.demo.open":"Abrir demo ↗","work.demo.reservations":"Ver demo de reservas ↗","work.demo.basic":"Versión básica ↗","work.demo.premium":"Versión premium ↗","work.demo.preview":"Ver captura del proyecto ↗","work.demo.basicPreview":"Básico — captura ↗",
+        "work.demo.open":"Abrir demo ↗","work.demo.reservations":"Ver demo de reservas ↗","work.demo.basic":"Versión básica ↗","work.demo.premium":"Versión premium ↗","work.demo.preview":"Ver captura del proyecto ↗","work.demo.basicPreview":"Básico — captura ↗","work.demo.external":"Abrir demo externa ↗",
         "work.patarata.type":"Sitio web · vista en vivo",
         "work.patarata.title":"La Patarata · Sitio web",
         "work.patarata.need":"Facilitar que las personas descubran La Patarata en internet.",
@@ -391,7 +391,7 @@ const copy = {
  const s=bmServiceHero[lang]||bmServiceHero.en;
  const chips=s.modules.map((x,i)=>`<div class="bm-route-module"><span>0${i+1}</span><strong>${x}</strong><span aria-hidden="true">↗</span></div>`).join("");
  return `<section class="bm-service-lead" aria-labelledby="bm-service-lead-title"><div class="wrap bm-service-lead-grid">
- <div class="bm-service-lead-copy"><div class="bm-service-lead-tag"><span class="bm-service-lead-dot" aria-hidden="true"></span>${s.kicker}</div><h1 id="bm-service-lead-title">${s.title}</h1><p class="bm-service-lead-intro">${s.body}</p><div class="bm-service-lead-actions"><a class="button" href="#admin-panel">${s.primary}<span aria-hidden="true">↗</span></a><a class="bm-service-lead-link" href="#quote-builder-services">${s.secondary}<span aria-hidden="true">↗</span></a></div><p class="bm-service-lead-note">${s.addon}</p></div>
+ <div class="bm-service-lead-copy"><div class="bm-service-lead-tag"><span class="bm-service-lead-dot" aria-hidden="true"></span>${s.kicker}</div><h2 id="bm-service-lead-title">${s.title}</h2><p class="bm-service-lead-intro">${s.body}</p><div class="bm-service-lead-actions"><a class="button" href="#admin-panel">${s.primary}<span aria-hidden="true">↗</span></a><a class="bm-service-lead-link" href="#quote-builder-services">${s.secondary}<span aria-hidden="true">↗</span></a></div><p class="bm-service-lead-note">${s.addon}</p></div>
  <div class="bm-service-lead-visual" aria-label="${s.demo}"><div class="bm-service-lead-mini-label"><span>AB STUDIO / MANAGEMENT</span><span class="bm-service-lead-mini-mark">▦</span></div><h2>${s.core}</h2><div class="bm-service-lead-flow"><span>${lang==="es"?"PÁGINA WEB":"WEBSITE"}</span><span aria-hidden="true">⇄</span><span>${lang==="es"?"PANEL PRIVADO":"PRIVATE DASHBOARD"}</span></div><div class="bm-service-lead-module-tag">${s.moduleTitle}</div><div class="bm-service-lead-modules">${chips}</div><p class="bm-service-lead-demo">${s.demo}</p></div>
  </div></section>`;
 }
@@ -407,20 +407,24 @@ const copy = {
  const desc=es?["Una presencia digital profesional y clara.","Más contenido y formularios para clientes.","Diseño distintivo y funciones interactivas."]:["A focused, professional online presence.","More content and ways to connect.","Distinctive design and interactive sections."];
  const plans=[["basic",d.basic,"$1,100"],["professional",d.professional,"$1,500"],["premium",d.premium,"$2,500"]].map(([id,name,price],i)=>`<label class="quote-plan quote-plan--${id}"><input type="radio" name="quote-${scope}" data-q-plan value="${id}" ${id==="professional"?"checked":""}><span class="quote-plan-card"><span class="quote-plan-top"><small>0${i+1} / WEB</small>${id==="professional"?`<small class="quote-plan-popular">${es?"MÁS ELEGIDO":"POPULAR"}</small>`:""}</span><strong class="quote-plan-name">${name}</strong><span class="quote-plan-description">${desc[i]}</span><span class="quote-plan-cost"><b>${price}</b><small>USD · ${es?"desde":"starting at"}</small></span><span class="quote-radio-decoration" aria-hidden="true"></span></span></label>`).join("");
  const modules=d.modules.map(([id,text])=>`<label class="quote-module"><input type="checkbox" data-q-module value="${id}"><span>${text}</span></label>`).join("");
+ const managementQuote=scope==="services";
+ const crmChooserMarkup=managementQuote
+   ? `<div class="quote-crm-choice"><div class="quote-crm-eyebrow">${es?"SERVICIO INDEPENDIENTE":"SEPARATE SERVICE"}</div><p class="quote-help">${es?"El CRM tiene su propia página, funciones y precios. Puedes contratarlo por separado.":"CRM has its own page, features and pricing. You can request it separately."}</p><a class="text-link" href="/crm/">${es?"Explorar los planes CRM":"Explore CRM plans"} <span aria-hidden="true">↗</span></a><select data-q-crm id="quote-crm-${scope}" hidden><option value="none">${d.crmNone}</option></select></div>`
+   : `<div class="quote-crm-choice"><div class="quote-crm-eyebrow">${es?"SEGUIMIENTO COMERCIAL":"CUSTOMER FOLLOW-UP"}</div><label class="quote-label" for="quote-crm-${scope}">${d.crm}</label><p class="quote-help">${d.crmHint}</p><select data-q-crm id="quote-crm-${scope}"><option value="none">${d.crmNone}</option><option value="starter">${d.starter}</option><option value="growth">${d.growth}</option><option value="enterprise">${d.enterprise}</option></select></div>`;
  return `<section class="quote-section" id="quote-builder-${scope}" aria-labelledby="quote-title-${scope}"><div class="wrap">
-   <div class="quote-heading"><div class="eyebrow">${d.tag}</div><h2 id="quote-title-${scope}">${d.title}</h2><p>${d.intro}</p></div>
+   <div class="quote-heading"><div class="eyebrow">${managementQuote?(es?"WEB + BUSINESS MANAGEMENT":"WEBSITE + BUSINESS MANAGEMENT"):d.tag}</div><h2 id="quote-title-${scope}">${managementQuote?(es?"Estima tu proyecto web con panel administrativo.":"Estimate a website with your management dashboard."):d.title}</h2><p>${managementQuote?(es?"Esta calculadora incluye una nueva web. Si ya tienes una, solicita una cotización solo para el panel en el formulario inferior.":"This calculator includes a new website. If you already have one, request a dashboard-only quote using the contact form below."):d.intro}</p></div>
    <div class="quote-layout" data-quote-root data-quote-lang="${lang}"><div class="quote-inputs">
     <div class="quote-step"><div class="quote-step-heading"><span class="quote-step-index">01</span><div><h3>${t(d.web)}</h3><p>${es?"Elige cualquier plan. Podrás añadir el panel administrativo como complemento.":"Choose any plan. A management dashboard can be added to all three."}</p></div></div><fieldset class="quote-fieldset"><legend class="quote-visually-hidden">${d.web}</legend><div class="quote-plan-grid">${plans}</div></fieldset></div>
     <div class="quote-step"><div class="quote-step-heading"><span class="quote-step-index">02</span><div><h3>${t(d.extra)}</h3><p>${es?"Añade solo las herramientas que tu negocio necesita.":"Add only the tools your business actually needs."}</p></div></div><fieldset class="quote-fieldset"><legend class="quote-visually-hidden">${d.extra}</legend>
-      <div class="quote-extra-list"><label class="quote-toggle"><input type="checkbox" data-q-admin><span class="quote-toggle-copy"><strong>${d.admin}</strong><small>${d.adminHint}</small></span><small class="quote-extra-label">${es?"COTIZAR APARTE":"CUSTOM QUOTE"}</small></label>
-      <div class="quote-modules" data-q-modules hidden><p>${d.modTitle}</p><div class="quote-module-grid">${modules}</div></div>
+      <div class="quote-extra-list"><label class="quote-toggle"><input type="checkbox" data-q-admin ${managementQuote?"checked":""}><span class="quote-toggle-copy"><strong>${d.admin}</strong><small>${d.adminHint}</small></span><small class="quote-extra-label">${es?"COTIZAR APARTE":"CUSTOM QUOTE"}</small></label>
+      <div class="quote-modules" data-q-modules ${managementQuote?"":"hidden"}><p>${d.modTitle}</p><div class="quote-module-grid">${modules}</div></div>
       <label class="quote-toggle"><input type="checkbox" data-q-seo><span class="quote-toggle-copy"><strong>${d.seo}</strong><small>${d.seoHint}</small></span><small class="quote-extra-label">${es?"$200 + $30/MES":"$200 + $30/MO"}</small></label></div>
-      <div class="quote-crm-choice"><div class="quote-crm-eyebrow">${es?"SEGUIMIENTO COMERCIAL":"CUSTOMER FOLLOW-UP"}</div><label class="quote-label" for="quote-crm-${scope}">${d.crm}</label><p class="quote-help">${d.crmHint}</p><select data-q-crm id="quote-crm-${scope}"><option value="none">${d.crmNone}</option><option value="starter">${d.starter}</option><option value="growth">${d.growth}</option><option value="enterprise">${d.enterprise}</option></select></div>
+      ${crmChooserMarkup}
      </fieldset></div>
     <div class="quote-step"><div class="quote-step-heading"><span class="quote-step-index">03</span><div><h3>${t(d.details)}</h3><p>${es?"Un poco de información nos ayuda a cotizar tu proyecto.":"A few details help us quote your project accurately."}</p></div></div><div class="quote-details"><label class="quote-label" for="quote-name-${scope}">${d.name}</label><input id="quote-name-${scope}" type="text" data-q-name maxlength="100" placeholder="${d.namePH}"><label class="quote-label" for="quote-notes-${scope}">${d.notes}</label><textarea id="quote-notes-${scope}" data-q-notes maxlength="1200" rows="4" placeholder="${d.notesPH}"></textarea></div></div>
    </div><aside class="quote-result" aria-label="${d.summary}"><div class="quote-result-top"><span class="quote-result-mark" aria-hidden="true">AB.</span><div class="eyebrow">AB STUDIO / USD</div><h3>${d.summary}</h3><p>${es?"Tu selección, resumida con claridad.":"Your selections, clearly summarized."}</p></div>
     <div class="quote-totals" aria-live="polite" aria-atomic="true"><div><span>${d.initial}</span><strong data-q-initial>$1,500</strong></div><div><span>${d.monthly}</span><strong data-q-monthly>$0 / ${es?"mes":"mo"}</strong></div><div class="quote-custom"><b>${d.custom}</b><p data-q-custom>${d.none}</p></div></div>
-    <div class="quote-result-footer"><span class="quote-estimate-label">${es?"ESTIMADO · NO ES UNA COTIZACIÓN FINAL":"ESTIMATE · NOT A FINAL QUOTE"}</span><p class="quote-exclusions">${d.exclude}</p><a class="button" data-q-email href="mailto:sales.abstudio@gmail.com">${d.email} <span aria-hidden="true">↗</span></a><a class="button outline" data-q-wa target="_blank" rel="noopener noreferrer" href="https://wa.me/15513129791">${d.wa} <span aria-hidden="true">↗</span></a><small class="quote-send-note">${d.disclose}</small></div></aside>
+    <div class="quote-result-footer"><span class="quote-estimate-label">${es?"ESTIMADO · NO ES UNA COTIZACIÓN FINAL":"ESTIMATE · NOT A FINAL QUOTE"}</span><p class="quote-exclusions">${managementQuote?(es?"El total mostrado cubre solo la web y los extras con precio publicado. Los módulos Business Management se cotizan por separado; dominio, hosting y servicios externos también.":"The displayed total includes the website and published-price extras only. Business Management modules, hosting, domains and third-party costs are quoted separately."):d.exclude}</p><a class="button" data-q-email href="mailto:sales.abstudio@gmail.com">${d.email} <span aria-hidden="true">↗</span></a><a class="button outline" data-q-wa target="_blank" rel="noopener noreferrer" href="https://wa.me/15513129791">${d.wa} <span aria-hidden="true">↗</span></a><small class="quote-send-note">${d.disclose}</small></div></aside>
    </div></div></section>`;
 }
     function quoteUpdate(root){
@@ -556,6 +560,7 @@ const copy = {
       const isHome = path === '/';
       document.body.classList.toggle('route-mode', !isHome);
       document.body.classList.toggle('home-mode', isHome);
+      document.body.classList.toggle('service-form-enabled', path === '/business-management/' || path === '/crm/');
       // Preserve the estimate while switching between English and Spanish.
       const savedQuotes=[...document.querySelectorAll("[data-quote-root]")].map(root=>({
         id:root.closest(".quote-section")?.id,
@@ -629,12 +634,27 @@ const copy = {
       if (ogTitleTag) ogTitleTag.content = document.title;
       const ogDescriptionTag = document.querySelector('meta[property="og:description"]');
       if (ogDescriptionTag) ogDescriptionTag.content = metaDescriptions[path] || metaDescriptions['/'];
+      const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+      const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+      if (twitterTitle) twitterTitle.content = document.title;
+      if (twitterDescription) twitterDescription.content = metaDescriptions[path] || metaDescriptions['/'];
+      // Mark the active destination for keyboard and screen-reader navigation.
+      document.querySelectorAll('.nav-menu a').forEach(link=>{
+        if (new URL(link.href, location.href).pathname === path) link.setAttribute('aria-current','page');
+        else link.removeAttribute('aria-current');
+      });
       const contact = document.getElementById('contact');
       if (!isHome && path !== '/sitios-web/' && path !== '/sistemas/' && path !== '/automatizacion/') {
         const section = document.getElementById(targetId)?.closest('section') || document.getElementById(targetId);
         if (section) section.style.display = 'block';
       }
       if (!isHome) contact.style.display = 'block';
+      // Dedicated service pages use a real bilingual contact form, rather than a generic contact-only block.
+      if (path === '/business-management/' || path === '/crm/') {
+        contact.style.display = 'none';
+        const serviceInquiry = document.getElementById('home-inquiry');
+        if (serviceInquiry) serviceInquiry.style.display = 'block';
+      }
       document.querySelectorAll("[data-quote-root]").forEach(root=>{
         const saved=savedQuotes.find(x=>x.id===root.closest(".quote-section")?.id);
         if(saved){
@@ -813,13 +833,48 @@ const copy = {
     crmOption.textContent=currentLang==="es"?"CRM / Seguimiento de clientes":"CRM / Customer follow-up";
     inquiryType.add(managementOption);
     inquiryType.add(crmOption);
+    // Adapt the inquiry to the service instead of showing generic website-only questions.
+    function updateServiceInquiryContext() {
+      const page = document.body.dataset.page;
+      if (page !== 'management' && page !== 'crm') return;
+      const es = currentLang === 'es';
+      const content = {
+        management: {
+          en: ['Tell us what you need to manage.', 'Describe how your business handles products, orders, inventory or daily operations. We will help scope the modules.', 'What would you like to manage?', 'Example: I have a florist and need to update product prices and keep track of orders.'],
+          es: ['Cuéntanos qué necesitas administrar.', 'Describe cómo manejas productos, pedidos, inventario u operaciones. Te ayudaremos a definir los módulos necesarios.', '¿Qué necesitas administrar?', 'Ejemplo: Tengo una florería y quiero actualizar precios y organizar pedidos.']
+        },
+        crm: {
+          en: ['Tell us about your customer workflow.', 'Explain how you receive leads and follow up on inquiries. We can recommend a CRM plan based on your process.', 'What would you like your CRM to solve?', 'Example: I receive inquiries from my website and need to track each lead and follow-up.'],
+          es: ['Cuéntanos cómo gestionas a tus clientes.', 'Explica cómo recibes consultas y haces seguimiento. Podemos recomendarte un plan CRM según tu proceso.', '¿Qué quieres resolver con el CRM?', 'Ejemplo: Recibo consultas desde mi web y quiero organizar los contactos y seguimientos.']
+        }
+      }[page][currentLang];
+      const keys = ['title', 'intro', 'label'];
+      for (let i=0;i<keys.length;i++) {
+        const field = document.querySelector('[data-copy="homeInquiry.'+keys[i]+'"]');
+        if (field) field.textContent = content[i];
+      }
+      homeInquiryMessage.placeholder = content[3];
+      const asideText = document.querySelector('.home-inquiry-aside [data-copy="homeInquiry.emailIntro"]');
+      if (asideText) asideText.textContent = es
+        ? 'También puedes escribirnos por correo o solicitar una consulta para este servicio.'
+        : 'You can also email us or book a consultation about this service.';
+      if (!inquiryType.value) inquiryType.value = page;
+      if (page === 'management' && !inquiryAdmin.dataset.initialized) {
+        inquiryAdmin.checked = true;
+        inquiryModules.hidden = false;
+        inquiryAdmin.dataset.initialized = 'true';
+      }
+    }
     const localizeSpecialOptions = () => {
       managementOption.textContent=currentLang==="es"?"Panel Business Management":"Business Management dashboard";
       crmOption.textContent=currentLang==="es"?"CRM / Seguimiento de clientes":"CRM / Customer follow-up";
+      updateServiceInquiryContext();
     };
+    updateServiceInquiryContext();
     function jumpToInquiry(event) {
       const isHome = document.body.classList.contains('home-mode');
-      const target = document.getElementById(isHome ? 'home-inquiry' : 'contact');
+      const isServiceInquiry = ['management','crm'].includes(document.body.dataset.page);
+      const target = document.getElementById(isHome || isServiceInquiry ? 'home-inquiry' : 'contact');
       if (!target) return;
       event.preventDefault();
       const service = event.currentTarget.dataset.inquiryService;
@@ -832,12 +887,17 @@ const copy = {
         homeInquiryMessage.value = currentLang === 'es' ? `Me interesa el plan ${plan}. Mi negocio es: ` : `I am interested in the ${plan} plan. My business is: `;
       }
       target.scrollIntoView({behavior:'smooth',block:'start'});
-      if (isHome) homeInquiryMessage.focus({preventScroll:true});
+      if (isHome || isServiceInquiry) homeInquiryMessage.focus({preventScroll:true});
     }
     document.querySelectorAll('a[href="#contact"],a[data-inquiry-service],a[data-inquiry-plan]').forEach(link => link.addEventListener('click', jumpToInquiry));
     homeInquiryForm.addEventListener('submit', event => {
       event.preventDefault();
-      const opening = currentLang === 'es' ? 'Hola AB Studio, quiero conversar sobre un proyecto web:' : 'Hi AB Studio, I would like to discuss a website project:';
+      const page = document.body.dataset.page;
+      const opening = page === 'crm'
+        ? (currentLang === 'es' ? 'Hola AB Studio, quiero información sobre su CRM:' : 'Hi AB Studio, I would like to discuss your CRM service:')
+        : page === 'management'
+        ? (currentLang === 'es' ? 'Hola AB Studio, quiero información sobre Business Management:' : 'Hi AB Studio, I would like to discuss Business Management:')
+        : (currentLang === 'es' ? 'Hola AB Studio, quiero conversar sobre un proyecto web:' : 'Hi AB Studio, I would like to discuss a website project:');
       const service = inquiryLabels[inquiryType.value]?.[currentLang];
       const description = homeInquiryMessage.value.trim();
       if (!description) { homeInquiryMessage.focus(); return; }
@@ -847,14 +907,16 @@ const copy = {
         opening,
         service ? `${currentLang === 'es' ? 'Servicio' : 'Service'}: ${service}` : '',
         selectedPlan ? `${currentLang === 'es' ? 'Plan web' : 'Website plan'}: ${selectedPlan}` : '',
-        `${currentLang === 'es' ? 'Panel administrativo opcional' : 'Optional management dashboard'}: ${inquiryAdmin.checked ? (currentLang === 'es' ? 'Sí, cotizar por separado' : 'Yes, quote separately') : (currentLang === 'es' ? 'No' : 'No')}`,
-        inquiryAdmin.checked && modulesSelected.length ? `${currentLang === 'es' ? 'Módulos deseados' : 'Requested modules'}: ${modulesSelected.join(', ')}` : '',
+        ...(page === 'crm' ? [] : [`${currentLang === 'es' ? 'Panel administrativo opcional' : 'Optional management dashboard'}: ${inquiryAdmin.checked ? (currentLang === 'es' ? 'Sí, cotizar por separado' : 'Yes, quote separately') : (currentLang === 'es' ? 'No' : 'No')}`]),
+        page !== 'crm' && inquiryAdmin.checked && modulesSelected.length ? `${currentLang === 'es' ? 'Módulos deseados' : 'Requested modules'}: ${modulesSelected.join(', ')}` : '',
         description
       ];
       const message = lineItems.filter(Boolean).join('\n\n');
       const channel = event.submitter?.dataset.inquiryChannel === 'email' ? 'email' : 'whatsapp';
       if (channel === 'email') {
-        const subject = currentLang === 'es' ? 'Solicitud de proyecto web — AB Studio' : 'Website project inquiry — AB Studio';
+        const subject = page === 'crm' ? (currentLang === 'es' ? 'Consulta sobre CRM — AB Studio' : 'CRM inquiry — AB Studio')
+          : page === 'management' ? (currentLang === 'es' ? 'Consulta sobre Business Management — AB Studio' : 'Business Management inquiry — AB Studio')
+          : (currentLang === 'es' ? 'Solicitud de proyecto web — AB Studio' : 'Website project inquiry — AB Studio');
         window.location.href = `mailto:sales.abstudio@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
       } else {
         const url = `https://wa.me/15513129791?text=${encodeURIComponent(message)}`;

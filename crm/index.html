@@ -68,7 +68,7 @@
     <section class="subpage-intro" aria-labelledby="subpage-heading"><div class="wrap subpage-intro-inner"><div class="subpage-intro-copy"><div class="eyebrow" data-subpage-field="kicker">CUSTOMER RELATIONSHIPS / CRM</div><h1 id="subpage-heading" class="serif" data-subpage-field="title">Build stronger customer follow-ups.</h1><p class="subpage-copy" data-subpage-field="body">Keep leads, contacts and sales conversations organized with a CRM dedicated to your relationships and next steps.</p><div class="hero-actions"><a class="button" href="#contact"><span data-copy="nav.cta">Request a consultation</span><span class="arrow">↗</span></a><a class="button outline" href="/proyectos/"><span data-copy="work.viewAll">See all projects</span><span class="arrow">↗</span></a></div></div><div class="intro-art intro-art--services intro-art--crm" aria-hidden="true"><div class="intro-art-meta"><span>AB STUDIO / CRM</span><span>✳ DIGITAL TOOLKIT</span></div><div class="intro-service-list"><div><span>01</span><strong>CONTACTS</strong><i>▤</i></div><div><span>02</span><strong>LEADS</strong><i>▦</i></div><div><span>03</span><strong>PIPELINE</strong><i>◫</i></div><div><span>04</span><strong>FOLLOW-UPS</strong><i>↗</i></div></div><div class="intro-art-footer"><span>CREATE WITH PURPOSE</span><span>● ● ●</span></div></div></div></section>
 
 
-    <div id="route-page" aria-live="polite"></div>
+    <div id="route-page" aria-live="polite"><noscript><section class="section"><div class="wrap"><h2>Customer CRM</h2><p>Organize customer contacts, inquiries, sales opportunities and follow-up tasks in a dedicated system. View our three CRM plans and their setup and monthly pricing by enabling JavaScript.</p><p><a class="button" href="mailto:sales.abstudio@gmail.com?subject=CRM%20inquiry">Ask about CRM</a></p></div></section></noscript></div>
     <section class="contact" id="contact">
       <div class="wrap contact-inner">
         <div>
@@ -115,8 +115,11 @@
                 <option value="other" data-copy="inquiry.optionOther">Something else</option>
               </select>
             </div>
-            <button class="button" type="submit"><span data-copy="homeInquiry.send">Continue in WhatsApp</span><span class="arrow">↗</span></button>
-            <small class="home-inquiry-note" data-copy="homeInquiry.note">This opens WhatsApp with a prepared message; nothing is sent until you choose to send it there.</small>
+            <div class="home-inquiry-actions">
+              <button class="button" type="submit" data-inquiry-channel="whatsapp"><span data-copy="homeInquiry.send">Continue in WhatsApp</span><span class="arrow">↗</span></button>
+              <button class="button outline" type="submit" data-inquiry-channel="email"><span data-copy="homeInquiry.sendEmail">Continue by email</span><span class="arrow">↗</span></button>
+            </div>
+            <small class="home-inquiry-note" data-copy="homeInquiry.note">Choose email or WhatsApp to open a prepared message. Nothing is sent automatically.</small>
           </form>
           <aside class="home-inquiry-aside">
             <p data-copy="homeInquiry.emailIntro">Prefer email? Send us a note and tell us what kind of site you have in mind.</p>
