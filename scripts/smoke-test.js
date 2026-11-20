@@ -555,3 +555,6 @@ assert.match(crmAdmin, /Not authorized/);
 assert.match(crmPrivacy, /private CRM/);
 assert.match(js, /fetch\('\/api\/inquiries'/);
 assert.match(read('vercel.json'), /admin\/index.html/);
+
+// New Supabase projects require explicit Data API grants for server inserts.
+assert.match(read('supabase/migrations/20261120_crm_api_grants.sql'), /grant select, insert on table public\.crm_leads to service_role/i);
