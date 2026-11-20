@@ -731,8 +731,11 @@ const copy = {
     const inquiryAdmin = document.getElementById("inquiryAdmin");
     const inquiryModules = document.getElementById("inquiryModules");
     inquiryAdmin.addEventListener("change",()=>{inquiryModules.hidden=!inquiryAdmin.checked;});
-    // New nodes were inserted after the first language pass; translate them immediately.
-    setLanguage(currentLang);
+    // Translate only the newly inserted controls. Do not overwrite page-specific SEO metadata.
+    homeInquiryForm.querySelectorAll(".inquiry-extra-block [data-copy]").forEach(element=>{
+      const value=copy[currentLang]?.[element.dataset.copy];
+      if(typeof value==="string")element.textContent=value;
+    });
     const inquiryType = document.getElementById('inquiryType');
     const inquiryLabels = {
       website: { en: 'Business website', es: 'Página web para negocio' },
