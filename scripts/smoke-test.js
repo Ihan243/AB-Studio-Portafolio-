@@ -242,4 +242,43 @@ assert.match(css,/\.crm-plan-example/);
 assert.match(css,/\.crm-payment-guide/);
 assert.match(css,/max-width:1130px/);
 
+
+/* Featured Business Management priority — homepage, navigation and Services. */
+for(const pagePath of ['public/index.html','index.html']){
+  const page=read(pagePath);
+  assert.match(page,/id="business-management"/);
+  assert.match(page,/id="bm-feature-title"/);
+  assert.match(page,/href="\/servicios\/#admin-panel"/);
+  assert.match(page,/href="\/sitios-web\/#quote-builder-web"/);
+  assert.match(page,/data-copy-html="bmHome\.title"/);
+  assert.match(page,/data-copy="bmHome\.note"/);
+}
+assert.match(js,/overview\.after\(feature\)/);
+assert.match(js,/bmServiceSpotlightMarkup\(currentLang\)/);
+assert.match(css,/\.bm-home-feature-grid/);
+assert.match(css,/\.bm-service-lead-grid/);
+assert.match(css,/\.nav-dropdown \[data-copy="nav\.serviceAdmin"\]/);
+assert.match(css,/max-width:970px/);
+const featuredStart=js.indexOf('const bmServiceHero = ');
+const featuredEnd=js.indexOf('const quoteData = ',featuredStart);
+assert.ok(featuredStart>=0&&featuredEnd>featuredStart,'Featured service code not found');
+const featured=new Function(js.slice(featuredStart,featuredEnd)+';return {bmServiceHero,bmServiceSpotlightMarkup,servicesChooserCopy};')();
+for(const lang of ['en','es']){
+  const content=featured.bmServiceSpotlightMarkup(lang);
+  assert.match(content,/id="bm-service-lead-title"/);
+  assert.match(content,/href="#admin-panel"/);
+  assert.match(content,/href="#quote-builder-services"/);
+  assert.equal((content.match(/class="bm-route-module"/g)||[]).length,3);
+  assert.equal(featured.servicesChooserCopy[lang].cards[0][3],'#admin-panel');
+}
+const servicesRender=js.match(/if \(path === '\/servicios\/'\) routePage\.innerHTML = ([^;]+);/);
+assert.ok(servicesRender,'Services rendering was not found');
+const orderedSections=['bmServiceSpotlightMarkup','servicesChooserMarkup','adminPanelMarkup','quoteMarkup','adminGuideMarkup','crmPanelMarkup'];
+let index=-1;
+for(const component of orderedSections){
+  const pos=servicesRender[1].indexOf(component);
+  assert.ok(pos>index,`Incorrect Services content priority: ${component}`);
+  index=pos;
+}
+
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
