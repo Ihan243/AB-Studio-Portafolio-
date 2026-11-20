@@ -1773,3 +1773,13 @@ body.theme-dark .addon-compare,body.theme-dark .website-addon-home{background:va
 body.theme-dark .bm-workflow-board{background:#f9f6ef;color:#263127}
 @media(max-width:800px){.bm-workflow-progress{flex-direction:column;align-items:stretch}.bm-workflow-actions{grid-template-columns:1fr}.bm-workflow-kpis>div{padding:17px}}
 @media(max-width:500px){.bm-workflow-kpis{gap:8px}.bm-workflow-kpis>div{padding:13px 10px}.bm-workflow-kpis small{font-size:.62rem}.bm-workflow-kpis strong{font-size:2rem}}
+
+
+/* Case study -> transparent quote conversion */
+.portfolio-convert{border-top:1px solid var(--line);padding:clamp(50px,6vw,85px) 0;background:var(--paper-deep)}
+.portfolio-convert>.wrap{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.portfolio-convert .eyebrow{color:var(--green)}
+.portfolio-convert h2{font:400 clamp(2rem,3.5vw,3.5rem)/1.06 var(--serif);letter-spacing:-.045em;margin:16px 0;max-width:800px}
+.portfolio-convert p{font-size:.89rem;line-height:1.72;color:var(--ink-soft);max-width:690px}
+.portfolio-convert .button{flex:none;white-space:nowrap}
+@media(max-width:800px){.portfolio-convert>.wrap{flex-direction:column;align-items:flex-start;gap:20px}.portfolio-convert .button{white-space:normal;max-width:100%}}
