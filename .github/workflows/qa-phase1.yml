@@ -1,0 +1,37 @@
+name: AB Studio — Phase 1 QA
+on:
+  push:
+    branches: [qa/fase-1-auditoria-2026-11-20]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Existing smoke checks
+        run: node scripts/smoke-test.js
+      - name: Phase 1 static QA
+        run: node scripts/qa-phase1.test.js
+
+  browser-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependency
+        run: npm install --no-save --package-lock=false playwright@1.56.1
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Real browser checks, four viewport widths
+        run: node scripts/qa-phase1.browser.test.cjs
