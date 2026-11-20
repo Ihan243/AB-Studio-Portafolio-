@@ -534,3 +534,10 @@ assert.match(js, /I don't need a new website/);
 
 
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
+
+// Phase 1 regression checks: root mirror and key public assets.
+assert.equal(read('index.html'), read('public/index.html'), 'Root and published homepage differ');
+assert.match(read('public/index.html'), /instagram\.com\/abstudio\.builds\//);
+for (const asset of ['public/assets/brand/favicon.png', 'public/assets/brand/08_Aplicacion_Laptop.png', 'public/assets/portfolio/floreria-muniz.webp']) {
+  assert.ok(fs.existsSync(path.join(root, asset)), `Missing production asset: ${asset}`);
+}
