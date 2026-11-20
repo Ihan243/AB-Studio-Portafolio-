@@ -36,3 +36,37 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Real browser checks, four viewport widths
         run: node scripts/qa-phase1.browser.test.cjs
+
+  lighthouse-basics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Lighthouse CLI
+        run: npm install --no-save --package-lock=false lighthouse@13
+      - name: Audit local Home and Pricing with Lighthouse
+        run: |
+          node server.js >/tmp/abstudio-qa-server.log 2>&1 &
+          sleep 3
+          for route in home pricing; do
+            if [ "$route" = home ]; then url="http://127.0.0.1:3000/"; else url="http://127.0.0.1:3000/pricing.html"; fi
+            npx lighthouse "$url" --quiet --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path="/tmp/qa-lighthouse-$route.json"
+          done
+          node - <<'NODE'
+          const fs=require('fs');
+          for(const name of ['home','pricing']){
+            const report=JSON.parse(fs.readFileSync('/tmp/qa-lighthouse-'+name+'.json','utf8'));
+            const scores=Object.fromEntries(Object.entries(report.categories).map(([key,val])=>[key,Math.round(val.score*100)]));
+            console.log('LOCAL LIGHTHOUSE '+name,JSON.stringify(scores));
+            console.log('LOCAL LIGHTHOUSE KEY FINDINGS '+name,JSON.stringify(Object.values(report.audits).filter(a=>a.score!==null&&a.score<0.5&&a.details&&a.details.type!=='opportunity').slice(0,12).map(a=>({id:a.id,title:a.title,score:a.score}))));
+          }
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-phase1-local-lighthouse
+          path: /tmp/qa-lighthouse-*.json
+          if-no-files-found: ignore
