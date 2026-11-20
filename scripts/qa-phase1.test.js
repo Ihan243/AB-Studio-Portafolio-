@@ -94,6 +94,19 @@ for(const opts of [
  const wa=decodeURIComponent(root.fields['[data-q-wa]'].href);
  assert.match(mail,/Demo Co\./);assert.match(wa,/Demo Co\./);
 }
+
+for(const crm of ['starter','growth','enterprise']){
+  const onlyFull=mock({plan:'professional',admin:true,crm,modules:[]});
+  const overlapped=mock({plan:'professional',admin:true,crm,modules:['crm']});
+  runtime.quoteUpdate(onlyFull);
+  runtime.quoteUpdate(overlapped);
+  assert.equal(overlapped.fields['[data-q-initial]'].textContent,onlyFull.fields['[data-q-initial]'].textContent,'Double charged basic follow-up with '+crm);
+  assert.equal(overlapped.fields['[data-q-monthly]'].textContent,onlyFull.fields['[data-q-monthly]'].textContent,'Double charged follow-up monthly with '+crm);
+  assert.doesNotMatch(decodeURIComponent(overlapped.fields['[data-q-email]'].href),/Customer follow-up: /,'Overlapping add-on leaked into quote');
+}
+const invalidCrm=mock({plan:'professional',crm:'__proto__',admin:true,modules:[]});
+runtime.quoteUpdate(invalidCrm);
+assert.doesNotMatch(invalidCrm.fields['[data-q-initial]'].textContent,/NaN|Infinity|undefined/);
 assert.match(js,/location\.pathname === '\/pricing\.html'\s*\?\s*'\/pricing\/'/);
 assert.match(css,/body\.theme-dark/);
 assert.match(css,/#home-inquiry \.inquiry-module-fieldset/);

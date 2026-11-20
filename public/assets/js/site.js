@@ -495,10 +495,16 @@ function quoteMarkup(lang,scope="services"){
  const selected=Object.hasOwn(abPrices.web,requestedPlan)?requestedPlan:"professional";
  const price=abPrices.web[selected] || abPrices.web.professional;
  const admin=root.querySelector("[data-q-admin]").checked,seo=root.querySelector("[data-q-seo]").checked,crm=root.querySelector("[data-q-crm]").value;
- const validCrm = crm in abPrices.crm ? crm : "none";
+ const validCrm = Object.hasOwn(abPrices.crm,crm) ? crm : "none";
  const crmRates = validCrm === "none" ? [0,0,0] : [abPrices.crm[validCrm].min,abPrices.crm[validCrm].max,abPrices.crm[validCrm].monthly];
  const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(n);
- const activeModules=admin?[...root.querySelectorAll("[data-q-module]:checked")].map(input=>({id:input.value,name:d.modules.find(x=>x[0]===input.value)?.[1],rate:bmModuleRates[input.value]})).filter(x=>x.name&&x.rate):[];
+ // A full CRM replaces (and must not double-charge) basic customer follow-up.
+ const basicFollowup=root.querySelector('[data-q-module][value="crm"]');
+ if(basicFollowup){
+   if(validCrm!=="none") basicFollowup.checked=false;
+   basicFollowup.disabled=validCrm!=="none";
+ }
+ const activeModules=admin?[...root.querySelectorAll("[data-q-module]:checked")].map(input=>({id:input.value,name:d.modules.find(x=>x[0]===input.value)?.[1],rate:bmModuleRates[input.value]})).filter(x=>x.name&&x.rate&&!(validCrm!=="none"&&x.id==="crm")):[];
  const moduleSetup=activeModules.reduce((sum,x)=>sum+x.rate.setup,0);
  const moduleMonthly=activeModules.reduce((sum,x)=>sum+x.rate.monthly,0);
  const managementSetup=admin?bmModuleRates.base.setup+moduleSetup:0;
