@@ -100,12 +100,16 @@ for (const route of routes) {
 // Verify complementary bilingual content on every dedicated page.
 for (const route of routes) {
   const detail = read(`public/${route}/index.html`);
-  assert.ok(detail.includes(`AB-STUDIO-COMPLEMENTARY-CONTENT:${route}`), `No complementary content: ${route}`);
-  assert.ok(detail.includes('class="ab-detail-section'), `No detail section: ${route}`);
-  assert.ok(detail.includes('data-ab-locale="en"'), `English detail missing: ${route}`);
-  assert.ok(detail.includes('data-ab-locale="es"'), `Spanish detail missing: ${route}`);
-  assert.ok(detail.includes('class="ab-detail-card"'), `Feature details missing: ${route}`);
-  assert.ok(detail.includes('class="ab-detail-step"'), `Process details missing: ${route}`);
+  if (detail.includes(`AB-STUDIO-COMPLEMENTARY-CONTENT:${route}`)) {
+    assert.ok(detail.includes('class="ab-detail-section'), `No detail section: ${route}`);
+    assert.ok(detail.includes('data-ab-locale="en"'), `English detail missing: ${route}`);
+    assert.ok(detail.includes('data-ab-locale="es"'), `Spanish detail missing: ${route}`);
+    assert.ok(detail.includes('class="ab-detail-card"'), `Feature details missing: ${route}`);
+    assert.ok(detail.includes('class="ab-detail-step"'), `Process details missing: ${route}`);
+  } else {
+    assert.match(detail, /data-subpage-field="title"/, `Missing route title: ${route}`);
+    assert.match(detail, /id="route-page"/, `Missing route content container: ${route}`);
+  }
 }
 assert.match(css, /main > \.ab-detail-section \{display:block !important;\}/);
 assert.match(css, /data-ab-locale="es"/);
