@@ -7,6 +7,10 @@
   "trailingSlash": true,
   "rewrites": [
     {
+      "source": "/admin/",
+      "destination": "/admin/index.html"
+    },
+    {
       "source": "/servicios/",
       "destination": "/servicios/index.html"
     },
