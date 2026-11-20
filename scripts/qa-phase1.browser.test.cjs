@@ -71,8 +71,10 @@ async function main(){
    await page.locator('[data-p-crm]').selectOption('none');
    assert.equal(await page.locator('[data-p-initial]').textContent(),'$0');
    for(const width of [360,390,768,1024]){
-     for(const route of ['/','/pricing.html','/business-management/','/crm/']){
+     for(const route of paths){
        const p=await browser.newPage({viewport:{width,height:820},locale:'en-US',reducedMotion:'reduce'});
+       const viewportErrors=[];
+       p.on('pageerror',err=>viewportErrors.push(String(err)));
        await p.goto(base+route,{waitUntil:'domcontentloaded',timeout:20000});
        const size=await p.evaluate(()=>({viewport:innerWidth,scroll:document.documentElement.scrollWidth}));
        assert.ok(size.scroll <= size.viewport+3,'Horizontal overflow '+route+' at '+width+'px: '+JSON.stringify(size));
@@ -85,11 +87,12 @@ async function main(){
          });
          assert.ok(colors.fg&&colors.bg&&colors.bg!=='rgba(0, 0, 0, 0)','Invisible module background '+width);
        }
+       assert.deepEqual(viewportErrors,[],'JS error at '+width+'px on '+route);
        await p.close();
      }
    }
    assert.deepEqual(exceptions,[],'Unhandled JS errors during local routes');
-   console.log('Phase 1 browser QA PASS: routes, bilingual quote, contact drafts, 404, mobile widths 360/390/768/1024');
+   console.log('Phase 1 browser QA PASS: all 15 routes x 360/390/768/1024 widths, bilingual quote, contact drafts, 400/404');
    await context.close();
  }finally{await browser.close();}
 }
