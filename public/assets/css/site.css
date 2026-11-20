@@ -2264,3 +2264,45 @@ body.theme-dark .ab-pricing-summary{background:#1e3025}
  .ab-pricing-summary-heading,.ab-pricing-totals,.ab-pricing-summary-breakdown,.ab-pricing-summary-actions{padding-inline:21px}
 }
 @media(prefers-reduced-motion:reduce){.ab-pricing-service{transition:none}}
+
+
+/* Dark lead form: accessible Business Management module selector.
+   The parent form is always charcoal, even when the main site uses light mode. */
+#home-inquiry .inquiry-module-fieldset{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+  padding:19px 20px 21px;border:1px solid #6f766b;border-radius:10px;
+  background:#383b35;color:#f4f1e9;min-width:0;
+}
+#home-inquiry .inquiry-module-fieldset[hidden]{display:none!important}
+#home-inquiry .inquiry-module-heading{
+  display:block;grid-column:1 / -1;margin:0 0 3px;padding:0;
+  color:#f4f1e9;font-size:.83rem;font-weight:800;line-height:1.55;
+}
+#home-inquiry .home-inquiry-form .inquiry-module-fieldset label{
+  display:flex;align-items:center;gap:11px;margin:0;padding:11px 12px;
+  background:rgba(255,255,255,.035);border:1px solid rgba(242,238,229,.17);
+  border-radius:7px;color:#f4f1e9;font-size:.79rem;font-weight:650;
+  line-height:1.45;cursor:pointer;min-width:0;
+}
+#home-inquiry .inquiry-module-fieldset label span{
+  display:block;min-width:0;color:#f4f1e9;overflow-wrap:anywhere;
+}
+#home-inquiry .inquiry-module-fieldset label:has(input:checked){
+  background:#465746;border-color:#b8c9af;
+}
+#home-inquiry .inquiry-module-fieldset input[type="checkbox"]{
+  display:block;width:18px;height:18px;min-width:18px;margin:0;
+  accent-color:#b5c8ac;cursor:pointer;
+}
+#home-inquiry .inquiry-module-fieldset label:focus-within{
+  outline:2px solid #d9e8cf;outline-offset:2px;
+}
+/* The management page is already a dashboard inquiry: avoid asking to add it twice. */
+body[data-page="management"] #home-inquiry .inquiry-addon-check{display:none!important}
+body[data-page="management"] #home-inquiry .inquiry-extra-block{
+  gap:14px;
+}
+@media(max-width:660px){
+  #home-inquiry .inquiry-module-fieldset{grid-template-columns:1fr;padding:16px}
+  #home-inquiry .home-inquiry-form .inquiry-module-fieldset label{min-height:44px}
+}

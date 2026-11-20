@@ -516,4 +516,21 @@ assert.match(js,/pricingUpdate/);
 assert.match(js,/savedPricing/);
 assert.match(js,/syncPublishedPrices/);
 
+/* Business Management inquiry: labels stay readable in a dark form,
+   and the optional module heading never overlaps the card border. */
+assert.match(js, /<div class="inquiry-module-fieldset" id="inquiryModules" role="group" aria-labelledby="inquiryModulesHeading"/);
+assert.match(js, /class="inquiry-module-heading" id="inquiryModulesHeading"/);
+assert.doesNotMatch(js, /<fieldset class="inquiry-module-fieldset"/);
+assert.match(css, /#home-inquiry \.inquiry-module-fieldset\{/);
+assert.match(css, /background:#383b35;color:#f4f1e9/);
+assert.match(css, /#home-inquiry \.home-inquiry-form \.inquiry-module-fieldset label/);
+assert.match(css, /#home-inquiry \.inquiry-module-fieldset label span/);
+assert.match(css, /body\[data-page="management"\] #home-inquiry \.inquiry-addon-check\{display:none!important\}/);
+assert.match(js, /inquiryAdmin\.checked = true/);
+assert.match(js, /inquiryModules\.hidden = false/);
+assert.match(js, /¿También necesitas una página web\? \(opcional\)/);
+assert.match(js, /No necesito una web nueva/);
+assert.match(js, /I don't need a new website/);
+
+
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');

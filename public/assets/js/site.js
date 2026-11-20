@@ -1138,14 +1138,14 @@ function syncPublishedPrices(){
       <label for="inquiryPlan" data-copy="inquiry.extraPlan">Interested in a website plan?</label>
       <select id="inquiryPlan" name="plan"><option value="" data-copy="inquiry.planAny">Not sure yet</option><option value="Basic" data-copy="inquiry.planBasic">Basic · $1,100+</option><option value="Professional" data-copy="inquiry.planProfessional">Professional · $1,500+</option><option value="Premium" data-copy="inquiry.planPremium">Premium · $2,500+</option></select>
       <label class="inquiry-addon-check"><input type="checkbox" id="inquiryAdmin" name="dashboard"><span data-copy="inquiry.adminAddon">I would also like a Business Management dashboard</span></label>
-      <fieldset class="inquiry-module-fieldset" id="inquiryModules" hidden><legend data-copy="inquiry.moduleLegend">What would you manage? (optional)</legend>
+      <div class="inquiry-module-fieldset" id="inquiryModules" role="group" aria-labelledby="inquiryModulesHeading" hidden><p class="inquiry-module-heading" id="inquiryModulesHeading" data-copy="inquiry.moduleLegend">What would you manage? (optional)</p>
         <label><input type="checkbox" value="catalog" data-inquiry-module><span data-copy="inquiry.moduleCatalog">Catalog / products</span></label>
         <label><input type="checkbox" value="inventory" data-inquiry-module><span data-copy="inquiry.moduleInventory">Inventory</span></label>
         <label><input type="checkbox" value="orders" data-inquiry-module><span data-copy="inquiry.moduleOrders">Orders</span></label>
         <label><input type="checkbox" value="reports" data-inquiry-module><span data-copy="inquiry.moduleReports">Sales reports</span></label>
         <label><input type="checkbox" value="bookings" data-inquiry-module><span data-copy="inquiry.moduleBookings">Bookings</span></label>
         <label><input type="checkbox" value="customers" data-inquiry-module><span data-copy="inquiry.moduleCustomers">Customer follow-up</span></label>
-      </fieldset>
+      </div>
     </div>`;
     const inquiryFields = homeInquiryForm.querySelector(".inquiry-fields");
     inquiryFields.insertAdjacentHTML("beforeend", inquiryExtras);
@@ -1153,6 +1153,8 @@ function syncPublishedPrices(){
     syncPublishedPrices();
     const inquiryAdmin = document.getElementById("inquiryAdmin");
     const inquiryModules = document.getElementById("inquiryModules");
+    const inquiryPlanLabel = inquiryFields.querySelector('label[for="inquiryPlan"]');
+    const inquiryNoWebOption = inquiryPlan.querySelector('option[value=""]');
     inquiryAdmin.addEventListener("change",()=>{inquiryModules.hidden=!inquiryAdmin.checked;});
     // Translate only the newly inserted controls. Do not overwrite page-specific SEO metadata.
     homeInquiryForm.querySelectorAll(".inquiry-extra-block [data-copy]").forEach(element=>{
@@ -1204,10 +1206,21 @@ function syncPublishedPrices(){
         ? 'También puedes escribirnos por correo o solicitar una consulta para este servicio.'
         : 'You can also email us or book a consultation about this service.';
       if (!inquiryType.value) inquiryType.value = page;
-      if (page === 'management' && !inquiryAdmin.dataset.initialized) {
+      if (page === 'management') {
+        // Management is already selected on this dedicated page.
+        // Only ask whether the client ALSO needs a new website.
         inquiryAdmin.checked = true;
         inquiryModules.hidden = false;
-        inquiryAdmin.dataset.initialized = 'true';
+        if (inquiryPlanLabel) {
+          inquiryPlanLabel.textContent = es
+            ? '¿También necesitas una página web? (opcional)'
+            : 'Do you also need a website? (optional)';
+        }
+        if (inquiryNoWebOption) {
+          inquiryNoWebOption.textContent = es
+            ? 'No necesito una web nueva'
+            : "I don't need a new website";
+        }
       }
     }
     const localizeSpecialOptions = () => {
