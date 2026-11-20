@@ -296,8 +296,8 @@ const copy = {
         : "mailto:sales.abstudio@gmail.com?subject=Consulta%20sobre%20un%20proyecto%20con%20AB%20Studio";
       document.title = lang === "en" ? "AB Studio — Websites, systems & automation" : "AB Studio — Sitios web, sistemas y automatización";
       document.querySelector('meta[name="description"]').content = lang === "en"
-        ? "AB Studio builds websites, booking systems, and practical automation for small businesses across the United States."
-        : "AB Studio crea sitios web, sistemas de reservas y automatización práctica para pequeños negocios de Estados Unidos.";
+        ? "AB Studio builds business websites and optional Business Management dashboards for products, inventory and daily operations, plus CRM, booking and SEO."
+        : "AB Studio crea páginas web y paneles Business Management opcionales para administrar productos, inventario y operaciones, además de CRM, reservas y SEO.";
     }
     document.getElementById("langToggle").addEventListener("click", () => {
       setLanguage(currentLang === "en" ? "es" : "en");
@@ -643,7 +643,13 @@ const copy = {
         }
         quoteUpdate(root);
       });
-      const navCta = document.querySelector('.nav-actions a.button.small');
+      // Keep the featured Business Management offering visible near the top of every Services menu.
+    document.querySelectorAll(".nav-menu").forEach(menu => {
+      const feature = menu.querySelector('[data-copy="nav.serviceAdmin"]');
+      const overview = menu.querySelector('[data-copy="nav.serviceOverview"]');
+      if (feature && overview && overview.nextElementSibling !== feature) overview.after(feature);
+    });
+    const navCta = document.querySelector('.nav-actions a.button.small');
       if (navCta) { navCta.href = 'https://calendar.app.google/DKwYiEnNF2YFDXtq7'; navCta.target = '_blank'; navCta.rel = 'noopener noreferrer'; }
       // Sections inside Services are rendered dynamically; resolve deep links after the DOM is updated.
       if (['/servicios/','/sitios-web/','/'].includes(path) && ['#admin-panel','#crm-plans','#quote-builder-services','#quote-builder-web','#quote-builder-home','#business-management-guide','#web-dashboard-addon'].includes(location.hash)) {
