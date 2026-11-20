@@ -328,7 +328,9 @@ const copy = {
     }
     document.getElementById("langToggle").addEventListener("click", () => {
       setLanguage(currentLang === "en" ? "es" : "en");
-      const path = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
+      const path = location.pathname === '/pricing.html'
+        ? '/pricing/'
+        : location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
       if (routeTargets[path]) showRoute(path, routeTargets[path], false);
       localizeSpecialOptions();
     });
@@ -490,9 +492,10 @@ function quoteMarkup(lang,scope="services"){
  if(!root)return;
  const lang=root.dataset.quoteLang==="es"?"es":"en",d=quoteData[lang],es=lang==="es";
  const selected=root.querySelector("[data-q-plan]:checked")?.value||"professional";
- const price=abPrices.web[selected];
+ const price=abPrices.web[selected] || abPrices.web.professional;
  const admin=root.querySelector("[data-q-admin]").checked,seo=root.querySelector("[data-q-seo]").checked,crm=root.querySelector("[data-q-crm]").value;
- const crmRates = crm === "none" ? [0,0,0] : [abPrices.crm[crm].min,abPrices.crm[crm].max,abPrices.crm[crm].monthly];
+ const validCrm = crm in abPrices.crm ? crm : "none";
+ const crmRates = validCrm === "none" ? [0,0,0] : [abPrices.crm[validCrm].min,abPrices.crm[validCrm].max,abPrices.crm[validCrm].monthly];
  const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(n);
  const activeModules=admin?[...root.querySelectorAll("[data-q-module]:checked")].map(input=>({id:input.value,name:d.modules.find(x=>x[0]===input.value)?.[1],rate:bmModuleRates[input.value]})).filter(x=>x.name&&x.rate):[];
  const moduleSetup=activeModules.reduce((sum,x)=>sum+x.rate.setup,0);
@@ -515,7 +518,7 @@ function quoteMarkup(lang,scope="services"){
    ...(admin?[[es?"Base del panel":"Dashboard base",bmModuleRates.base.setup,bmModuleRates.base.monthly]]:[]),
    ...activeModules.map(x=>[x.name,x.rate.setup,x.rate.monthly]),
    ...(seo?[[d.seo,abPrices.seo.setup,abPrices.seo.monthly]]:[]),
-   ...(crm!=="none"?[[d.crmLabel+": "+{starter:"Starter",growth:"Growth",enterprise:"Enterprise"}[crm],crmRates[0],crmRates[2]]]:[])
+   ...(validCrm!=="none"?[[d.crmLabel+": "+{starter:"Starter",growth:"Growth",enterprise:"Enterprise"}[validCrm],crmRates[0],crmRates[2]]]:[])
  ];
  if(breakdown){
    breakdown.replaceChildren();
@@ -528,13 +531,13 @@ function quoteMarkup(lang,scope="services"){
    }
  }
  const business=root.querySelector("[data-q-name]").value.trim().slice(0,100),details=root.querySelector("[data-q-notes]").value.trim().slice(0,1200);
- const crmTitle=crm==="none"?d.crmNone:crm[0].toUpperCase()+crm.slice(1)+" ("+abCrmPrice(crm,lang)+")";
+ const crmTitle=validCrm==="none"?d.crmNone:validCrm[0].toUpperCase()+validCrm.slice(1)+" ("+abCrmPrice(validCrm,lang)+")";
  const lines=[d.hello,"",d.web+": "+({basic:d.basic,professional:d.professional,premium:d.premium}[selected])+" ("+money(price)+")",
    d.dash+": "+(admin?d.yes:d.no),
    ...(admin?[(es?"Base del panel":"Dashboard base")+": "+money(bmModuleRates.base.setup)+" + "+money(bmModuleRates.base.monthly)+(es?"/mes":"/mo")]:[]),
    ...activeModules.map(x=>x.name+": "+money(x.rate.setup)+" + "+money(x.rate.monthly)+(es?"/mes":"/mo")),
    d.seo+": "+(seo?d.yes:d.no),
-   ...(crm!=="none"?[d.crmLabel+": "+crmTitle]:[]),
+   ...(validCrm!=="none"?[d.crmLabel+": "+crmTitle]:[]),
    d.initial+": "+total,d.monthly+": "+monthly,
    ...(business?["",d.business+": "+business]:[]),...(details?["",d.message+": "+details]:[]),"",d.exclude];
  const message=lines.join("\n");
@@ -712,10 +715,10 @@ function pricingReadState(root){
 }
 
 function pricingCalculate(state){
- const web=state.website==="new" && abPrices.web[state.plan]?state.plan:null;
- const crm=abPrices.crm[state.crm]||null;
+ const web=state.website==="new" && Object.hasOwn(abPrices.web,state.plan)?state.plan:null;
+ const crm=Object.hasOwn(abPrices.crm,state.crm)?abPrices.crm[state.crm]:null;
  const management=!!state.management;
- const modules=management?[...new Set(state.modules.filter(id=>id!=="base"&&id in abPrices.management && !(crm&&id==="crm")))]:[];
+ const modules=management?[...new Set((Array.isArray(state.modules)?state.modules:[]).filter(id=>id!=="base"&&Object.hasOwn(abPrices.management,id)&&!(crm&&id==="crm")))]:[];
  const items=[];
  if(web)items.push({id:"website",initial:abPrices.web[web],monthly:0});
  if(management){
@@ -914,7 +917,7 @@ function syncPublishedPrices(){
       if (twitterDescription) twitterDescription.content = metaDescriptions[path] || metaDescriptions['/'];
       // Mark the active destination for keyboard and screen-reader navigation.
       document.querySelectorAll('.nav-menu a, .navlinks > a').forEach(link=>{
-        if (new URL(link.href, location.href).pathname === path) link.setAttribute('aria-current','page');
+        if ((new URL(link.href, location.href).pathname === '/pricing.html' ? '/pricing/' : new URL(link.href, location.href).pathname) === path) link.setAttribute('aria-current','page');
         else link.removeAttribute('aria-current');
       });
       const contact = document.getElementById('contact');
