@@ -541,3 +541,17 @@ assert.match(read('public/index.html'), /instagram\.com\/abstudio\.builds\//);
 for (const asset of ['public/assets/brand/favicon.png', 'public/assets/brand/08_Aplicacion_Laptop.png', 'public/assets/portfolio/floreria-muniz.webp']) {
   assert.ok(fs.existsSync(path.join(root, asset)), `Missing production asset: ${asset}`);
 }
+
+// CRM foundation static regression checks.
+const crmIntake = read('api/inquiries.js');
+const crmAdmin = read('public/admin/crm.js');
+const crmPrivacy = read('public/privacidad/index.html');
+const crmSql = read('supabase/migrations/20261120_crm.sql');
+assert.match(crmIntake, /SUPABASE_SERVICE_ROLE_KEY/);
+assert.match(crmIntake, /consent_required/);
+assert.match(crmSql, /row level security/);
+assert.match(crmSql, /crm_staff/);
+assert.match(crmAdmin, /Not authorized/);
+assert.match(crmPrivacy, /private CRM/);
+assert.match(js, /fetch\('\/api\/inquiries'/);
+assert.match(read('vercel.json'), /admin\/index.html/);
