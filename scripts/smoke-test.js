@@ -547,7 +547,7 @@ const crmIntake = read('api/inquiries.js');
 const crmAdmin = read('public/admin/crm.js');
 const crmPrivacy = read('public/privacidad/index.html');
 const crmSql = read('supabase/migrations/20261120_crm.sql');
-assert.match(crmIntake, /SUPABASE_SERVICE_ROLE_KEY/);
+assert.match(crmIntake, /SUPABASE_SECRET_KEY/);
 assert.match(crmIntake, /consent_required/);
 assert.match(crmSql, /row level security/);
 assert.match(crmSql, /crm_staff/);
