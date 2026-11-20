@@ -758,6 +758,52 @@ function quoteMarkup(lang,scope="services"){
         requestAnimationFrame(() => document.getElementById(sectionId)?.scrollIntoView({behavior:'instant',block:'start'}));
       }
     }
+    // AB Studio Instagram: one consistent social profile across all portfolio routes.
+    (() => {
+      const instagramUrl = 'https://www.instagram.com/abstudio.builds/';
+      const instagramSvg = '<svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.8" cy="6.3" r="1" fill="currentColor" stroke="none"/></svg>';
+      function socialLink(className, label, icon) {
+        const link = document.createElement('a');
+        link.className = className;
+        link.href = instagramUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', 'AB Studio on Instagram — @abstudio.builds');
+        if (icon) link.innerHTML = instagramSvg;
+        const text = document.createElement('span');
+        text.textContent = label;
+        link.appendChild(text);
+        return link;
+      }
+
+      const navActions = document.querySelector('.nav-actions');
+      if (navActions && !navActions.querySelector('.social-nav-instagram')) {
+        const link = socialLink('social-nav-instagram', 'Instagram', true);
+        navActions.insertBefore(link, navActions.querySelector('a.button.small'));
+      }
+      const mobileNav = document.querySelector('.navlinks');
+      if (mobileNav && !mobileNav.querySelector('.social-nav-mobile')) {
+        mobileNav.appendChild(socialLink('social-nav-mobile', 'Instagram · @abstudio.builds', true));
+      }
+      document.querySelectorAll('.footer-links').forEach(footer => {
+        if (!footer.querySelector('.social-footer-instagram')) {
+          footer.appendChild(socialLink('social-footer-instagram', '@abstudio.builds', true));
+        }
+      });
+      document.querySelectorAll('.contact-detail').forEach(details => {
+        if (!details.querySelector('.social-contact-instagram')) {
+          const term = document.createElement('div');
+          term.className = 'term social-contact-instagram';
+          const heading = document.createElement('h4');
+          heading.textContent = 'Instagram';
+          const paragraph = document.createElement('p');
+          paragraph.appendChild(socialLink('social-contact-link', '@abstudio.builds ↗', false));
+          term.append(heading, paragraph);
+          details.appendChild(term);
+        }
+      });
+    })();
+
     // Consultation booking is a direct, verified owner-provided Google Calendar link.
     const bookingAside = document.querySelector('.home-inquiry-aside');
     if (bookingAside && !bookingAside.querySelector('.consultation-booking')) {
