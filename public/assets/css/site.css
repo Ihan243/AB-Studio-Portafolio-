@@ -1783,3 +1783,9 @@ body.theme-dark .bm-workflow-board{background:#f9f6ef;color:#263127}
 .portfolio-convert p{font-size:.89rem;line-height:1.72;color:var(--ink-soft);max-width:690px}
 .portfolio-convert .button{flex:none;white-space:nowrap}
 @media(max-width:800px){.portfolio-convert>.wrap{flex-direction:column;align-items:flex-start;gap:20px}.portfolio-convert .button{white-space:normal;max-width:100%}}
+
+
+/* Accessible skip navigation that stays out of the visual layout until focused */
+.ab-skip-link{position:fixed;left:14px;top:0;z-index:99999;background:#f7f3e9;color:#17291b;border:2px solid #335f3b;padding:12px 18px;border-radius:0 0 8px 8px;font-weight:800;font-size:.83rem;transform:translateY(-130%);transition:transform .16s ease}
+.ab-skip-link:focus-visible{transform:translateY(0);outline:3px solid #fff;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.ab-skip-link{transition:none}}
