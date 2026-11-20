@@ -250,7 +250,7 @@ for(const pagePath of ['public/index.html','index.html']){
   assert.match(page,/id="bm-feature-title"/);
   assert.match(page,/href="\/servicios\/#admin-panel"/);
   assert.match(page,/href="\/sitios-web\/#quote-builder-web"/);
-  assert.match(page,/data-copy="bmHome\.title"/);
+  assert.match(page,/data-copy-html="bmHome\.title"/);
   assert.match(page,/data-copy="bmHome\.note"/);
 }
 assert.match(js,/overview\.after\(feature\)/);
