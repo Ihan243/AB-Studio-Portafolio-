@@ -301,4 +301,24 @@ assert.match(js,/\['#admin-panel','#crm-plans'/);
 assert.match(js,/crmPanelMarkup\(currentLang\)/);
 assert.match(css,/\.nav-dropdown \[data-copy="nav\.serviceCrm"\]/);
 
+/* Business Management and CRM must be two clearly distinct, linked cards on Home and Services. */
+for (const file of ['index.html','public/index.html','servicios/index.html','public/servicios/index.html']) {
+  const source=read(file);
+  const grid=source.split('<div class="services-grid">')[1]?.split('        </div>\n        <div class="section-more">')[0];
+  assert.ok(grid, 'Missing services grid: '+file);
+  const management=grid.indexOf('id="admin-panel-service"');
+  const crm=grid.indexOf('id="crm"');
+  const web=grid.indexOf('data-copy="services.webTitle"');
+  assert.ok(management>=0 && crm>management && web>crm, 'Distinct service card order: '+file);
+  assert.equal((grid.match(/data-copy="admin.serviceTitle"/g)||[]).length,1);
+  assert.equal((grid.match(/data-copy="crm.serviceTitle"/g)||[]).length,1);
+  const prefix=file.includes('servicios/') ? '#' : '/servicios/#';
+  assert.ok(grid.includes('href="'+prefix+'admin-panel"'));
+  assert.ok(grid.includes('href="'+prefix+'crm-plans"'));
+  assert.ok(!grid.includes('Customer & business management panel'));
+}
+assert.match(js, /"services.numManagement":"01 \/ MANAGEMENT"/);
+assert.match(js, /"services.numCrm":"02 \/ CRM"/);
+assert.match(css, /body\.home-mode #services \.service--admin/);
+
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');

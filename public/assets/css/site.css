@@ -2023,3 +2023,8 @@ body.theme-dark .crm-fee--monthly{background:#373f33}
 .nav-menu{min-width:250px}
 .nav-dropdown [data-copy="nav.serviceCrm"]{border-left:3px solid rgba(89,99,81,.32);color:var(--ink-soft);font-weight:650}
 .nav-dropdown [data-copy="nav.serviceCrm"]:hover,.nav-dropdown [data-copy="nav.serviceCrm"]:focus-visible{background:var(--paper-deep);color:var(--ink)}
+
+/* Separate Business Management and CRM service cards: featured operations panel, independent customer CRM. */
+body.home-mode #services .service--admin{background:var(--paper-deep);border-top:2px solid var(--green)}
+body[data-page="services"].route-mode #services .service--admin{border-top:2px solid var(--green)}
+@media(min-width:681px){body.home-mode #services .service--admin{grid-column:span 2}body.home-mode #services .service--admin h3{font-size:clamp(1.8rem,3vw,2.3rem)}}
