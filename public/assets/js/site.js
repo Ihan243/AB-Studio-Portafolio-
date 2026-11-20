@@ -1270,6 +1270,8 @@ function syncPublishedPrices(){
       const modulesSelected=[...inquiryModules.querySelectorAll('[data-inquiry-module]:checked')].map(input=>input.closest('label')?.querySelector('span')?.textContent.trim()).filter(Boolean);
       const lineItems=[
         opening,
+        `Name / Nombre: ${String(homeInquiryForm.querySelector('#crmLeadName')?.value || '').trim()}`,
+        `Email / Correo: ${String(homeInquiryForm.querySelector('#crmLeadEmail')?.value || '').trim()}`,
         service ? `${currentLang === 'es' ? 'Servicio' : 'Service'}: ${service}` : '',
         selectedPlan ? `${currentLang === 'es' ? 'Plan web' : 'Website plan'}: ${selectedPlan}` : '',
         ...(page === 'crm' ? [] : [`${currentLang === 'es' ? 'Panel administrativo opcional' : 'Optional management dashboard'}: ${inquiryAdmin.checked ? (currentLang === 'es' ? 'Sí, cotizar por separado' : 'Yes, quote separately') : (currentLang === 'es' ? 'No' : 'No')}`]),
