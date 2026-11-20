@@ -214,4 +214,32 @@ quoteTools.quoteUpdate(enterprise);
 assert.equal(enterprise.result['[data-q-initial]'].textContent,'$4,100+');
 assert.equal(enterprise.result['[data-q-monthly]'].textContent,'$199+ / mo');
 
+
+/* CRM education, actual examples and prices must work in both languages. */
+const crmStart=js.indexOf('const crmText = '),crmEnd=js.indexOf('function showRoute(',crmStart);
+assert.ok(crmStart>=0 && crmEnd>crmStart,'CRM source missing');
+const crmRuntime=new Function(js.slice(crmStart,crmEnd)+';return {crmText,crmPanelMarkup};')();
+for(const lang of ['en','es']){
+  const model=crmRuntime.crmText[lang];
+  const markup=crmRuntime.crmPanelMarkup(lang);
+  assert.equal(model.plans.length,3);
+  assert.equal((markup.match(/class="crm-plan /g)||[]).length,3);
+  assert.equal((markup.match(/class="crm-plan-example"/g)||[]).length,3);
+  assert.equal((markup.match(/class="crm-journey-step"/g)||[]).length,5);
+  assert.equal((markup.match(/class="crm-compare-card /g)||[]).length,3);
+  assert.equal((markup.match(/class="crm-fee crm-fee--/g)||[]).length,6);
+  assert.equal((markup.match(/<details>/g)||[]).length,6);
+  assert.equal((markup.match(/mailto:sales\.abstudio@gmail\.com/g)||[]).length,3);
+  for(const price of ['$900–$1,500','$1,500–$3,000','$3,000+','$39','$89','$199+']){
+    assert.ok(markup.includes(price),`Missing CRM price ${price} in ${lang}`);
+  }
+  assert.ok(model.journeyNote.includes(lang==='en'?'Illustrative':'ilustrativo'));
+  assert.ok(model.plans.every(plan=>plan.scenario && plan.steps.length===3 && plan.result));
+}
+assert.match(css,/CRM EDUCATION V2/);
+assert.match(css,/\.crm-explanation/);
+assert.match(css,/\.crm-plan-example/);
+assert.match(css,/\.crm-payment-guide/);
+assert.match(css,/max-width:1130px/);
+
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
