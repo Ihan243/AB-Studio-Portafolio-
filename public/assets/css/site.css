@@ -2017,3 +2017,9 @@ body.theme-dark .crm-fee--monthly{background:#373f33}
 @media(max-width:970px){.bm-home-feature-grid,.bm-service-lead-grid{grid-template-columns:1fr;gap:40px}.bm-home-feature-visual{max-width:650px;width:100%;margin:auto}.bm-service-lead-visual{max-width:650px;width:100%;margin:auto}}
 @media(max-width:640px){.bm-home-feature{padding:56px 0}.bm-home-feature h2{font-size:clamp(2.6rem,10vw,3.9rem)}.bm-home-feature-actions,.bm-service-lead-actions{align-items:flex-start;flex-direction:column;gap:17px}.bm-home-feature-actions .button,.bm-service-lead-actions .button{width:100%;justify-content:space-between}.bm-home-feature-dashboard{padding:19px}.bm-home-feature-metrics>div{padding:11px 8px}.bm-home-feature-metrics small{font-size:.58rem}.bm-home-feature-metrics strong{font-size:1.75rem}.bm-home-feature-window{transform:none}.bm-service-lead{padding:60px 0}.bm-service-lead h1{font-size:clamp(3rem,11vw,4.3rem)}.bm-service-lead-visual{padding:23px}.bm-service-lead-flow span:not(:nth-child(2)){font-size:.57rem}}
 @media(prefers-reduced-motion:reduce){.bm-home-feature-window{transform:none}}
+
+
+/* Two distinct Services dropdown options: operations versus customer follow-up. */
+.nav-menu{min-width:250px}
+.nav-dropdown [data-copy="nav.serviceCrm"]{border-left:3px solid rgba(89,99,81,.32);color:var(--ink-soft);font-weight:650}
+.nav-dropdown [data-copy="nav.serviceCrm"]:hover,.nav-dropdown [data-copy="nav.serviceCrm"]:focus-visible{background:var(--paper-deep);color:var(--ink)}
