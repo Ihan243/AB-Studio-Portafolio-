@@ -2045,3 +2045,46 @@ body[data-page="management"] #home-inquiry .home-inquiry-actions .button{flex:1 
   body[data-page="crm"] #home-inquiry .home-inquiry-actions .button,
   body[data-page="management"] #home-inquiry .home-inquiry-actions .button{width:100%}
 }
+
+/* Business Management: transparent, selectable starting prices (Nov 2026). */
+.quote-toggle .quote-extra-label{max-width:166px;white-space:normal;overflow-wrap:normal;line-height:1.5}
+.quote-bm-base{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--paper);border:1px solid rgba(89,99,81,.33);border-radius:9px;padding:17px 18px;margin-bottom:25px}
+.quote-bm-base>div:first-child>strong{font-size:.89rem;color:var(--ink);font-weight:850}
+.quote-bm-base p{font-size:.74rem;line-height:1.6;color:var(--ink-soft);margin:6px 0 0}
+.quote-bm-base-price{text-align:right;white-space:nowrap}
+.quote-bm-base-price strong,.quote-module-price strong{display:block;color:var(--green);font-size:.88rem;font-weight:850;letter-spacing:-.01em}
+.quote-bm-base-price small,.quote-module-price small{display:block;margin-top:4px;color:var(--ink-soft);font-size:.72rem;font-weight:700}
+.quote-modules .quote-module-intro{font-size:.83rem;font-weight:800;color:var(--ink);margin:0 0 16px}
+.quote-module-grid{gap:12px}
+.quote-module{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:12px 8px;min-width:0;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:15px;cursor:default;transition:background .2s ease,border-color .2s ease}
+.quote-module:has(input:checked){background:#e6eade;border-color:var(--green)}
+.quote-module:focus-within{border-color:var(--green)}
+.quote-module-choice{min-width:0;display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.8rem;font-weight:800;line-height:1.45;color:var(--ink)}
+.quote-module-choice>input{width:19px;height:19px;flex:none;margin:0;accent-color:var(--green);cursor:pointer}
+.quote-module-choice>span{min-width:0;overflow-wrap:anywhere}
+.quote-module-price{min-width:max-content;text-align:right}
+.quote-module-price strong{font-size:.8rem}
+.quote-module-price small{font-size:.68rem}
+.quote-module-details{grid-column:1/-1;margin-top:1px;border-top:1px solid var(--line);padding-top:10px;min-width:0}
+.quote-module-details summary{display:inline-flex;align-items:center;gap:6px;list-style:none;cursor:pointer;color:var(--green);font-size:.7rem;font-weight:800;min-height:27px}
+.quote-module-details summary::-webkit-details-marker{display:none}
+.quote-module-details summary::after{content:"＋";font-size:.86rem;margin-left:3px}
+.quote-module-details[open] summary::after{content:"−"}
+.quote-module-details summary:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:3px}
+.quote-module-details p{margin:8px 0 0;font-size:.72rem;line-height:1.6;color:var(--ink-soft)}
+.quote-module-details .quote-module-example{font-style:italic;color:var(--green)}
+.quote-pricing-note{font-size:.73rem!important;font-weight:500!important;color:var(--ink-soft)!important;line-height:1.6;margin:17px 0 0!important}
+.quote-breakdown{list-style:none;margin:15px 0 0;padding:0;display:grid;gap:10px}
+.quote-breakdown li{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;font-size:.74rem;line-height:1.55;color:#d6e1d2}
+.quote-breakdown li span:first-child{flex:1;min-width:0}
+.quote-breakdown li span:last-child{text-align:right;color:#fff;font-weight:750;max-width:55%}
+@container (max-width:590px){
+  .quote-module-grid{grid-template-columns:1fr}
+}
+@container (max-width:470px){
+  .quote-bm-base{grid-template-columns:1fr}
+  .quote-bm-base-price{text-align:left}
+  .quote-module{padding:14px}
+  .quote-breakdown li{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){.quote-module{transition:none}}

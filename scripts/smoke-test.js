@@ -177,7 +177,7 @@ for (const name of ['index.html','public/index.html','public/sitios-web/index.ht
 }
 const quoteStart=js.indexOf('const quoteData = '),quoteEnd=js.indexOf('const businessAddonData = ',quoteStart);
 assert.ok(quoteStart>-1 && quoteEnd>quoteStart,'Quote builder source not found');
-const quoteTools=new Function(js.slice(quoteStart,quoteEnd)+';return {quoteMarkup,quoteUpdate};')();
+const quoteTools=new Function(js.slice(quoteStart,quoteEnd)+';return {quoteMarkup,quoteUpdate,bmModuleRates};')();
 for (const lang of ['en','es']) {
   const sample=quoteTools.quoteMarkup(lang,'test');
   assert.equal((sample.match(/data-q-plan/g)||[]).length,3);
@@ -188,7 +188,7 @@ for (const lang of ['en','es']) {
   assert.equal((sample.match(/class="quote-step-heading"/g)||[]).length,3);
   assert.equal((sample.match(/class="quote-plan-card"/g)||[]).length,3);
 }
-function sampleQuote(plan='professional',seo=false,crm='none',admin=false){
+function sampleQuote(plan='professional',seo=false,crm='none',admin=false,modules=[],lang='en'){
   const fields={
     '[data-q-plan]:checked':{value:plan},'[data-q-admin]':{checked:admin},'[data-q-seo]':{checked:seo},
     '[data-q-crm]':{value:crm},'[data-q-initial]':{textContent:''},'[data-q-monthly]':{textContent:''},
@@ -196,7 +196,7 @@ function sampleQuote(plan='professional',seo=false,crm='none',admin=false){
     '[data-q-name]':{value:'Sample Shop'},'[data-q-notes]':{value:'I need a clear website'},
     '[data-q-email]':{href:''},'[data-q-wa]':{href:''}
   };
-  return {dataset:{quoteLang:'en'},querySelector:key=>fields[key],querySelectorAll:()=>[],
+  return {dataset:{quoteLang:lang},querySelector:key=>fields[key],querySelectorAll:key=>key==='[data-q-module]:checked'?modules.map(value=>({value})):[],
     result:fields};
 }
 const basic=sampleQuote('basic');
@@ -205,14 +205,61 @@ assert.equal(basic.result['[data-q-initial]'].textContent,'$1,100');
 assert.equal(basic.result['[data-q-monthly]'].textContent,'$0 / mo');
 const growth=sampleQuote('professional',true,'growth',true);
 quoteTools.quoteUpdate(growth);
-assert.equal(growth.result['[data-q-initial]'].textContent,'$3,200 – $4,700');
-assert.equal(growth.result['[data-q-monthly]'].textContent,'$119 / mo');
+assert.equal(growth.result['[data-q-initial]'].textContent,'$3,650 – $5,150');
+assert.equal(growth.result['[data-q-monthly]'].textContent,'$144 / mo');
 assert.equal(growth.result['[data-q-modules]'].hidden,false);
 assert.match(growth.result['[data-q-email]'].href,/mailto:sales\.abstudio@gmail\.com/);
 const enterprise=sampleQuote('basic',false,'enterprise');
 quoteTools.quoteUpdate(enterprise);
 assert.equal(enterprise.result['[data-q-initial]'].textContent,'$4,100+');
 assert.equal(enterprise.result['[data-q-monthly]'].textContent,'$199+ / mo');
+
+/* Public Business Management prices, calculated totals, and standalone CRM links. */
+const publishedRates={base:[450,25],catalog:[250,10],inventory:[400,20],orders:[450,20],reports:[250,10],booking:[450,20],crm:[300,15]};
+for(const [code,amounts] of Object.entries(publishedRates)){
+  const rate=quoteTools.bmModuleRates[code];
+  assert.deepEqual([rate.setup,rate.monthly],amounts,'Unexpected module rate '+code);
+}
+for(const lang of ['en','es']){
+  const markup=quoteTools.quoteMarkup(lang,'services');
+  const normal=quoteTools.quoteMarkup(lang,'home');
+  assert.equal((markup.match(/data-bm-module="/g)||[]).length,6);
+  assert.equal((markup.match(/class="quote-module-details"/g)||[]).length,6);
+  assert.equal((normal.match(/data-bm-module="/g)||[]).length,6);
+  assert.match(markup,/data-q-breakdown/);
+  assert.match(markup,/quote-bm-base/);
+  assert.ok(markup.includes(lang==='es'?'Desde $450':'From $450'));
+  for(const [code,[setup,monthly]] of Object.entries(publishedRates)){
+    if(code==='base')continue;
+    const at=markup.indexOf('data-bm-module="'+code+'"');
+    const card=markup.slice(at,markup.indexOf('</article>',at));
+    assert.ok(at>=0,'Missing module card '+code+' in '+lang);
+    assert.ok(card.includes('$'+setup)&&card.includes('$'+monthly),'Missing prices '+code);
+  }
+  assert.ok(markup.includes('/crm/'),'Management should link to separate CRM');
+  assert.ok(!markup.includes('<option value="enterprise">'),'Management cannot bundle advanced CRM');
+  assert.ok(normal.includes('<option value="enterprise">'),'Web estimator must retain optional CRM tiers');
+}
+const threeModules=sampleQuote('professional',false,'none',true,['catalog','inventory','orders'],'es');
+quoteTools.quoteUpdate(threeModules);
+assert.equal(threeModules.result['[data-q-initial]'].textContent,'$3,050');
+assert.equal(threeModules.result['[data-q-monthly]'].textContent,'$75 / mes');
+const emailDraft=decodeURIComponent(threeModules.result['[data-q-email]'].href);
+assert.ok(emailDraft.includes('Catálogo de productos: $250 + $10/mes'));
+assert.ok(emailDraft.includes('Base del panel: $450 + $25/mes'));
+const allModules=sampleQuote('professional',false,'none',true,['catalog','inventory','orders','reports','booking','crm']);
+quoteTools.quoteUpdate(allModules);
+assert.equal(allModules.result['[data-q-initial]'].textContent,'$4,050');
+assert.equal(allModules.result['[data-q-monthly]'].textContent,'$120 / mo');
+const ignoredModules=sampleQuote('professional',false,'none',false,['catalog','inventory']);
+quoteTools.quoteUpdate(ignoredModules);
+assert.equal(ignoredModules.result['[data-q-initial]'].textContent,'$1,500');
+assert.equal(ignoredModules.result['[data-q-monthly]'].textContent,'$0 / mo');
+assert.match(js,/event\.target\.matches\("\[data-q-module\]"\)/);
+assert.match(css,/\.quote-module-details/);
+assert.match(css,/\.quote-module-price/);
+assert.match(css,/\.quote-breakdown/);
+
 
 
 /* CRM education, actual examples and prices must work in both languages. */
@@ -248,7 +295,7 @@ for(const pagePath of ['public/index.html','index.html']){
   const page=read(pagePath);
   assert.match(page,/id="business-management"/);
   assert.match(page,/id="bm-feature-title"/);
-  assert.match(page,/href="\/servicios\/#admin-panel"/);
+  assert.match(page,/href="\/business-management\/"/);
   assert.match(page,/href="\/sitios-web\/#quote-builder-web"/);
   assert.match(page,/data-copy-html="bmHome\.title"/);
   assert.match(page,/data-copy="bmHome\.note"/);
