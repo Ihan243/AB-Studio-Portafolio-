@@ -176,7 +176,7 @@ assert.match(js, /quote-plan-description/);
 assert.match(css, /\.service-chooser-card/);
 assert.match(css, /\.bm-workflow-board/);
 assert.match(css, /\.inquiry-extra-block/);
-assert.match(read('public/index.html'), /href="\/servicios\/#admin-panel"/);
+assert.match(read('public/index.html'), /href="\/business-management\/"/);
 for (const name of ['index.html','public/index.html','public/sitios-web/index.html','public/servicios/index.html']) {
   const page = read(name);
   for (const price of ['$1,100','$1,500','$2,500']) {
