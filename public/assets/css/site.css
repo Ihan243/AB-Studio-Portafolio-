@@ -2313,3 +2313,11 @@ body[data-page="management"] #home-inquiry .inquiry-extra-block{
 .ab-pricing-web-plan.featured,
 .ab-pricing-crm-plan.featured { color: var(--ink); }
 body:not(.theme-dark) .brand-sub { color:#5f5a50; }
+
+
+/* QA-01 follow-up: li text has a separate inherited light-on-light rule.
+   Apply the text color to the list items themselves (both light and dark modes). */
+.ab-pricing-web-plan li,
+.ab-pricing-crm-plan li,
+.ab-pricing-web-plan.featured li,
+.ab-pricing-crm-plan.featured li { color:var(--ink); }
