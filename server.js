@@ -19,7 +19,14 @@ const MIME_TYPES = {
 };
 
 function handler(req, res) {
-  const cleanUrl = decodeURIComponent((req.url || '/').split('?')[0]);
+  let cleanUrl;
+  try {
+    cleanUrl = decodeURIComponent((req.url || '/').split('?')[0]);
+  } catch (_) {
+    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-cache' });
+    res.end('Bad Request');
+    return;
+  }
 
   // Root or index.html
   if (cleanUrl === '/' || cleanUrl === '/index.html') {

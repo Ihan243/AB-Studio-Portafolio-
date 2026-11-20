@@ -35,6 +35,11 @@ async function main(){
      assert.ok((await page.title()).includes('AB Studio'),'Missing title on '+route);
      assert.ok((await page.locator('h1').count())>=1,'Missing heading '+route);
    }
+   // Invalid percent encodings must not crash the local server.
+   const malformed=await fetch(base+'/bad%ZZ');
+   assert.equal(malformed.status,400,'Malformed URL should receive HTTP 400');
+   const stillAlive=await fetch(base+'/');
+   assert.equal(stillAlive.status,200,'Server crashed on malformed path');
    const bad=await page.goto(base+'/does-not-exist/',{waitUntil:'domcontentloaded'});
    assert.equal(bad.status(),404,'Unknown routes must be 404');
    await page.goto(base+'/pricing.html',{waitUntil:'domcontentloaded'});
