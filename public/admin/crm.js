@@ -105,8 +105,23 @@ $('#login-form').addEventListener('submit',async e=>{
 });
 $('#logout').addEventListener('click',()=>{token=null;leads=[];visible('login');message('Signed out.')});
 $('#refresh').addEventListener('click',load);
+$('#refresh-leads').addEventListener('click',load);
 $('#search').addEventListener('input',render);
 $('#filter').addEventListener('change',render);
+$('#open-leads').addEventListener('click',()=>setActiveView('leads'));
+document.querySelectorAll('[data-crm-view]').forEach(button=>{
+ button.addEventListener('click',()=>setActiveView(button.dataset.crmView));
+});
+function setActiveView(view){
+ if(!['overview','leads'].includes(view))return;
+ $('#view-overview').hidden=view!=='overview';
+ $('#view-leads').hidden=view!=='leads';
+ document.querySelectorAll('[data-crm-view]').forEach(button=>{
+  const active=button.dataset.crmView===view;
+  button.classList.toggle('is-active',active);
+  if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+ });
+}
 function el(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node}
 function field(labelText,control){const l=el('label');l.append(el('span','',labelText),control);return l}
 function render(){
