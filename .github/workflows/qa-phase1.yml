@@ -80,12 +80,15 @@ jobs:
     steps:
       - name: Check current production routes (read-only)
         run: |
+          failures=0
           for route in / /servicios/ /pricing/ /pricing.html /business-management/ /crm/ /definitely-unknown-qa-path/; do
-            code=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 18 "https://ab-studio-portafolio.vercel.app$route")
+            code=$(curl -L -s -o /dev/null -w "%{http_code}" --max-time 18 "https://ab-studio-portafolio.vercel.app$route") || code="000"
             echo "PRODUCTION HTTP $route -> $code"
             if [ "$route" = "/definitely-unknown-qa-path/" ]; then
-              [ "$code" = 404 ] || exit 1
+              [ "$code" = 404 ] || failures=$((failures + 1))
             else
-              [ "$code" = 200 ] || exit 1
+              [ "$code" = 200 ] || failures=$((failures + 1))
             fi
           done
+          echo "Production route failures: $failures"
+          [ "$failures" -eq 0 ]
