@@ -468,7 +468,7 @@ assert.match(preRenderedPricing, /data-p-initial/);
 assert.match(preRenderedPricing, /data-p-monthly/);
 assert.match(preRenderedPricing, /data-p-email/);
 assert.match(preRenderedPricing, /data-p-wa/);
-assert.match(preRenderedPricing, /<noscript>[\\s\\S]*?sales\.abstudio@gmail\.com/);
+assert.match(preRenderedPricing, /<noscript>[\s\S]*?sales\.abstudio@gmail\.com/);
 assert.match(js, /const hasStaticPricing = path === '\/pricing\/'/);
 assert.match(js, /if \(!hasStaticPricing\) routePage\.innerHTML = ''/);
 assert.match(js, /routePage\.dataset\.pricingStatic = currentLang/);
