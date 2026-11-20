@@ -6,7 +6,7 @@ const els={boot:$('#boot'),setup:$('#setup'),login:$('#login'),workspace:$('#wor
 const CACHE_KEY='abstudio.crm.public-config.v1';
 let project=null,anon=null,token=null,leads=[],configuredFromServer=false;
 const message=s=>{els.notice.textContent=s};
-const visible=section=>{for(const k of ['boot','setup','login','workspace'])els[k].hidden=k!==section;els.logout.hidden=section!=='workspace'};
+const visible=section=>{for(const k of ['boot','setup','login','workspace'])els[k].hidden=k!==section;els.logout.hidden=section!=='workspace';document.body.classList.toggle('crm-workspace-open',section==='workspace');if(section==='workspace')setActiveView('overview')};
 const validUrl=u=>{try{const v=new URL(u);return v.protocol==='https:' && /^[a-z0-9-]+\.supabase\.co$/i.test(v.hostname) && v.pathname==='/'}catch{return false}};
 const validPublicKey=k=>typeof k==='string' && k.startsWith('sb_publishable_') && k.length>20;
 function savePublicSettings(url,key){
@@ -105,8 +105,23 @@ $('#login-form').addEventListener('submit',async e=>{
 });
 $('#logout').addEventListener('click',()=>{token=null;leads=[];visible('login');message('Signed out.')});
 $('#refresh').addEventListener('click',load);
+$('#refresh-leads').addEventListener('click',load);
 $('#search').addEventListener('input',render);
 $('#filter').addEventListener('change',render);
+$('#open-leads').addEventListener('click',()=>setActiveView('leads'));
+document.querySelectorAll('[data-crm-view]').forEach(button=>{
+ button.addEventListener('click',()=>setActiveView(button.dataset.crmView));
+});
+function setActiveView(view){
+ if(!['overview','leads'].includes(view))return;
+ $('#view-overview').hidden=view!=='overview';
+ $('#view-leads').hidden=view!=='leads';
+ document.querySelectorAll('[data-crm-view]').forEach(button=>{
+  const active=button.dataset.crmView===view;
+  button.classList.toggle('is-active',active);
+  if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+ });
+}
 function el(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!==undefined)node.textContent=text;return node}
 function field(labelText,control){const l=el('label');l.append(el('span','',labelText),control);return l}
 function render(){
@@ -116,6 +131,23 @@ function render(){
  const metric=$('#metrics');metric.replaceChildren();
  const won=leads.filter(l=>l.status==='won').reduce((n,l)=>n+Number(l.estimated_value||0),0);
  [['Total inquiries',leads.length],['New',leads.filter(l=>l.status==='new').length],['In proposals',leads.filter(l=>l.status==='proposal').length],['Won value','$'+won.toLocaleString('en-US')]].forEach(([name,n])=>{const m=el('div','metric');m.append(el('span','',name),el('strong','',String(n)));metric.append(m)});
+ $('#leads-count').textContent=String(leads.length);
+ const recent=$('#recent-leads');recent.replaceChildren();
+ if(!leads.length)recent.append(el('p','crm-empty','No leads yet. New inquiries will appear here.'));
+ leads.slice(0,5).forEach(x=>{
+   const item=el('button','crm-recent-row');item.type='button';
+   const details=el('span','crm-recent-info');
+   details.append(el('strong','',x.name),el('small','',(x.service||'Unspecified service')+' · '+new Date(x.created_at).toLocaleDateString()));
+   const stageName=stages.includes(x.status)?x.status:'new';
+   const status=el('span','crm-stage-tag crm-stage-'+stageName,stageName[0].toUpperCase()+stageName.slice(1));
+   item.append(details,status);
+   item.addEventListener('click',()=>{
+     $('#search').value=x.email||x.name;
+     $('#filter').value='';
+     setActiveView('leads');render();
+   });
+   recent.append(item);
+ });
  if(!shown.length)box.append(el('p','', 'No inquiries match your filters.'));
  shown.forEach(x=>{
   const card=el('article','lead');card.append(el('div','muted',new Date(x.created_at).toLocaleString()),el('h2','',x.name),el('div','meta',x.email+' · '+(x.service||'Unspecified service')+' · '+x.channel),el('p','description',x.description));
