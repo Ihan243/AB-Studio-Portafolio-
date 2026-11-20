@@ -52,7 +52,7 @@ const copy = {
         "homeInquiry.note":"This opens WhatsApp with a prepared message; nothing is sent until you choose to send it there.",
         "brand.sub":"Web · Systems · Automation",
         "homeInquiry.kicker":"Let’s get started","homeInquiry.title":"Tell us what your website needs.","homeInquiry.intro":"Describe your business and what you want the site to help with. We’ll review your note and reply within one business day with next steps.","homeInquiry.label":"Describe the website you need","homeInquiry.placeholder":"Example: I run a dental clinic and want patients to request appointments online.","homeInquiry.pick1":"A campaign landing page","homeInquiry.pick2":"My business website","homeInquiry.pick3":"A digital product catalog","homeInquiry.send":"Continue in WhatsApp","homeInquiry.sendEmail":"Continue by email","homeInquiry.note":"Choose WhatsApp or email to open a prefilled draft. You decide when to send it.","homeInquiry.emailIntro":"Prefer email? Send us a note and tell us what kind of site you have in mind.","homeInquiry.reply":"We normally reply to new inquiries within one business day.",
-        "nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.serviceAdmin":"Business Management","nav.company":"Company","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Start a project",
+        "a11y.skip":"Skip to main content","nav.home":"Home","nav.services":"Services","nav.serviceOverview":"All services","nav.serviceWeb":"Websites","nav.serviceSystems":"Booking systems","nav.serviceSeo":"SEO & local search","nav.serviceAutomation":"Automation","nav.serviceAdmin":"Business Management","nav.company":"Company","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Selected work","nav.plans":"Plans","nav.about":"About","nav.cta":"Start a project",
         "hero.eyebrow":"Independent digital studio · Serving the U.S.",
         "hero.title":"A better web presence.<br><em>Built to move business forward.</em>",
         "hero.body":"We build thoughtful websites, booking systems and practical automation for small businesses across the United States. Clear design, useful technology and a direct path to your next customer.",
@@ -172,7 +172,7 @@ const copy = {
         "homeInquiry.note":"Se abrirá WhatsApp con un mensaje preparado; nada se envía hasta que tú decidas enviarlo allí.",
         "brand.sub":"Web · Sistemas · Automatización",
         "homeInquiry.kicker":"Empecemos","homeInquiry.title":"Contanos qué necesita tu sitio web.","homeInquiry.intro":"Describí tu negocio y qué necesitás que resuelva el sitio. Revisaremos tu mensaje y te responderemos dentro de un día hábil con los próximos pasos.","homeInquiry.label":"Describí el sitio web que necesitás","homeInquiry.placeholder":"Ejemplo: Tengo una clínica dental y quiero que mis pacientes soliciten citas en línea.","homeInquiry.pick1":"Una página para una campaña","homeInquiry.pick2":"El sitio de mi negocio","homeInquiry.pick3":"Un catálogo digital de productos","homeInquiry.send":"Continuar en WhatsApp","homeInquiry.sendEmail":"Continuar por correo","homeInquiry.note":"Elige WhatsApp o correo para abrir un borrador preparado. Tú decides cuándo enviarlo.","homeInquiry.emailIntro":"¿Preferís escribirnos por correo? Contanos qué tipo de sitio tenés en mente.","homeInquiry.reply":"Normalmente respondemos las consultas nuevas dentro de un día hábil.",
-        "nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.serviceAdmin":"Gestión del negocio","nav.company":"Empresa","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Empezar un proyecto",
+        "a11y.skip":"Ir al contenido principal","nav.home":"Inicio","nav.services":"Servicios","nav.serviceOverview":"Todos los servicios","nav.serviceWeb":"Páginas web","nav.serviceSystems":"Sistemas de reservas","nav.serviceSeo":"SEO y búsqueda local","nav.serviceAutomation":"Automatización","nav.serviceAdmin":"Gestión del negocio","nav.company":"Empresa","nav.blog":"Blog","nav.faq":"FAQ","nav.work":"Proyectos","nav.plans":"Paquetes","nav.about":"Nosotros","nav.cta":"Empezar un proyecto",
         "hero.eyebrow":"Estudio digital independiente · Atención a negocios de EE. UU.",
         "hero.title":"Una mejor presencia digital.<br><em>Hecha para impulsar tu negocio.</em>",
         "hero.body":"Creamos sitios web, sistemas de reservas y automatizaciones prácticas para pequeños negocios de Estados Unidos. Diseño claro, tecnología útil y un camino directo hacia tus próximos clientes.",
@@ -283,6 +283,8 @@ const copy = {
       document.getElementById("themeToggle").setAttribute("aria-label", lang === "en" ? "Toggle dark mode" : "Cambiar modo oscuro");
       const menuToggle = document.getElementById("menuToggle");
       const languageNav = document.getElementById("navlinks");
+      document.querySelector(".service-nav .nav-dropdown summary")?.setAttribute("aria-label",lang==="es"?"Abrir opciones de servicios":"Open service options");
+      languageNav?.setAttribute("aria-label",lang==="es"?"Navegación principal":"Main navigation");
       if (languageNav && !languageNav.classList.contains("open")) menuToggle.setAttribute("aria-label", lang === "en" ? "Open menu" : "Abrir menú");
       const whatsapp = document.querySelector('a[href^="https://wa.me/15513129791?"]');
       if (whatsapp) whatsapp.href = lang === "en"
@@ -308,6 +310,17 @@ const copy = {
       const savedLang = storedLang === "en" || storedLang === "es" ? storedLang : ((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en");
       setLanguage(savedLang === "es" ? "es" : "en");
     } catch (_) { setLanguage((navigator.language || "").toLowerCase().startsWith("es") ? "es" : "en"); }
+    // Keyboard users can bypass the header and reach the primary page content.
+    const skipTarget=document.querySelector("main");
+    if(skipTarget){
+      if(!skipTarget.id)skipTarget.id="main-content";
+      const skip=document.createElement("a");
+      skip.className="ab-skip-link";
+      skip.href="#"+skipTarget.id;
+      skip.dataset.copy="a11y.skip";
+      skip.textContent=copy[currentLang]["a11y.skip"];
+      document.body.prepend(skip);
+    }
     const themeToggle = document.getElementById("themeToggle");
     if ((() => {try{return localStorage.getItem("abstudio-theme")}catch(_){return null}})() === "dark") { document.body.classList.add("theme-dark"); themeToggle.textContent = "☀"; }
     themeToggle.addEventListener("click", () => {
