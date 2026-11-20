@@ -464,7 +464,7 @@ assert.match(preRenderedPricing, /data-p-initial/);
 assert.match(preRenderedPricing, /data-p-monthly/);
 assert.match(preRenderedPricing, /data-p-email/);
 assert.match(preRenderedPricing, /data-p-wa/);
-assert.match(preRenderedPricing, /<noscript>[\\s\\S]*?sales\.abstudio@gmail\.com/);
+assert.ok(preRenderedPricing.slice(preRenderedPricing.indexOf('<noscript>')).includes('sales.abstudio@gmail.com'), 'Pricing noscript must provide an email fallback');
 assert.match(js, /const hasStaticPricing = path === '\/pricing\/'/);
 assert.match(js, /if \(!hasStaticPricing\) routePage\.innerHTML = ''/);
 assert.match(js, /routePage\.dataset\.pricingStatic = currentLang/);
