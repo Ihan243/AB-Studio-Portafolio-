@@ -11,6 +11,14 @@
       "destination": "/servicios/index.html"
     },
     {
+      "source": "/crm/",
+      "destination": "/crm/index.html"
+    },
+    {
+      "source": "/business-management/",
+      "destination": "/business-management/index.html"
+    },
+    {
       "source": "/proyectos/",
       "destination": "/proyectos/index.html"
     },

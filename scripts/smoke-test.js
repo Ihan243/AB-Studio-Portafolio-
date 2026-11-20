@@ -51,7 +51,7 @@ assert.match(css, /AB Studio dedicated FAQ page and navigation/);
 assert.ok(faqConfig.rewrites.some(rule => rule.source === '/faq/' && rule.destination === '/faq/index.html'));
 assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel\.app\/faq\//);
 
-const routes = ['servicios', 'sitios-web', 'sistemas', 'seo', 'automatizacion', 'empresa', 'blog', 'proyectos'];
+const routes = ['servicios', 'business-management', 'crm', 'sitios-web', 'sistemas', 'seo', 'automatizacion', 'empresa', 'blog', 'proyectos'];
 
 const effects = read('public/assets/js/effects.js');
 const entrance = read('public/assets/js/entrance.js');
@@ -122,7 +122,7 @@ assert.match(modernCss, /ab-detail-section--alternate/);
 const modernJs = read('public/assets/js/site.js');
 assert.match(modernJs, /route-hero--visual/);
 assert.match(read('public/sitios-web/index.html'), /route-hero-showcase/);
-for (const page of ['servicios','sistemas','seo','automatizacion','empresa','blog','proyectos']) {
+for (const page of ['servicios','business-management','crm','sistemas','seo','automatizacion','empresa','blog','proyectos']) {
   const content = read(`public/${page}/index.html`);
   assert.match(content, /class="subpage-intro-copy"/);
   assert.match(content, /class="intro-art intro-art--/);
@@ -269,25 +269,26 @@ for(const lang of ['en','es']){
   assert.match(content,/href="#admin-panel"/);
   assert.match(content,/href="#quote-builder-services"/);
   assert.equal((content.match(/class="bm-route-module"/g)||[]).length,3);
-  assert.equal(featured.servicesChooserCopy[lang].cards[0][3],'#admin-panel');
+  assert.equal(featured.servicesChooserCopy[lang].cards[0][3],'/business-management/');
+  assert.equal(featured.servicesChooserCopy[lang].cards[2][3],'/crm/');
 }
 const servicesRender=js.match(/if \(path === '\/servicios\/'\) routePage\.innerHTML = ([^;]+);/);
 assert.ok(servicesRender,'Services rendering was not found');
-const orderedSections=['bmServiceSpotlightMarkup','servicesChooserMarkup','adminPanelMarkup','quoteMarkup','adminGuideMarkup','crmPanelMarkup'];
-let index=-1;
-for(const component of orderedSections){
-  const pos=servicesRender[1].indexOf(component);
-  assert.ok(pos>index,`Incorrect Services content priority: ${component}`);
-  index=pos;
-}
+assert.equal(servicesRender[1].trim(),'servicesChooserMarkup(currentLang)','Services is just the overview');
+const managementRender=js.match(/if \(path === '\/business-management\/'\) routePage\.innerHTML = ([^;]+);/);
+const crmRender=js.match(/if \(path === '\/crm\/'\) routePage\.innerHTML = ([^;]+);/);
+assert.ok(managementRender&&crmRender,'Dedicated routes must be present');
+for(const component of ['bmServiceSpotlightMarkup','adminPanelMarkup','quoteMarkup','adminGuideMarkup']) assert.ok(managementRender[1].includes(component), 'Missing Business Management content: '+component);
+assert.ok(!managementRender[1].includes('crmPanelMarkup'),'Business Management cannot render CRM');
+assert.equal(crmRender[1].trim(),'crmPanelMarkup(currentLang)','CRM should render only its own content');
 
 
 /* Separate Business Management and CRM options throughout the Services navigation. */
 for (const prefix of ['','public/']) {
   for (const page of ['index.html','servicios/index.html','sitios-web/index.html','sistemas/index.html','seo/index.html','automatizacion/index.html','empresa/index.html','proyectos/index.html','blog/index.html','faq/index.html']) {
     const source=read(prefix+page);
-    const management='<a href="/servicios/#admin-panel" data-copy="nav.serviceAdmin">Business Management</a>';
-    const customerCRM='<a href="/servicios/#crm-plans" data-copy="nav.serviceCrm">Customer CRM</a>';
+    const management='<a href="/business-management/" data-copy="nav.serviceAdmin">Business Management</a>';
+    const customerCRM='<a href="/crm/" data-copy="nav.serviceCrm">Customer CRM</a>';
     assert.ok(source.includes(management),`Missing Business Management nav link: ${prefix+page}`);
     assert.ok(source.includes(customerCRM),`Missing Customer CRM nav link: ${prefix+page}`);
     assert.equal(source.split('data-copy="nav.serviceAdmin"').length-1,1);
@@ -297,7 +298,8 @@ for (const prefix of ['','public/']) {
 assert.match(js,/"nav\.serviceCrm":"Customer CRM"/);
 assert.match(js,/"nav\.serviceCrm":"CRM · Gestión de clientes"/);
 assert.match(js,/feature\.after\(crm\)/);
-assert.match(js,/\['#admin-panel','#crm-plans'/);
+assert.match(js,/oldManagementHashes/);
+assert.match(js,/oldCrmHashes/);
 assert.match(js,/crmPanelMarkup\(currentLang\)/);
 assert.match(css,/\.nav-dropdown \[data-copy="nav\.serviceCrm"\]/);
 
@@ -312,13 +314,30 @@ for (const file of ['index.html','public/index.html','servicios/index.html','pub
   assert.ok(management>=0 && crm>management && web>crm, 'Distinct service card order: '+file);
   assert.equal((grid.match(/data-copy="admin.serviceTitle"/g)||[]).length,1);
   assert.equal((grid.match(/data-copy="crm.serviceTitle"/g)||[]).length,1);
-  const prefix=file.includes('servicios/') ? '#' : '/servicios/#';
-  assert.ok(grid.includes('href="'+prefix+'admin-panel"'));
-  assert.ok(grid.includes('href="'+prefix+'crm-plans"'));
+  assert.ok(grid.includes('href="/business-management/"'));
+  assert.ok(grid.includes('href="/crm/"'));
   assert.ok(!grid.includes('Customer & business management panel'));
 }
 assert.match(js, /"services.numManagement":"01 \/ MANAGEMENT"/);
 assert.match(js, /"services.numCrm":"02 \/ CRM"/);
 assert.match(css, /body\.home-mode #services \.service--admin/);
+
+/* New separate pages have their own routes, SEO and active UI; the directory stays short. */
+for (const slug of ['business-management','crm']) {
+  const output = read('public/'+slug+'/index.html');
+  const source = read(slug+'/index.html');
+  assert.equal(source,output,'Source/public page mismatch: '+slug);
+  assert.ok(output.includes('data-page="'+(slug==='crm'?'crm':'management')+'"'));
+  assert.ok(output.includes('https://ab-studio-portafolio.vercel.app/'+slug+'/'));
+  assert.match(output,/id="route-page"/);
+  assert.match(output,/id="homeInquiryForm"/);
+  assert.doesNotMatch(output,/id="services"/);
+  assert.ok(read('public/sitemap.xml').includes('https://ab-studio-portafolio.vercel.app/'+slug+'/'));
+  const entry=JSON.parse(read('vercel.json')).rewrites.find(x=>x.source==='/'+slug+'/');
+  assert.equal(entry?.destination,'/'+slug+'/index.html');
+  assert.ok(js.includes('"/'+slug+'/":'));
+}
+assert.match(js,/href="\/crm\/#crm-plans"/);
+assert.ok(!js.includes('bmServiceSpotlightMarkup(currentLang) + servicesChooserMarkup(currentLang)'));
 
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
