@@ -100,6 +100,14 @@ for (const route of routes) {
 // Verify complementary bilingual content on every dedicated page.
 for (const route of routes) {
   const detail = read(`public/${route}/index.html`);
+  // Management and CRM intentionally render their detailed sections from site.js.
+  // They still ship semantic HTML and noscript fallback on dedicated pages.
+  if (route === 'business-management' || route === 'crm') {
+    assert.match(detail, /id="route-page"/);
+    assert.match(detail, /<noscript>/);
+    assert.match(js, route === 'crm' ? /crmPanelMarkup\(currentLang\)/ : /bmServiceSpotlightMarkup\(currentLang\)/);
+    continue;
+  }
   assert.ok(detail.includes(`AB-STUDIO-COMPLEMENTARY-CONTENT:${route}`), `No complementary content: ${route}`);
   assert.ok(detail.includes('class="ab-detail-section'), `No detail section: ${route}`);
   assert.ok(detail.includes('data-ab-locale="en"'), `English detail missing: ${route}`);
