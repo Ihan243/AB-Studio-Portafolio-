@@ -11,18 +11,19 @@ function res(){
  status(code){this.statusCode=code;return this},json(value){this.body=value;return this}};
 }
 async function call(data,method='POST',origin='https://ab-studio-portafolio.vercel.app'){
- const out=res();await handler({method,headers:{origin},body:data},out);return out;
+ const out=res();await handler({method,headers:{origin,host:'ab-studio-portafolio.vercel.app'},body:data},out);return out;
 }
 (async()=>{
  const prev={url:process.env.SUPABASE_URL,key:process.env.SUPABASE_SECRET_KEY,fetch:global.fetch};
  try{
   delete process.env.SUPABASE_URL;delete process.env.SUPABASE_SECRET_KEY;
-  assert.equal((await call(valid,'GET')).statusCode,405);
+  const health=await call(valid,'GET');assert.equal(health.statusCode,200);assert.equal(health.body.configured,false);
   assert.equal((await call({...valid,consent:false})).statusCode,400);
   assert.equal((await call({...valid,email:'not-an-email'})).statusCode,400);
   assert.equal((await call({...valid,description:'short'})).statusCode,400);
   assert.equal((await call(valid,'POST','https://attacker.example')).statusCode,403);
   assert.equal((await call(valid)).statusCode,503);
+  const preview = res(); await handler({method:'POST',headers:{origin:'https://ab-studio-portafolio-jp92qlf0d-raulsandi2000-3282.vercel.app',host:'ab-studio-portafolio-jp92qlf0d-raulsandi2000-3282.vercel.app'},body:valid},preview); assert.equal(preview.statusCode,503);
   process.env.SUPABASE_URL='https://example.supabase.co';process.env.SUPABASE_SECRET_KEY='sb_secret_test_server_only';
   let inserts=0; global.fetch=async(url,opts)=>{inserts++;assert.match(String(url),/rest\/v1\/crm_leads/);const item=JSON.parse(opts.body);assert.equal(item.name,'Test Client');assert.equal(opts.headers.apikey,'sb_secret_test_server_only');assert.ok(!('Authorization' in opts.headers));assert.ok(!('consent' in item));return {ok:true,status:201}};
   const ok=await call(valid);assert.equal(ok.statusCode,201);assert.equal(ok.body.ok,true);assert.equal(inserts,1);
