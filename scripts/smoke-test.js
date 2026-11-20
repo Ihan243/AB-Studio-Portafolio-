@@ -575,3 +575,12 @@ assert.match(crmSecuritySchema, /Staff can update leads/);
 assert.match(crmIntake, /CRM_CAPTURE_ENABLED/);
 assert.match(js, /setCrmCaptureMode\(false\)/);
 assert.match(js, /if \(crmCaptureEnabled\)/);
+
+/* Guardrails for production CRM intake. */
+const crmRateLimitSql = read('supabase/migrations/20261120_crm_rate_limit.sql');
+assert.match(crmRateLimitSql,/security definer/i);
+assert.match(crmRateLimitSql,/revoke all on function public\.crm_rate_limit_check\(text\) from public, anon, authenticated/i);
+assert.match(crmRateLimitSql,/grant execute on function public\.crm_rate_limit_check\(text\) to service_role/i);
+assert.match(crmIntake,/CRM_RATE_LIMIT_ENABLED/);
+assert.match(crmIntake,/crm_rate_limit_check/);
+assert.match(js,/lastInquirySubmissionId/);
