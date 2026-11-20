@@ -156,6 +156,15 @@ assert.match(js, /data-bm-workflow/);
 assert.match(js, /data-inquiry-module/);
 assert.match(js, /inquiryAdmin\.addEventListener/);
 assert.match(css, /\.quote-section/);
+
+assert.match(css, /container-type:inline-size/); // cards respond to their actual column width
+assert.match(css, /@container \(max-width:720px\)/);
+assert.match(css, /\.quote-fieldset\{border:0!important/);
+assert.match(css, /\.quote-plan-card/);
+assert.match(css, /\.quote-step-heading/);
+assert.match(js, /quote-visually-hidden/);
+assert.match(js, /quote-plan-description/);
+
 assert.match(css, /\.service-chooser-card/);
 assert.match(css, /\.bm-workflow-board/);
 assert.match(css, /\.inquiry-extra-block/);
@@ -176,6 +185,8 @@ for (const lang of ['en','es']) {
   assert.match(sample,/data-q-email/);
   assert.match(sample,/data-q-wa/);
   assert.match(sample,/data-q-crm/);
+  assert.equal((sample.match(/class="quote-step-heading"/g)||[]).length,3);
+  assert.equal((sample.match(/class="quote-plan-card"/g)||[]).length,3);
 }
 function sampleQuote(plan='professional',seo=false,crm='none',admin=false){
   const fields={
