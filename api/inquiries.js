@@ -1,7 +1,6 @@
 // Public inquiry intake. Secrets must only be configured in Vercel environment variables.
-const crypto = require('node:crypto');
 const MAX_BODY = 12_000;
-const allowedHosts = new Set(['ab-studio-portafolio.vercel.app', 'localhost:3000', '127.0.0.1:3000']);
+const allowedHosts = new Set(['ab-studio-portafolio.vercel.app', 'localhost:3000', '127.0.0.1:3000', process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].filter(Boolean).map(host => host.replace(/^https?:\/\//, '').replace(/\/$/, '')));
 const text = (v,n=1000) => typeof v === 'string' ? v.trim().slice(0,n) : '';
 const emailOkay = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length <= 254;
 function response(res,code,body){res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json; charset=utf-8');return res.status(code).json(body)}
@@ -22,12 +21,12 @@ module.exports = async function inquiry(req,res){
   if(!['whatsapp','email'].includes(channel))return response(res,400,{error:'invalid_channel'});
   const submissionId=text(data.submission_id,36);
   if(!/^[0-9a-f]{8}-[0-9a-f-]{27,28}$/i.test(submissionId))return response(res,400,{error:'invalid_submission_id'});
-  const url=process.env.SUPABASE_URL, key=process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if(!url||!key)return response(res,503,{error:'crm_not_configured'});
+  const url=process.env.SUPABASE_URL, key=process.env.SUPABASE_SECRET_KEY;
+  if(!url||!key||!key.startsWith('sb_secret_'))return response(res,503,{error:'crm_not_configured'});
   let endpoint;try{endpoint=new URL('/rest/v1/crm_leads?on_conflict=submission_id',url);if(endpoint.protocol!=='https:')throw Error('https required');}catch{return response(res,503,{error:'crm_not_configured'});}
   const item={submission_id:submissionId,name,email,description,service,plan,channel,modules,source:'website',status:'new'};
   try{
-    const result=await fetch(endpoint,{method:'POST',headers:{'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json','Prefer':'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(item),signal:AbortSignal.timeout(8000)});
+    const result=await fetch(endpoint,{method:'POST',headers:{'apikey':key,'Content-Type':'application/json','Prefer':'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(item),signal:AbortSignal.timeout(8000)});
     if(!result.ok){console.error('CRM insert failed',result.status);return response(res,502,{error:'storage_unavailable'});}
     return response(res,201,{ok:true,submission_id:submissionId});
   }catch(e){console.error('CRM intake error',e?.name||'unknown');return response(res,502,{error:'storage_unavailable'});}
