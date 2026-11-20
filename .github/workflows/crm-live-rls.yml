@@ -1,0 +1,16 @@
+name: CRM Live Anonymous RLS
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  verify-anonymous-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check anonymous users cannot read protected CRM records
+        run: node scripts/crm-live-rls-test.js
