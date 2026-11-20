@@ -2306,3 +2306,12 @@ body[data-page="management"] #home-inquiry .inquiry-extra-block{
   #home-inquiry .inquiry-module-fieldset{grid-template-columns:1fr;padding:16px}
   #home-inquiry .home-inquiry-form .inquiry-module-fieldset label{min-height:44px}
 }
+
+/* CRM lead intake: readable, keyboard-friendly bilingual contact fields. */
+#home-inquiry .crm-contact-fields {display:grid;gap:10px;margin-bottom:16px;padding:16px;border:1px solid #5a645d;background:#323b35}
+#home-inquiry .crm-contact-fields>label {display:block;color:#f3f3ed;font-size:.8rem;font-weight:600}
+#home-inquiry .crm-contact-fields input:not([type=checkbox]) {display:block;width:100%;min-height:44px;padding:11px 13px;border:1px solid #9aa69b;background:#fffdf8;color:#252522;border-radius:4px}
+#home-inquiry .crm-consent {display:flex!important;gap:10px;align-items:flex-start;color:#f1f1ec}
+#home-inquiry .crm-consent input {width:18px;height:18px;flex-shrink:0;margin-top:2px}
+#home-inquiry .crm-consent a {color:#e2eada;text-decoration:underline}
+#crmLeadStatus {font-size:.8rem;color:#e7d4a3;margin:2px 0 0}

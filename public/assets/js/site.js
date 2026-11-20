@@ -1148,7 +1148,32 @@ function syncPublishedPrices(){
       </div>
     </div>`;
     const inquiryFields = homeInquiryForm.querySelector(".inquiry-fields");
+    inquiryFields.insertAdjacentHTML("afterbegin", `<div class="crm-contact-fields">
+      <label for="crmLeadName">Name / Nombre</label><input id="crmLeadName" name="crmName" autocomplete="name" maxlength="120" required placeholder="Your name / Tu nombre">
+      <label for="crmLeadEmail">Email / Correo electrónico</label><input id="crmLeadEmail" name="crmEmail" type="email" autocomplete="email" maxlength="254" required placeholder="name@example.com">
+      <label class="crm-consent"><input id="crmLeadConsent" type="checkbox" required><span>I agree to AB Studio storing my inquiry to respond to me. / Acepto que AB Studio guarde mi solicitud para responderme. <a href="/privacidad/">Privacy / Privacidad</a></span></label>
+      <div style="display:none" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p id="crmLeadStatus" role="status" aria-live="polite"></p>
+    </div>`);
     inquiryFields.insertAdjacentHTML("beforeend", inquiryExtras);
+    // Keep the public contact experience working when CRM is not explicitly active.
+    // Preview reads the configuration from the same deployment; Production is fail-closed.
+    let crmCaptureEnabled = false;
+    const crmContactSection = homeInquiryForm.querySelector('.crm-contact-fields');
+    const crmNameField = homeInquiryForm.querySelector('#crmLeadName');
+    const crmEmailField = homeInquiryForm.querySelector('#crmLeadEmail');
+    const crmConsentField = homeInquiryForm.querySelector('#crmLeadConsent');
+    function setCrmCaptureMode(enabled) {
+      crmCaptureEnabled = Boolean(enabled);
+      crmContactSection.style.display = crmCaptureEnabled ? '' : 'none';
+      [crmNameField, crmEmailField, crmConsentField].forEach(field => { field.required = crmCaptureEnabled; });
+    }
+    setCrmCaptureMode(false);
+    fetch('/api/inquiries', {cache:'no-store'})
+      .then(response => response.ok ? response.json() : null)
+      .then(result => setCrmCaptureMode(result?.ok === true && result?.configured === true))
+      .catch(() => setCrmCaptureMode(false));
+
     const inquiryPlan = document.getElementById("inquiryPlan");
     syncPublishedPrices();
     const inquiryAdmin = document.getElementById("inquiryAdmin");
@@ -1248,7 +1273,7 @@ function syncPublishedPrices(){
       if (isHome || isServiceInquiry) homeInquiryMessage.focus({preventScroll:true});
     }
     document.querySelectorAll('a[href="#contact"],a[data-inquiry-service],a[data-inquiry-plan]').forEach(link => link.addEventListener('click', jumpToInquiry));
-    homeInquiryForm.addEventListener('submit', event => {
+    homeInquiryForm.addEventListener('submit', async event => {
       event.preventDefault();
       const page = document.body.dataset.page;
       const opening = page === 'crm'
@@ -1263,6 +1288,8 @@ function syncPublishedPrices(){
       const modulesSelected=[...inquiryModules.querySelectorAll('[data-inquiry-module]:checked')].map(input=>input.closest('label')?.querySelector('span')?.textContent.trim()).filter(Boolean);
       const lineItems=[
         opening,
+        `Name / Nombre: ${String(homeInquiryForm.querySelector('#crmLeadName')?.value || '').trim()}`,
+        `Email / Correo: ${String(homeInquiryForm.querySelector('#crmLeadEmail')?.value || '').trim()}`,
         service ? `${currentLang === 'es' ? 'Servicio' : 'Service'}: ${service}` : '',
         selectedPlan ? `${currentLang === 'es' ? 'Plan web' : 'Website plan'}: ${selectedPlan}` : '',
         ...(page === 'crm' ? [] : [`${currentLang === 'es' ? 'Panel administrativo opcional' : 'Optional management dashboard'}: ${inquiryAdmin.checked ? (currentLang === 'es' ? 'Sí, cotizar por separado' : 'Yes, quote separately') : (currentLang === 'es' ? 'No' : 'No')}`]),
@@ -1271,6 +1298,40 @@ function syncPublishedPrices(){
       ];
       const message = lineItems.filter(Boolean).join('\n\n');
       const channel = event.submitter?.dataset.inquiryChannel === 'email' ? 'email' : 'whatsapp';
+      const details = new FormData(homeInquiryForm);
+      const leadPayload = {
+        submission_id: crypto.randomUUID(),
+        name: String(details.get('crmName') || '').trim(),
+        email: String(details.get('crmEmail') || '').trim(),
+        description, service: inquiryType.value || page, plan: selectedPlan,
+        channel, modules: [...inquiryModules.querySelectorAll('[data-inquiry-module]:checked')].map(x => x.value),
+        consent: document.getElementById('crmLeadConsent').checked,
+        website: String(details.get('website') || '')
+      };
+      const status = document.getElementById('crmLeadStatus');
+      const submitButtons = [...homeInquiryForm.querySelectorAll('button[type="submit"]')];
+      submitButtons.forEach(button => button.disabled = true);
+      if (crmCaptureEnabled) {
+      let stored = false;
+      let failureCode = 'network_error';
+      try {
+        status.textContent = currentLang === 'es' ? 'Registrando solicitud...' : 'Saving inquiry...';
+        const response = await fetch('/api/inquiries', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(leadPayload)});
+        const result = await response.json().catch(() => null);
+        stored = response.ok && result?.ok === true;
+        if (!stored) failureCode = result?.error || ('http_' + response.status);
+      } catch (error) { failureCode = 'network_error'; }
+      finally { submitButtons.forEach(button => button.disabled = false); }
+      if (!stored) {
+        status.textContent = (currentLang === 'es' ? 'No pudimos confirmar que la solicitud se haya guardado en el CRM.' : 'We could not confirm that your inquiry was saved in our CRM.') + ' [' + failureCode + ']';
+        const proceed = window.confirm(currentLang === 'es'
+          ? 'No pudimos confirmar el registro en el CRM. ¿Deseas continuar por WhatsApp o correo?'
+          : 'We could not confirm CRM storage. Continue to WhatsApp or email?');
+        if (!proceed) return;
+      } else {
+        status.textContent = currentLang === 'es' ? 'Solicitud registrada. Abriendo el canal elegido...' : 'Inquiry recorded. Opening your selected channel...';
+      }
+      }
       if (channel === 'email') {
         const subject = page === 'crm' ? (currentLang === 'es' ? 'Consulta sobre CRM — AB Studio' : 'CRM inquiry — AB Studio')
           : page === 'management' ? (currentLang === 'es' ? 'Consulta sobre Business Management — AB Studio' : 'Business Management inquiry — AB Studio')

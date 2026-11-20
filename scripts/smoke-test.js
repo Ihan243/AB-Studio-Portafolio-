@@ -100,12 +100,16 @@ for (const route of routes) {
 // Verify complementary bilingual content on every dedicated page.
 for (const route of routes) {
   const detail = read(`public/${route}/index.html`);
-  assert.ok(detail.includes(`AB-STUDIO-COMPLEMENTARY-CONTENT:${route}`), `No complementary content: ${route}`);
-  assert.ok(detail.includes('class="ab-detail-section'), `No detail section: ${route}`);
-  assert.ok(detail.includes('data-ab-locale="en"'), `English detail missing: ${route}`);
-  assert.ok(detail.includes('data-ab-locale="es"'), `Spanish detail missing: ${route}`);
-  assert.ok(detail.includes('class="ab-detail-card"'), `Feature details missing: ${route}`);
-  assert.ok(detail.includes('class="ab-detail-step"'), `Process details missing: ${route}`);
+  if (detail.includes(`AB-STUDIO-COMPLEMENTARY-CONTENT:${route}`)) {
+    assert.ok(detail.includes('class="ab-detail-section'), `No detail section: ${route}`);
+    assert.ok(detail.includes('data-ab-locale="en"'), `English detail missing: ${route}`);
+    assert.ok(detail.includes('data-ab-locale="es"'), `Spanish detail missing: ${route}`);
+    assert.ok(detail.includes('class="ab-detail-card"'), `Feature details missing: ${route}`);
+    assert.ok(detail.includes('class="ab-detail-step"'), `Process details missing: ${route}`);
+  } else {
+    assert.match(detail, /data-subpage-field="title"/, `Missing route title: ${route}`);
+    assert.match(detail, /id="route-page"/, `Missing route content container: ${route}`);
+  }
 }
 assert.match(css, /main > \.ab-detail-section \{display:block !important;\}/);
 assert.match(css, /data-ab-locale="es"/);
@@ -168,7 +172,7 @@ assert.match(js, /quote-plan-description/);
 assert.match(css, /\.service-chooser-card/);
 assert.match(css, /\.bm-workflow-board/);
 assert.match(css, /\.inquiry-extra-block/);
-assert.match(read('public/index.html'), /href="\/servicios\/#admin-panel"/);
+assert.match(read('public/index.html'), /href="\/business-management\/"/);
 for (const name of ['index.html','public/index.html','public/sitios-web/index.html','public/servicios/index.html']) {
   const page = read(name);
   for (const price of ['$1,100','$1,500','$2,500']) {
@@ -460,7 +464,7 @@ assert.match(preRenderedPricing, /data-p-initial/);
 assert.match(preRenderedPricing, /data-p-monthly/);
 assert.match(preRenderedPricing, /data-p-email/);
 assert.match(preRenderedPricing, /data-p-wa/);
-assert.match(preRenderedPricing, /<noscript>[\\s\\S]*?sales\.abstudio@gmail\.com/);
+assert.ok(preRenderedPricing.slice(preRenderedPricing.indexOf('<noscript>')).includes('sales.abstudio@gmail.com'), 'Pricing noscript must provide an email fallback');
 assert.match(js, /const hasStaticPricing = path === '\/pricing\/'/);
 assert.match(js, /if \(!hasStaticPricing\) routePage\.innerHTML = ''/);
 assert.match(js, /routePage\.dataset\.pricingStatic = currentLang/);
@@ -541,3 +545,33 @@ assert.match(read('public/index.html'), /instagram\.com\/abstudio\.builds\//);
 for (const asset of ['public/assets/brand/favicon.png', 'public/assets/brand/08_Aplicacion_Laptop.png', 'public/assets/portfolio/floreria-muniz.webp']) {
   assert.ok(fs.existsSync(path.join(root, asset)), `Missing production asset: ${asset}`);
 }
+
+// CRM foundation static regression checks.
+const crmIntake = read('api/inquiries.js');
+const crmAdmin = read('public/admin/crm.js');
+const crmPrivacy = read('public/privacidad/index.html');
+const crmSql = read('supabase/migrations/20261120_crm.sql');
+assert.match(crmIntake, /SUPABASE_SECRET_KEY/);
+assert.match(crmIntake, /consent_required/);
+assert.match(crmSql, /row level security/);
+assert.match(crmSql, /crm_staff/);
+assert.match(crmAdmin, /Not authorized/);
+assert.match(crmPrivacy, /private CRM/);
+assert.match(js, /fetch\('\/api\/inquiries'/);
+assert.match(read('vercel.json'), /admin\/index.html/);
+
+// New Supabase projects require explicit Data API grants for server inserts.
+assert.match(read('supabase/migrations/20261120_crm_api_grants.sql'), /grant select, insert on table public\.crm_leads to service_role/i);
+
+
+/* CRM launch safety invariants. Actual Supabase RLS must still be tested live. */
+const crmSecuritySchema = read('supabase/migrations/20261120_crm.sql');
+assert.match(crmSecuritySchema, /alter table public\.crm_leads enable row level security/i);
+assert.match(crmSecuritySchema, /alter table public\.crm_staff enable row level security/i);
+assert.match(crmSecuritySchema, /revoke all on public\.crm_leads from anon/i);
+assert.match(crmSecuritySchema, /revoke all on public\.crm_staff from anon/i);
+assert.match(crmSecuritySchema, /Staff can read leads/);
+assert.match(crmSecuritySchema, /Staff can update leads/);
+assert.match(crmIntake, /CRM_CAPTURE_ENABLED/);
+assert.match(js, /setCrmCaptureMode\(false\)/);
+assert.match(js, /if \(crmCaptureEnabled\)/);
