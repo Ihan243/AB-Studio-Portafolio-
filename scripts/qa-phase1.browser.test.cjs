@@ -40,7 +40,7 @@ async function main(){
    await page.goto(base+'/pricing.html',{waitUntil:'domcontentloaded'});
    assert.equal(await page.locator('.ab-pricing-service').count(),4);
    assert.equal(await page.locator('.ab-pricing-module').count(),6);
-   const heading=page.locator('#pricing-overview h2');
+   const heading=page.locator('#pricing-overview .ab-pricing-header h2');
    await page.waitForSelector('[data-p-initial]');
    await page.locator('[data-p-module="catalog"]').check();
    await page.locator('[data-p-module="orders"]').check();
