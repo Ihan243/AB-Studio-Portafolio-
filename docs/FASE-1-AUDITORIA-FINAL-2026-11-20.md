@@ -28,12 +28,9 @@ Las otras correcciones altas se prepararon **solo en la rama de QA** y se someti
 | Lighthouse / SEO | Home y Pricing en servidor local; título, descripción, canonical, Open Graph de las páginas principales | El informe Lighthouse **no** es una medición del dominio productivo |
 | Producción | HTTP real con GitHub Actions, incluyendo rutas conocidas y 404 esperado | **Fallo reproducido**, detallado abajo |
 
-**Ejecuciones:**  
-- Chromium y controles estáticos: https://github.com/Ihan243/AB-Studio-Portafolio-/actions/runs/44707926023  
-- Lighthouse con corrección de contraste aprobada: https://github.com/Ihan243/AB-Studio-Portafolio-/actions/runs/44707926023  
-- Verificación HTTP de producción: https://github.com/Ihan243/AB-Studio-Portafolio-/actions/runs/44708202727
+**Ejecución de referencia final (código y reporte actualizados):** https://github.com/Ihan243/AB-Studio-Portafolio-/actions/runs/44708886284 — PASS en `static-checks`, `browser-checks` y `lighthouse-basics`; FAIL exclusivamente en `production-http-checks` (dos rutas de Pricing).
 
-### Estados HTTP reales (20/11/2026, 09:08 UTC)
+### Estados HTTP reales (20/11/2026, 09:13 UTC)
 
 | URL | HTTP | Interpretación |
 |---|---:|---|
@@ -51,8 +48,8 @@ Resultados de la ejecución posterior a la corrección del contraste en Pricing 
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
 |---|---:|---:|---:|---:|
-| Home | 67 | 100 | 100 | 100 |
-| Pricing | 81 | 98 | 100 | 100 |
+| Home | 70 | 100 | 100 | 100 |
+| Pricing | 86 | 98 | 100 | 100 |
 
 Se confirmó que el aviso de contraste en Pricing desapareció. Quedan observaciones de Lighthouse de **orden de encabezados** y **nombre accesible frente a etiqueta visible** en Pricing (calificadas como Medio). Rendimiento local: imágenes sobredimensionadas, CSS bloqueante, árbol de dependencias y reflows.
 
@@ -67,7 +64,7 @@ Se confirmó que el aviso de contraste en Pricing desapareció. Quedan observaci
 | **R05 · CTA móvil EN/ES** | La clave \`mobileCta\` aparece en HTML pero no en los diccionarios; el botón puede conservar texto inglés al seleccionar español. | Medio | Buscar \`data-copy="mobileCta"\` y compararlo con \`copy.es\` y \`copy.en\`. | Añadir traducciones EN/ES a la misma clave, después de aprobación para corregir medios. |
 | **R06 · Demos externas** | Cuatro URLs de preview externas no se pudieron comprobar; pueden requerir autorización, caducar o fallar. | Medio / no confirmado | Abrir las demos de Cuervos Garden, HK, Curiel y Magnolia en sesión anónima. | Verificación manual de HTTP, login y capturas; sustituir solo las realmente rotas por URL pública o captura local. |
 | **R07 · Accesibilidad Pricing** | Un subtítulo H4 salta niveles; la marca y el botón de idioma usan nombres accesibles que no incluyen el texto visible. | Medio | Ejecutar Lighthouse accessibility en \`/pricing.html\`: \`heading-order\` y \`label-content-name-mismatch\`. | Ajustar jerarquía semántica y nombres accesibles, sin rediseño, si se autoriza arreglar medios. |
-| **R08 · Rendimiento** | Imágenes sobredimensionadas (logo 1024×1024 mostrado a ~39×39), CSS bloqueante y reflows; el resultado local fue 67 Home / 81 Pricing. | Medio | Lighthouse local; revisar \`image-delivery-insight\`, \`render-blocking-insight\`, LCP y \`forced-reflow-insight\`. | Versiones de imagen responsivas, CSS crítico y revisión de carga; no se modifica por regla de alcance. |
+| **R08 · Rendimiento** | Imágenes sobredimensionadas (logo 1024×1024 mostrado a ~39×39), CSS bloqueante y reflows; el resultado local más reciente fue 70 Home / 86 Pricing. | Medio | Lighthouse local; revisar \`image-delivery-insight\`, \`render-blocking-insight\`, LCP y \`forced-reflow-insight\`. | Versiones de imagen responsivas, CSS crítico y revisión de carga; no se modifica por regla de alcance. |
 | **R09 · SEO de páginas legales** | Privacidad y Condiciones cuentan con title/description/canonical, pero no con todos los Open Graph/Twitter metadata de las páginas principales. | Medio | Revisar HTML de \`/privacidad/\` y \`/condiciones/\`. | Completar metadatos sociales si se aprueba corrección de medios. El contenido legal necesita revisión humana. |
 | **R10 · Página 404** | 404 responde como error correctamente en local, pero su HTML básico carece de descripción y metadatos sociales. | Bajo | Leer \`public/404.html\` y visitar ruta desconocida. | Mantener \`noindex\` y añadir texto descriptivo únicamente si se desea. |
 | **R11 · Prueba externa no disponible** | Los recursos de proveedores preview no se pudieron inspeccionar mediante herramientas de consulta web, no hay prueba de funcionamiento real. | Medio / riesgo | Abrir desde navegador anónimo o CI con pruebas URL individualizadas. | Completar validación antes de considerar aprobados enlaces externos; no inventar estados. |
@@ -75,7 +72,7 @@ Se confirmó que el aviso de contraste en Pricing desapareció. Quedan observaci
 ## Verificaciones pendientes / criterios de aceptación
 
 1. **Bloqueante (Alto):** resolver los dos HTTP 404 de Pricing en producción y ejecutar nuevamente \`production-http-checks\` con resultado PASS. Requiere revisar **Vercel** y el despliegue asociado, sin cambiar \`main\` directamente.
-2. Validar resultado del CI más reciente sobre los últimos cambios de pruebas de viewport (15 rutas × 4 anchos) y servidor.
+2. **Comprobado:** la última ejecución de Chromium pasó las **15 rutas × 4 anchos (60 visitas)** y los casos 400/404 del servidor local. Esta cobertura automatizada no reemplaza una revisión visual manual.
 3. Verificación visual manual con capturas en 360, 390, 768 y 1024 px en navegadores/dispositivos representativos. Los asserts de ancho no garantizan por sí solos un diseño correcto.
 4. Probar las cuatro demos externas desde sesión anónima y registrar resultados; no declararlas rotas sin prueba.
 5. El formulario actual **no registra solicitudes** por diseño. Base de datos, notificaciones, antifraude del formulario persistente y panel privado pertenecen expresamente a Fase 2.
