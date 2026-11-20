@@ -833,7 +833,12 @@ function syncPublishedPrices(){
         name:root.querySelector("[data-q-name]").value,
         notes:root.querySelector("[data-q-notes]").value
       }));
-      routePage.innerHTML = '';
+      // Pricing ships with real HTML. Keep it visible even when route hydration is delayed.
+      // Only replace the static content when switching language or changing routes.
+      const hasStaticPricing = path === '/pricing/' &&
+        routePage.dataset.pricingStatic === currentLang &&
+        !!routePage.querySelector('.ab-pricing-content');
+      if (!hasStaticPricing) routePage.innerHTML = '';
       if (isHome) {
         const homePlans=document.querySelector("main #plans .wrap");
         if (homePlans) {homePlans.querySelector(".quote-section")?.remove();homePlans.insertAdjacentHTML("beforeend",quoteMarkup(currentLang,"home"));}
@@ -841,7 +846,12 @@ function syncPublishedPrices(){
       document.querySelectorAll('#services .service').forEach(card => card.hidden = false);
       if (path === '/proyectos/') routePage.innerHTML = portfolioCtaMarkup(currentLang);
       if (path === '/servicios/') routePage.innerHTML = servicesChooserMarkup(currentLang);
-      if (path === '/pricing/') routePage.innerHTML = pricingPageMarkup(currentLang);
+      if (path === '/pricing/') {
+        if (!hasStaticPricing) routePage.innerHTML = pricingPageMarkup(currentLang);
+        routePage.dataset.pricingStatic = currentLang;
+      } else {
+        delete routePage.dataset.pricingStatic;
+      }
       if (path === '/business-management/') routePage.innerHTML = bmServiceSpotlightMarkup(currentLang) + adminPanelMarkup(currentLang) + quoteMarkup(currentLang,"services") + adminGuideMarkup(currentLang);
       if (path === '/crm/') routePage.innerHTML = crmPanelMarkup(currentLang);
       if (path === '/sitios-web/') routePage.innerHTML = websitePageMarkup(currentLang);

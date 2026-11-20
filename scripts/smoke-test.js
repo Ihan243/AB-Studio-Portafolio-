@@ -443,6 +443,26 @@ for(const route of ["pricing/index.html","public/pricing/index.html"]){
   assert.match(html,/data-copy="nav\.pricing"/);
 }
 assert.equal(read("pricing/index.html"),read("public/pricing/index.html"));
+
+/* Pricing must have meaningful HTML even if site.js fails before route hydration. */
+const preRenderedPricing=read("public/pricing/index.html");
+assert.match(preRenderedPricing, /data-pricing-static="en"/);
+assert.match(preRenderedPricing, /class="ab-pricing-content"/);
+assert.equal((preRenderedPricing.match(/class="ab-pricing-service"/g)||[]).length,4);
+assert.equal((preRenderedPricing.match(/class="ab-pricing-module"/g)||[]).length,6);
+assert.equal((preRenderedPricing.match(/class="ab-pricing-web-plan/g)||[]).length,3);
+assert.equal((preRenderedPricing.match(/class="ab-pricing-crm-plan/g)||[]).length,3);
+assert.match(preRenderedPricing, /id="build-estimate"/);
+assert.match(preRenderedPricing, /data-pricing-root/);
+assert.match(preRenderedPricing, /data-p-initial/);
+assert.match(preRenderedPricing, /data-p-monthly/);
+assert.match(preRenderedPricing, /data-p-email/);
+assert.match(preRenderedPricing, /data-p-wa/);
+assert.match(preRenderedPricing, /<noscript>[\\s\\S]*?sales\.abstudio@gmail\.com/);
+assert.match(js, /const hasStaticPricing = path === '\/pricing\/'/);
+assert.match(js, /if \(!hasStaticPricing\) routePage\.innerHTML = ''/);
+assert.match(js, /routePage\.dataset\.pricingStatic = currentLang/);
+
 const pricingRoutes=["index.html","public/index.html","servicios/index.html","public/servicios/index.html","crm/index.html","public/crm/index.html","business-management/index.html","public/business-management/index.html","sitios-web/index.html","public/sitios-web/index.html"];
 for(const route of pricingRoutes){
   const html=read(route);
