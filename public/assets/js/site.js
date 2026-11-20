@@ -1294,14 +1294,17 @@ function syncPublishedPrices(){
       const submitButtons = [...homeInquiryForm.querySelectorAll('button[type="submit"]')];
       submitButtons.forEach(button => button.disabled = true);
       let stored = false;
+      let failureCode = 'network_error';
       try {
         status.textContent = currentLang === 'es' ? 'Registrando solicitud...' : 'Saving inquiry...';
         const response = await fetch('/api/inquiries', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(leadPayload)});
-        stored = response.ok && (await response.json()).ok === true;
-      } catch (error) { stored = false; }
+        const result = await response.json().catch(() => null);
+        stored = response.ok && result?.ok === true;
+        if (!stored) failureCode = result?.error || ('http_' + response.status);
+      } catch (error) { failureCode = 'network_error'; }
       finally { submitButtons.forEach(button => button.disabled = false); }
       if (!stored) {
-        status.textContent = currentLang === 'es' ? 'No se pudo guardar la solicitud en el CRM.' : 'Your inquiry could not be saved in our CRM.';
+        status.textContent = (currentLang === 'es' ? 'No se pudo guardar la solicitud en el CRM.' : 'Your inquiry could not be saved in our CRM.') + ' [' + failureCode + ']';
         const proceed = window.confirm(currentLang === 'es'
           ? 'No se guardó tu solicitud. ¿Deseas continuar por WhatsApp o correo de todos modos?'
           : 'Your inquiry was not saved. Continue to WhatsApp or email anyway?');
