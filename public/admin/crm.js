@@ -17,7 +17,14 @@ function savePublicSettings(url,key){
 async function initialize(){
   visible('boot');
   let config=null;
-  try{
+  // Static configuration is bundled with the published site, so login works
+  // even when the hosting provider does not deploy the optional API endpoint.
+  const bundled=window.AB_STUDIO_CRM_PUBLIC_CONFIG;
+  if(bundled && validUrl(bundled.projectUrl) && validPublicKey(bundled.publishableKey)){
+    config={url:bundled.projectUrl,key:bundled.publishableKey};
+    configuredFromServer=true;
+  }
+  if(!config) try{
     const response=await fetch('/api/crm-public-config',{cache:'no-store'});
     if(response.ok){
       const data=await response.json();
