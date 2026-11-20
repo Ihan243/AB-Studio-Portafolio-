@@ -1,3 +1,4 @@
+const { createHmac } = require('node:crypto');
 // Public inquiry intake. Secrets must only be configured in Vercel environment variables.
 const MAX_BODY = 12_000;
 // Support changing Vercel Preview URLs while blocking cross-site browser posts.
@@ -9,7 +10,7 @@ function configured() {
   const hasCredentials = !!(process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY?.startsWith('sb_secret_'));
   // Do not activate public lead capture just because credentials were copied into Production.
   // Public launch requires a deliberate opt-in after security, abuse and backup checks.
-  return hasCredentials && (process.env.VERCEL_ENV !== 'production' || process.env.CRM_CAPTURE_ENABLED === 'true');
+  return hasCredentials && (process.env.VERCEL_ENV !== 'production' || (process.env.CRM_CAPTURE_ENABLED === 'true' && process.env.CRM_RATE_LIMIT_ENABLED === 'true'));
 }
 const text = (v,n=1000) => typeof v === 'string' ? v.trim().slice(0,n) : '';
 const emailOkay = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length <= 254;
@@ -43,6 +44,37 @@ module.exports = async function inquiry(req,res){
   const url=process.env.SUPABASE_URL, key=process.env.SUPABASE_SECRET_KEY;
   if(!configured()||!url||!key)return response(res,503,{error:'crm_not_configured'});
   let endpoint;try{endpoint=new URL('/rest/v1/crm_leads?on_conflict=submission_id',url);if(endpoint.protocol!=='https:')throw Error('https required');}catch{return response(res,503,{error:'crm_not_configured'});}
+  // Production throttle: atomic, database-backed, fail-closed. Never stores raw IP/email.
+  // The database RPC must be created first (see supabase/migrations/20261120_crm_rate_limit.sql).
+  if(process.env.VERCEL_ENV === 'production' || process.env.CRM_RATE_LIMIT_ENABLED === 'true'){
+    try{
+      const ip=String(req.headers['x-vercel-forwarded-for'] || req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || '')
+        .split(',')[0].trim().slice(0,100);
+      const identities=['email:'+email.toLowerCase()];
+      if(ip)identities.push('ip:'+ip);
+      for(const identity of identities){
+        const fingerprint=createHmac('sha256',key).update(identity).digest('hex');
+        const limitResponse=await fetch(new URL('/rest/v1/rpc/crm_rate_limit_check',url),{
+          method:'POST',
+          headers:{'apikey':key,'Content-Type':'application/json'},
+          body:JSON.stringify({p_fingerprint:fingerprint}),
+          signal:AbortSignal.timeout(5000)
+        });
+        if(!limitResponse.ok){
+          console.error('CRM throttle unavailable',limitResponse.status);
+          return response(res,503,{error:'rate_limit_unavailable'});
+        }
+        const granted=await limitResponse.json();
+        if(granted!==true){
+          res.setHeader('Retry-After','3600');
+          return response(res,429,{error:'rate_limited'});
+        }
+      }
+    }catch(error){
+      console.error('CRM throttle exception',error?.name||'unknown');
+      return response(res,503,{error:'rate_limit_unavailable'});
+    }
+  }
   const item={submission_id:submissionId,name,email,description,service,plan,channel,modules,source:'website',status:'new'};
   try{
     const result=await fetch(endpoint,{method:'POST',headers:{'apikey':key,'Content-Type':'application/json','Prefer':'resolution=ignore-duplicates,return=minimal'},body:JSON.stringify(item),signal:AbortSignal.timeout(8000)});
