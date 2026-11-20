@@ -19,6 +19,7 @@ jobs:
       - name: Existing smoke checks
         run: node scripts/smoke-test.js
       - name: Phase 1 static QA
+        if: always()
         run: node scripts/qa-phase1.test.js
 
   browser-checks:
