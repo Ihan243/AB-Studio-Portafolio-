@@ -166,7 +166,7 @@ const quoteTools=new Function(js.slice(quoteStart,quoteEnd)+';return {quoteMarku
 for (const lang of ['en','es']) {
   const sample=quoteTools.quoteMarkup(lang,'test');
   assert.equal((sample.match(/data-q-plan/g)||[]).length,3);
-  assert.equal((sample.match(/data-q-module(?=[\\s>])/g)||[]).length,6);
+  assert.equal(sample.split('data-q-module ').length-1,6);
   assert.match(sample,/data-q-email/);
   assert.match(sample,/data-q-wa/);
   assert.match(sample,/data-q-crm/);
