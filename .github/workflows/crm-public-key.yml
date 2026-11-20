@@ -1,0 +1,16 @@
+name: CRM Supabase Public Key Verification
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  check-supabase-public-key:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate public Supabase key against Auth API
+        run: node scripts/crm-key-diagnostic.js
