@@ -1752,3 +1752,24 @@ body.theme-dark .addon-compare,body.theme-dark .website-addon-home{background:va
 @media(max-width:1050px){.service-chooser-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:660px){.service-chooser-grid{grid-template-columns:1fr}.service-chooser-card{min-height:0;padding:25px}.service-chooser h2{font-size:2.65rem}.inquiry-module-fieldset{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.service-chooser-card{transition:none}.service-chooser-card:hover{transform:none}}
+
+
+/* Fictional order -> inventory -> revenue walkthrough */
+.bm-workflow{background:var(--paper-deep)}
+.bm-workflow-board{background:#f9f6ef;border:1px solid var(--line);border-radius:12px;padding:clamp(25px,4vw,45px);color:#263127}
+.bm-workflow-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.bm-workflow-kpis>div{background:#e5e9df;border-radius:8px;padding:22px;display:grid;gap:13px;min-width:0}
+.bm-workflow-kpis small{font-size:.72rem;color:#586757;font-weight:750;line-height:1.4}
+.bm-workflow-kpis strong{font:400 clamp(2rem,3.8vw,3.6rem)/1.1 var(--serif);color:#263b2b}
+.bm-workflow-progress{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #d1d9c9;margin-top:25px;padding-top:25px}
+.bm-workflow-progress>div:first-child{flex:1;min-width:0}
+.bm-workflow-progress small{font-size:.72rem;color:#55664c}
+.bm-workflow-progress h3{font:400 clamp(1.55rem,2.5vw,2.3rem) var(--serif);line-height:1.25;margin:12px 0}
+.bm-workflow-progress p{color:#506a4d;font-size:.8rem}
+.bm-workflow-actions{display:grid;gap:8px;min-width:230px}
+.bm-workflow-actions .button{display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.73rem;min-height:44px;text-align:center}
+.bm-workflow-actions .button:disabled{cursor:not-allowed;opacity:.45}
+.bm-workflow .bm-clarification{color:var(--ink-soft);font-size:.76rem}
+body.theme-dark .bm-workflow-board{background:#f9f6ef;color:#263127}
+@media(max-width:800px){.bm-workflow-progress{flex-direction:column;align-items:stretch}.bm-workflow-actions{grid-template-columns:1fr}.bm-workflow-kpis>div{padding:17px}}
+@media(max-width:500px){.bm-workflow-kpis{gap:8px}.bm-workflow-kpis>div{padding:13px 10px}.bm-workflow-kpis small{font-size:.62rem}.bm-workflow-kpis strong{font-size:2rem}}
