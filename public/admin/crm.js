@@ -2,27 +2,80 @@
 'use strict';
 const $ = s => document.querySelector(s);
 const stages=['new','contacted','proposal','won','lost'];
-const els={setup:$('#setup'),login:$('#login'),workspace:$('#workspace'),notice:$('#notice'),logout:$('#logout')};
-let project=null,anon=null,token=null,leads=[];
+const els={boot:$('#boot'),setup:$('#setup'),login:$('#login'),workspace:$('#workspace'),notice:$('#notice'),logout:$('#logout')};
+const CACHE_KEY='abstudio.crm.public-config.v1';
+let project=null,anon=null,token=null,leads=[],configuredFromServer=false;
 const message=s=>{els.notice.textContent=s};
-const visible=section=>{for(const k of ['setup','login','workspace'])els[k].hidden=k!==section;els.logout.hidden=section!=='workspace'};
-const validUrl=u=>{try{const v=new URL(u);return v.protocol==='https:' && /^[a-z0-9-]+\.supabase\.co$/i.test(v.hostname) && v.pathname==='/'}catch{return false}};
+const visible=section=>{for(const k of ['boot','setup','login','workspace'])els[k].hidden=k!==section;els.logout.hidden=section!=='workspace'};
+const validUrl=u=>{try{const v=new URL(u);return v.protocol==='https:' && /^[a-z0-9-]+\\.supabase\\.co$/i.test(v.hostname) && v.pathname==='/'}catch{return false}};
+const validPublicKey=k=>typeof k==='string' && k.startsWith('sb_publishable_') && k.length>20;
+function savePublicSettings(url,key){
+  project=url;anon=key;
+  // Only the project URL and publishable (public) key are remembered, never passwords or tokens.
+  try{localStorage.setItem(CACHE_KEY,JSON.stringify({url,key}))}catch{}
+}
+async function initialize(){
+  visible('boot');
+  let config=null;
+  try{
+    const response=await fetch('/api/crm-public-config',{cache:'no-store'});
+    if(response.ok){
+      const data=await response.json();
+      if(data.ok===true && validUrl(data.projectUrl) && validPublicKey(data.publishableKey)){
+        config={url:data.projectUrl,key:data.publishableKey};
+        configuredFromServer=true;
+      }
+    }
+  }catch{}
+  if(!config){
+    try{
+      const saved=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
+      if(saved && validUrl(saved.url) && validPublicKey(saved.key))config=saved;
+    }catch{}
+  }
+  if(config){
+    savePublicSettings(config.url,config.key);
+    $('#reset-config').hidden=configuredFromServer;
+    visible('login');
+    message('');
+  }else{
+    visible('setup');
+    message('One-time setup required. Your password is never stored here.');
+  }
+}
 async function request(path,options={}){
- const r=await fetch(project+path,{...options,headers:{apikey:anon,'Authorization':'Bearer '+(token||anon),'Content-Type':'application/json',...options.headers},cache:'no-store'});
+ const r=await fetch(project+path,{...options,headers:{apikey:anon,'Authorization':'Bearer '+token,'Content-Type':'application/json',...options.headers},cache:'no-store'});
  if(!r.ok){if(r.status===401||r.status===403)throw new Error('Not authorized. Check team membership or sign in again.');throw new Error('Request failed ('+r.status+').')}
  return r.status===204?null:r.json();
 }
-$('#setup-form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const u=String(f.get('url')).trim().replace(/\/$/,'');const key=String(f.get('anon')).trim();if(!validUrl(u)||!key.startsWith('sb_publishable_')){message('Use a valid https://PROJECT.supabase.co URL and sb_publishable_ key.');return;}project=u;anon=key;visible('login');message('Project configured for this tab. Sign in to continue.');});
-$('#reset-config').addEventListener('click',()=>{project=null;anon=null;token=null;visible('setup');message('')});
+$('#setup-form').addEventListener('submit',e=>{
+ e.preventDefault();
+ const form=e.currentTarget,f=new FormData(form),u=String(f.get('url')).trim().replace(/\\/$/,'');
+ const key=String(f.get('anon')).trim();
+ if(!validUrl(u)||!validPublicKey(key)){message('Use a valid https://PROJECT.supabase.co URL and sb_publishable_ key.');return}
+ savePublicSettings(u,key);
+ form.reset();
+ visible('login');
+ message('Public connection settings saved in this browser. Sign in with email and password.');
+});
+$('#reset-config').addEventListener('click',()=>{
+ if(configuredFromServer)return;
+ try{localStorage.removeItem(CACHE_KEY)}catch{}
+ project=null;anon=null;token=null;leads=[];
+ visible('setup');message('Public settings cleared. Set them once to continue.');
+});
 $('#login-form').addEventListener('submit',async e=>{
- e.preventDefault();const form=e.currentTarget;const f=new FormData(form),button=form.querySelector('button');button.disabled=true;message('Signing in...');
+ e.preventDefault();
+ const form=e.currentTarget,f=new FormData(form),button=form.querySelector('button');
+ if(!project || !anon){visible('setup');message('Configure your CRM connection first.');return}
+ button.disabled=true;message('Signing in...');
  try{
    const r=await fetch(project+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:anon,'Content-Type':'application/json'},body:JSON.stringify({email:f.get('email'),password:f.get('password')})});
    if(!r.ok)throw new Error('Sign-in failed. Check your credentials.');
    const data=await r.json();token=data.access_token;
    const staff=await request('/rest/v1/crm_staff?select=user_id&limit=1');
    if(!Array.isArray(staff)||staff.length!==1)throw new Error('This account is not approved for AB Studio CRM.');
-   form.reset();visible('workspace');message('Signed in. Session exists only in this tab.');await load();
+   form.reset();visible('workspace');message('Signed in. Session stays in this tab only.');await load();
  }catch(err){token=null;visible('login');message(err.message)}
  finally{button.disabled=false}
 });
@@ -58,5 +111,5 @@ function render(){
  });
 }
 async function load(){if(!token)return;message('Loading inquiries...');try{const rows=await request('/rest/v1/crm_leads?select=id,name,email,description,service,plan,channel,status,estimated_value,notes,created_at&order=created_at.desc&limit=200');leads=rows;render();message('Showing the latest '+rows.length+' inquiries (maximum 200).')}catch(e){message(e.message)}}
-visible('setup');
+initialize();
 })();
