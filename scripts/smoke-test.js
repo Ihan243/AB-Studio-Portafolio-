@@ -143,6 +143,12 @@ assert.match(js, /quoteMarkup\(currentLang,"services"\)/);
 assert.match(js, /quoteMarkup\(lang,"web"\)/);
 assert.match(js, /quoteMarkup\(currentLang,"home"\)/);
 assert.match(js, /servicesChooserMarkup\(currentLang\)/);
+
+assert.match(js, /portfolioCtaMarkup\(currentLang\)/);
+assert.match(js, /savedQuotes\.find/); // language switches preserve selections
+assert.match(js, /data-workflow-status/);
+assert.match(css, /\.portfolio-convert/);
+
 assert.match(js, /data-quote-root/);
 assert.match(js, /data-q-email/);
 assert.match(js, /data-q-wa/);
