@@ -1156,6 +1156,24 @@ function syncPublishedPrices(){
       <p id="crmLeadStatus" role="status" aria-live="polite"></p>
     </div>`);
     inquiryFields.insertAdjacentHTML("beforeend", inquiryExtras);
+    // Keep the public contact experience working when CRM is not explicitly active.
+    // Preview reads the configuration from the same deployment; Production is fail-closed.
+    let crmCaptureEnabled = false;
+    const crmContactSection = homeInquiryForm.querySelector('.crm-contact-fields');
+    const crmNameField = homeInquiryForm.querySelector('#crmLeadName');
+    const crmEmailField = homeInquiryForm.querySelector('#crmLeadEmail');
+    const crmConsentField = homeInquiryForm.querySelector('#crmLeadConsent');
+    function setCrmCaptureMode(enabled) {
+      crmCaptureEnabled = Boolean(enabled);
+      crmContactSection.style.display = crmCaptureEnabled ? '' : 'none';
+      [crmNameField, crmEmailField, crmConsentField].forEach(field => { field.required = crmCaptureEnabled; });
+    }
+    setCrmCaptureMode(false);
+    fetch('/api/inquiries', {cache:'no-store'})
+      .then(response => response.ok ? response.json() : null)
+      .then(result => setCrmCaptureMode(result?.ok === true && result?.configured === true))
+      .catch(() => setCrmCaptureMode(false));
+
     const inquiryPlan = document.getElementById("inquiryPlan");
     syncPublishedPrices();
     const inquiryAdmin = document.getElementById("inquiryAdmin");
@@ -1293,6 +1311,7 @@ function syncPublishedPrices(){
       const status = document.getElementById('crmLeadStatus');
       const submitButtons = [...homeInquiryForm.querySelectorAll('button[type="submit"]')];
       submitButtons.forEach(button => button.disabled = true);
+      if (crmCaptureEnabled) {
       let stored = false;
       let failureCode = 'network_error';
       try {
@@ -1304,13 +1323,14 @@ function syncPublishedPrices(){
       } catch (error) { failureCode = 'network_error'; }
       finally { submitButtons.forEach(button => button.disabled = false); }
       if (!stored) {
-        status.textContent = (currentLang === 'es' ? 'No se pudo guardar la solicitud en el CRM.' : 'Your inquiry could not be saved in our CRM.') + ' [' + failureCode + ']';
+        status.textContent = (currentLang === 'es' ? 'No pudimos confirmar que la solicitud se haya guardado en el CRM.' : 'We could not confirm that your inquiry was saved in our CRM.') + ' [' + failureCode + ']';
         const proceed = window.confirm(currentLang === 'es'
-          ? 'No se guardó tu solicitud. ¿Deseas continuar por WhatsApp o correo de todos modos?'
-          : 'Your inquiry was not saved. Continue to WhatsApp or email anyway?');
+          ? 'No pudimos confirmar el registro en el CRM. ¿Deseas continuar por WhatsApp o correo?'
+          : 'We could not confirm CRM storage. Continue to WhatsApp or email?');
         if (!proceed) return;
       } else {
         status.textContent = currentLang === 'es' ? 'Solicitud registrada. Abriendo el canal elegido...' : 'Inquiry recorded. Opening your selected channel...';
+      }
       }
       if (channel === 'email') {
         const subject = page === 'crm' ? (currentLang === 'es' ? 'Consulta sobre CRM — AB Studio' : 'CRM inquiry — AB Studio')
