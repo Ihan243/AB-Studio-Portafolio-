@@ -518,6 +518,17 @@ const copy = {
       const isHome = path === '/';
       document.body.classList.toggle('route-mode', !isHome);
       document.body.classList.toggle('home-mode', isHome);
+      // Preserve the estimate while switching between English and Spanish.
+      const savedQuotes=[...document.querySelectorAll("[data-quote-root]")].map(root=>({
+        id:root.closest(".quote-section")?.id,
+        plan:root.querySelector("[data-q-plan]:checked")?.value,
+        admin:root.querySelector("[data-q-admin]").checked,
+        seo:root.querySelector("[data-q-seo]").checked,
+        crm:root.querySelector("[data-q-crm]").value,
+        modules:[...root.querySelectorAll("[data-q-module]:checked")].map(x=>x.value),
+        name:root.querySelector("[data-q-name]").value,
+        notes:root.querySelector("[data-q-notes]").value
+      }));
       routePage.innerHTML = '';
       if (isHome) {
         const homePlans=document.querySelector("main #plans .wrap");
@@ -552,8 +563,8 @@ const copy = {
       document.title = titles[path] || titles['/'];
       const metaDescriptions = {
         '/': currentLang === 'es' ? 'AB Studio crea páginas web, sistemas de reservas y soluciones digitales para pequeños negocios en Estados Unidos.' : 'AB Studio builds websites, booking systems, and practical automation for small businesses across the United States.',
-        '/servicios/': currentLang === 'es' ? 'Descubre los servicios digitales de AB Studio: páginas web, reservas, SEO y automatización.' : 'Explore AB Studio digital services: business websites, booking systems, SEO and automation.',
-        '/sitios-web/': currentLang === 'es' ? 'Diseño y desarrollo de páginas web profesionales para negocios pequeños. Planes y proyectos de AB Studio.' : 'Custom professional website design and development for small businesses. Explore AB Studio website plans.',
+        '/servicios/': currentLang === 'es' ? 'Conoce los planes web, el panel Business Management opcional, CRM, reservas y SEO de AB Studio. Cotiza los módulos que necesites.' : 'Compare AB Studio website plans, optional Business Management dashboard, CRM, booking and SEO services. Configure your estimate.',
+        '/sitios-web/': currentLang === 'es' ? 'Páginas web desde $1,100 y panel Business Management opcional. Compara planes y configura tu cotización con AB Studio.' : 'Business websites starting at $1,100. Compare plans and optional Business Management add-ons in AB Studio’s quote builder.',
         '/sistemas/': currentLang === 'es' ? 'Sistemas de reservas y herramientas de administración adaptadas a tu negocio.' : 'Custom booking and administration systems tailored to your business workflow.',
         '/seo/': currentLang === 'es' ? 'SEO técnico y visibilidad local para que más clientes encuentren tu negocio.' : 'SEO and local search visibility services for small businesses.',
         '/automatizacion/': currentLang === 'es' ? 'Automatizaciones prácticas para formularios, mensajes y procesos de negocios.' : 'Practical automation for forms, messages and small business workflows.',
@@ -579,7 +590,20 @@ const copy = {
         if (section) section.style.display = 'block';
       }
       if (!isHome) contact.style.display = 'block';
-      document.querySelectorAll("[data-quote-root]").forEach(quoteUpdate);
+      document.querySelectorAll("[data-quote-root]").forEach(root=>{
+        const saved=savedQuotes.find(x=>x.id===root.closest(".quote-section")?.id);
+        if(saved){
+          const plan=root.querySelector('[data-q-plan][value="'+saved.plan+'"]');
+          if(plan)plan.checked=true;
+          root.querySelector("[data-q-admin]").checked=saved.admin;
+          root.querySelector("[data-q-seo]").checked=saved.seo;
+          root.querySelector("[data-q-crm]").value=saved.crm;
+          root.querySelectorAll("[data-q-module]").forEach(input=>{input.checked=saved.modules.includes(input.value);});
+          root.querySelector("[data-q-name]").value=saved.name;
+          root.querySelector("[data-q-notes]").value=saved.notes;
+        }
+        quoteUpdate(root);
+      });
       const navCta = document.querySelector('.nav-actions a.button.small');
       if (navCta) { navCta.href = 'https://calendar.app.google/DKwYiEnNF2YFDXtq7'; navCta.target = '_blank'; navCta.rel = 'noopener noreferrer'; }
       // Sections inside Services are rendered dynamically; resolve deep links after the DOM is updated.
