@@ -61,6 +61,9 @@ jobs:
             const report=JSON.parse(fs.readFileSync('/tmp/qa-lighthouse-'+name+'.json','utf8'));
             const scores=Object.fromEntries(Object.entries(report.categories).map(([key,val])=>[key,Math.round(val.score*100)]));
             console.log('LOCAL LIGHTHOUSE '+name,JSON.stringify(scores));
+            if(report.audits['color-contrast']?.score !== 1){
+              throw new Error('Lighthouse color-contrast check failed on '+name+'. Open qa-lighthouse-'+name+'.json for element selectors.');
+            }
             console.log('LOCAL LIGHTHOUSE KEY FINDINGS '+name,JSON.stringify(Object.values(report.audits).filter(a=>a.score!==null&&a.score<0.5&&a.details&&a.details.type!=='opportunity').slice(0,12).map(a=>({id:a.id,title:a.title,score:a.score}))));
           }
           NODE

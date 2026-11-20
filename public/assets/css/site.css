@@ -2306,3 +2306,10 @@ body[data-page="management"] #home-inquiry .inquiry-extra-block{
   #home-inquiry .inquiry-module-fieldset{grid-template-columns:1fr;padding:16px}
   #home-inquiry .home-inquiry-form .inquiry-module-fieldset label{min-height:44px}
 }
+
+
+/* QA-01 / HIGH: keep highlighted Pricing features readable in both themes.
+   Lighthouse 2026-11-20 detected #e8e1d5 text on #fffdf8 (1.27:1). */
+.ab-pricing-web-plan.featured,
+.ab-pricing-crm-plan.featured { color: var(--ink); }
+body:not(.theme-dark) .brand-sub { color:#5f5a50; }
