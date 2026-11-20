@@ -1273,6 +1273,8 @@ function syncPublishedPrices(){
       if (isHome || isServiceInquiry) homeInquiryMessage.focus({preventScroll:true});
     }
     document.querySelectorAll('a[href="#contact"],a[data-inquiry-service],a[data-inquiry-plan]').forEach(link => link.addEventListener('click', jumpToInquiry));
+    let lastInquiryDraft = '';
+    let lastInquirySubmissionId = null;
     homeInquiryForm.addEventListener('submit', async event => {
       event.preventDefault();
       const page = document.body.dataset.page;
@@ -1299,10 +1301,19 @@ function syncPublishedPrices(){
       const message = lineItems.filter(Boolean).join('\n\n');
       const channel = event.submitter?.dataset.inquiryChannel === 'email' ? 'email' : 'whatsapp';
       const details = new FormData(homeInquiryForm);
+      const name = String(details.get('crmName') || '').trim();
+      const email = String(details.get('crmEmail') || '').trim();
+      // Keep the same ID when retrying an uncertain save or switching contact channel.
+      // Duplicate HTTP requests for the same draft must not create duplicate leads.
+      const draft = JSON.stringify([name,email,description,inquiryType.value,selectedPlan,modulesSelected]);
+      if (draft !== lastInquiryDraft || !lastInquirySubmissionId) {
+        lastInquiryDraft = draft;
+        lastInquirySubmissionId = crypto.randomUUID();
+      }
       const leadPayload = {
-        submission_id: crypto.randomUUID(),
-        name: String(details.get('crmName') || '').trim(),
-        email: String(details.get('crmEmail') || '').trim(),
+        submission_id: lastInquirySubmissionId,
+        name,
+        email,
         description, service: inquiryType.value || page, plan: selectedPlan,
         channel, modules: [...inquiryModules.querySelectorAll('[data-inquiry-module]:checked')].map(x => x.value),
         consent: document.getElementById('crmLeadConsent').checked,
@@ -1323,6 +1334,12 @@ function syncPublishedPrices(){
       } catch (error) { failureCode = 'network_error'; }
       finally { submitButtons.forEach(button => button.disabled = false); }
       if (!stored) {
+        if(failureCode === 'rate_limited') {
+          status.textContent = currentLang === 'es'
+            ? 'Demasiadas solicitudes recientes. Intenta de nuevo más tarde.'
+            : 'Too many recent requests. Please try again later.';
+          return;
+        }
         status.textContent = (currentLang === 'es' ? 'No pudimos confirmar que la solicitud se haya guardado en el CRM.' : 'We could not confirm that your inquiry was saved in our CRM.') + ' [' + failureCode + ']';
         const proceed = window.confirm(currentLang === 'es'
           ? 'No pudimos confirmar el registro en el CRM. ¿Deseas continuar por WhatsApp o correo?'
