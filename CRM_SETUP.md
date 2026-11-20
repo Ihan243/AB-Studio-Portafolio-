@@ -18,6 +18,15 @@ This is a **foundation**, not a production-ready CRM until all steps below pass.
 - Pipeline stages: new, contacted, proposal, won and lost
 - Private notes, estimated deal value, and simple totals
 
+## Safe Production Launch
+
+- The public portfolio remains contact-only on Production until CRM intake is explicitly enabled. This avoids breaking WhatsApp/email when only Preview has Supabase credentials.
+- Configure `SUPABASE_URL` and `SUPABASE_SECRET_KEY` for **Production** in the correct Vercel project. Keep the secret in Vercel, never the repository.
+- Before enabling public collection, test unauthorized access against the *live Supabase project* and implement and verify server-side anti-spam protection (CAPTCHA/rate limiting), backups, and a privacy retention policy.
+- Only then set `CRM_CAPTURE_ENABLED=true` on Production and redeploy. When disabled, the form uses the existing WhatsApp/email flow and does not claim CRM storage.
+- Verify a fresh, consenting test inquiry from the production URL appears in the authorized admin dashboard; then delete test records through the administrator.
+- Preview requires credentials but not the Production launch flag, allowing end-to-end verification without changing the public website.
+
 ## Limitations
 
 - Environment variables and schema must be configured in the user's own Supabase/Vercel accounts. Verify they are set in the same Vercel project that is deploying this PR.
