@@ -3,11 +3,11 @@
 This is a **foundation**, not a production-ready CRM until all steps below pass.
 
 1. Create a Supabase project owned by AB Studio. Enable secure email/password authentication and disable public signups.
-2. Run `supabase/migrations/20261120_crm.sql` in the SQL Editor.
+2. Run `supabase/migrations/20261120_crm.sql`, then `supabase/migrations/20261120_crm_api_grants.sql` in SQL Editor (explicit Data API grants are required for new Supabase projects).
 3. Invite your administrator in Supabase Authentication > Users. Retrieve their UUID and add it to `crm_staff` through the SQL Editor.
 4. In **Vercel's server-side environment variables**, configure `SUPABASE_URL` and `SUPABASE_SECRET_KEY`. Never put the secret key into public HTML, frontend JavaScript, GitHub code, or the CRM setup screen.
 5. At `/admin/`, enter your **public** project URL and publishable key, then log in using the invited staff account. The admin screen deliberately does not persist passwords, tokens, or project keys to local storage.
-6. Test an inquiry end-to-end using a safe test record; confirm it appears in the admin panel. Then test an unauthorized account, failed database calls, duplicated submissions, email/WhatsApp fallback, desktop and mobile layouts.
+6. Open `/api/inquiries` on the same Preview deployment and confirm `{ ok: true, service: 'crm-intake', configured: true }` before testing submissions. An API 404 means the route was not deployed; `configured: false` means that deployment does not have both server environment variables. Test an inquiry end-to-end using a safe test record; confirm it appears in the admin panel. Then test an unauthorized account, failed database calls, duplicated submissions, email/WhatsApp fallback, desktop and mobile layouts.
 7. Add proper abuse controls (e.g. server-verified CAPTCHA / rate limiting), automated backups, access logging, retention/deletion procedures and notification delivery before inviting broad public traffic.
 
 ## What this foundation supports
