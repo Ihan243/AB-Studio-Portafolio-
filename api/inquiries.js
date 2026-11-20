@@ -1,13 +1,29 @@
 // Public inquiry intake. Secrets must only be configured in Vercel environment variables.
 const MAX_BODY = 12_000;
-const allowedHosts = new Set(['ab-studio-portafolio.vercel.app', 'localhost:3000', '127.0.0.1:3000', process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].filter(Boolean).map(host => host.replace(/^https?:\/\//, '').replace(/\/$/, '')));
+// Support changing Vercel Preview URLs while blocking cross-site browser posts.
+function validRequestHost(host) {
+  if (host === 'ab-studio-portafolio.vercel.app' || host === 'localhost:3000' || host === '127.0.0.1:3000') return true;
+  return /^ab-studio-portafolio-[a-z0-9-]+\.vercel\.app$/.test(host);
+}
+function configured() {
+  return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY?.startsWith('sb_secret_'));
+}
 const text = (v,n=1000) => typeof v === 'string' ? v.trim().slice(0,n) : '';
 const emailOkay = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length <= 254;
 function response(res,code,body){res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json; charset=utf-8');return res.status(code).json(body)}
 module.exports = async function inquiry(req,res){
-  if(req.method !== 'POST'){res.setHeader('Allow','POST');return response(res,405,{error:'method_not_allowed'});}
-  const origin = req.headers.origin;
-  if(origin){try{const u=new URL(origin);if(!['https:','http:'].includes(u.protocol)||!allowedHosts.has(u.host)) return response(res,403,{error:'origin_not_allowed'});}catch{return response(res,403,{error:'origin_not_allowed'});}}
+  if(req.method === 'GET') return response(res,200,{ok:true,service:'crm-intake',configured:configured()});
+  if(req.method !== 'POST'){res.setHeader('Allow','GET, POST');return response(res,405,{error:'method_not_allowed'});}
+  const origin=req.headers.origin;
+  const host=String(req.headers.host||'').toLowerCase().trim();
+  if(!validRequestHost(host)) return response(res,403,{error:'host_not_allowed'});
+  if(!origin) return response(res,403,{error:'origin_required'});
+  try {
+    const url = new URL(origin);
+    if(url.host.toLowerCase() !== host || !['https:','http:'].includes(url.protocol) ||
+       (url.protocol==='http:' && !host.startsWith('localhost:') && !host.startsWith('127.0.0.1:')))
+      return response(res,403,{error:'origin_not_allowed'});
+  } catch {return response(res,403,{error:'origin_not_allowed'});}
   const raw = typeof req.body === 'string' ? req.body : JSON.stringify(req.body||{});
   if(Buffer.byteLength(raw)>MAX_BODY) return response(res,413,{error:'too_large'});
   let data;try{data=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch{return response(res,400,{error:'invalid_json'});}
