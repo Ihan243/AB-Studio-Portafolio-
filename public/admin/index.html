@@ -8,9 +8,61 @@
 <section id="setup" class="panel" hidden><h1>One-time setup</h1><p>Your CRM settings are not yet available from Vercel. Enter the <strong>public</strong> Supabase URL and publishable key once; they will be remembered in this browser. Never enter a secret key or a password here.</p>
 <form id="setup-form"><label>Project URL<input name="url" type="url" placeholder="https://project.supabase.co" required></label><label>Publishable key<input name="anon" placeholder="sb_publishable_..." type="text" autocomplete="off" spellcheck="false" required></label><button type="submit">Save public settings</button></form></section>
 <section id="login" class="panel" hidden><h1>Team sign in</h1><p>Only invited, authorized AB Studio team members can view leads.</p><form id="login-form"><label>Email<input name="email" type="email" autocomplete="username" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button>Sign in</button></form><button class="link" type="button" id="reset-config">Change saved public settings</button></section>
-<section id="workspace" hidden><div class="heading"><div><div class="eyebrow">SALES OPERATIONS</div><h1>Lead management</h1><p>Manage inquiries and move opportunities through your sales pipeline.</p></div><button id="refresh">Refresh leads</button></div>
-<div id="metrics" class="metrics"></div>
-<div class="toolbar"><label>Find a lead<input id="search" type="search" placeholder="Name, email or service"></label><label>Stage<select id="filter"><option value="">All stages</option><option value="new">New</option><option value="contacted">Contacted</option><option value="proposal">Proposal</option><option value="won">Won</option><option value="lost">Lost</option></select></label></div>
-<div id="leads" class="leads" aria-live="polite"></div></section><p id="notice" role="status" aria-live="polite"></p></main>
+<section id="workspace" hidden>
+<div class="crm-shell">
+  <aside class="crm-sidebar" aria-label="CRM navigation">
+    <div class="crm-sidebar-identity">
+      <div class="crm-sidebar-mark" aria-hidden="true">AB</div>
+      <div><strong>AB Studio</strong><small>CRM Administration</small></div>
+    </div>
+    <p class="crm-sidebar-label">MAIN MENU</p>
+    <nav class="crm-sidebar-nav" aria-label="CRM sections">
+      <button class="crm-nav-item is-active" type="button" data-crm-view="overview" aria-current="page">
+        <span class="crm-nav-icon" aria-hidden="true">▦</span> <span>Overview</span>
+      </button>
+      <button class="crm-nav-item" type="button" data-crm-view="leads">
+        <span class="crm-nav-icon" aria-hidden="true">◎</span> <span>Leads</span>
+        <span id="leads-count" class="crm-nav-count" aria-label="Total leads">0</span>
+      </button>
+    </nav>
+    <div class="crm-sidebar-bottom"><span class="crm-sidebar-status-dot" aria-hidden="true"></span> Private workspace</div>
+  </aside>
+  <div class="crm-content">
+    <section id="view-overview" class="crm-view" aria-labelledby="overview-heading">
+      <div class="heading">
+        <div>
+          <div class="eyebrow">SALES OPERATIONS / OVERVIEW</div>
+          <h1 id="overview-heading">Overview</h1>
+          <p>Your leads and sales pipeline at a glance.</p>
+        </div>
+        <button id="refresh" type="button">Refresh leads</button>
+      </div>
+      <div id="metrics" class="metrics" aria-label="CRM summary"></div>
+      <section class="crm-recent" aria-labelledby="recent-heading">
+        <div class="crm-section-heading">
+          <div><div class="eyebrow">LATEST INQUIRIES</div><h2 id="recent-heading">Recent leads</h2></div>
+          <button id="open-leads" type="button" class="crm-subtle-button">View all leads →</button>
+        </div>
+        <div id="recent-leads" class="crm-recent-list"></div>
+      </section>
+    </section>
+    <section id="view-leads" class="crm-view" aria-labelledby="leads-heading" hidden>
+      <div class="heading">
+        <div>
+          <div class="eyebrow">SALES OPERATIONS / LEADS</div>
+          <h1 id="leads-heading">Leads</h1>
+          <p>Search inquiries, update their stage and manage every opportunity.</p>
+        </div>
+        <button id="refresh-leads" type="button">Refresh leads</button>
+      </div>
+      <div class="toolbar">
+        <label>Find a lead<input id="search" type="search" placeholder="Name, email or service"></label>
+        <label>Stage<select id="filter"><option value="">All stages</option><option value="new">New</option><option value="contacted">Contacted</option><option value="proposal">Proposal</option><option value="won">Won</option><option value="lost">Lost</option></select></label>
+      </div>
+      <div id="leads" class="leads" aria-live="polite"></div>
+    </section>
+  </div>
+</div>
+</section><p id="notice" role="status" aria-live="polite"></p></main>
 <script src="/admin/public-config.js" defer></script>
 <script src="/admin/crm.js" defer></script></body></html>
