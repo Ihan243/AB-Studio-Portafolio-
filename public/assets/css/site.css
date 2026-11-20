@@ -2088,3 +2088,16 @@ body[data-page="management"] #home-inquiry .home-inquiry-actions .button{flex:1 
   .quote-breakdown li{flex-wrap:wrap}
 }
 @media(prefers-reduced-motion:reduce){.quote-module{transition:none}}
+
+/* Official AB Studio Instagram links — consistent with the site's editorial UI. */
+.social-nav-instagram{display:inline-flex;align-items:center;justify-content:center;flex:0 0 36px;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;color:var(--ink);background:transparent;transition:background .2s ease,transform .2s ease}
+.social-nav-instagram:hover{background:var(--paper-deep);transform:translateY(-2px)}
+.social-nav-instagram span{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.social-nav-mobile{display:none}
+.footer-links .social-footer-instagram{display:inline-flex;align-items:center;gap:7px;color:var(--cream);white-space:nowrap}
+.footer-links .social-footer-instagram:hover,.social-contact-link:hover{text-decoration:underline;text-underline-offset:4px}
+.social-footer-instagram svg,.social-nav-mobile svg{flex:none}
+.contact-detail .social-contact-instagram a{display:inline-flex;align-items:center;gap:7px}
+@media(max-width:1100px){.social-nav-instagram{display:none}}
+@media(max-width:680px){.navlinks .social-nav-mobile{display:flex;align-items:center;gap:10px;padding:12px 5px;border-bottom:1px solid var(--line);font-size:.82rem}}
+@media(prefers-reduced-motion:reduce){.social-nav-instagram{transition:none}}
