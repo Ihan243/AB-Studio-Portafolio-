@@ -1,1 +1,66 @@
 :root{font-family:Inter,system-ui,sans-serif;color:#eff4ef;background:#141d1b}*{box-sizing:border-box}body{margin:0}header{height:72px;border-bottom:1px solid #34453e;display:flex;align-items:center;justify-content:space-between;padding:0 max(20px,5vw);gap:18px}header>span,.eyebrow{font-size:11px;letter-spacing:.18em;color:#a0b4a8}.brand{text-decoration:none;color:#fff;font-weight:800;letter-spacing:.14em}.brand span{font-weight:400}main{max-width:1260px;margin:50px auto;padding:0 20px}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(30px,4vw,52px);margin:12px 0}p{color:#a9b9ae;line-height:1.6}.panel{max-width:480px;margin:60px auto;background:#202d28;padding:32px;border:1px solid #415249}label{display:grid;gap:8px;color:#d4e0d6;font-size:13px;margin:14px 0}input,select,textarea{background:#101916;color:#f7fff8;border:1px solid #4b6255;border-radius:5px;padding:12px;font:inherit;width:100%;min-width:0}textarea{min-height:110px;resize:vertical}button{background:#c4ddc3;color:#172219;border:0;padding:11px 16px;border-radius:5px;cursor:pointer;font:600 13px Inter,system-ui}button:hover{background:#e1efe0}button:disabled{opacity:.5;cursor:not-allowed}.link{background:transparent;color:#b8d5bb;padding:10px 0;text-decoration:underline}.heading{display:flex;justify-content:space-between;align-items:center;gap:20px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:25px 0}.metric,.lead{background:#202d28;border:1px solid #364a3d;border-radius:8px;padding:18px}.metric strong{display:block;font-size:29px;margin-top:8px}.metric span,.muted{color:#a7b9aa;font-size:12px}.toolbar{display:flex;gap:15px;max-width:650px}.toolbar label{flex:1}.leads{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0 50px}.lead h2{font-size:18px;margin:4px 0}.lead .meta{font-size:12px;color:#adbeaf;overflow-wrap:anywhere}.lead .description{white-space:pre-wrap;overflow-wrap:anywhere;color:#ebf1e9;font-size:13px}.lead .edit{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.lead .edit label{margin:0}.lead .edit label:last-of-type{grid-column:1/-1}.lead .edit button{grid-column:1/-1}.lead a{color:#bdddc2}#notice{max-width:700px;margin:20px auto;color:#e0cf97}[hidden]{display:none!important}@media(max-width:660px){.metrics{grid-template-columns:repeat(2,1fr)}.heading,.toolbar{flex-direction:column;align-items:stretch}.panel{padding:20px}}
+
+/* Two-section CRM admin navigation — AB Studio identity, Florería Muñiz-inspired layout. */
+body.crm-workspace-open main{max-width:none;margin:0;padding:0}
+.crm-shell{display:grid;grid-template-columns:246px minmax(0,1fr);min-height:calc(100vh - 72px)}
+.crm-sidebar{background:#1b2823;border-right:1px solid #32483d;padding:28px 16px 22px;display:flex;flex-direction:column;gap:0;min-width:0}
+.crm-sidebar-identity{display:flex;align-items:center;gap:12px;padding:6px 10px 30px;border-bottom:1px solid #34483d}
+.crm-sidebar-mark{display:grid;place-items:center;background:#c4ddc3;color:#1c2920;font-family:Georgia,serif;font-size:20px;font-weight:700;width:42px;height:42px;border-radius:11px;letter-spacing:-.06em;flex-shrink:0}
+.crm-sidebar-identity strong{display:block;font-size:14px;color:#f2f5ef;letter-spacing:.02em}
+.crm-sidebar-identity small{display:block;color:#a1b4a6;font-size:11px;margin-top:3px}
+.crm-sidebar-label{font-size:10px;letter-spacing:.13em;color:#93a99b;font-weight:700;margin:26px 12px 10px}
+.crm-sidebar-nav{display:flex;flex-direction:column;gap:6px}
+.crm-nav-item{display:flex;align-items:center;gap:12px;text-align:left;padding:13px 14px;border-radius:9px;background:transparent;color:#c3d1c6;font-size:13px;font-weight:600;width:100%;min-height:44px;transition:background .18s ease,color .18s ease}
+.crm-nav-item:hover{background:#2b3d32;color:#f2f9ef}
+.crm-nav-item.is-active,.crm-nav-item.is-active:hover{background:#c4ddc3;color:#172219}
+.crm-nav-icon{font-size:20px;line-height:1;width:23px;text-align:center;font-weight:400}
+.crm-nav-count{margin-left:auto;background:#374d3f;color:#e8f0e8;border-radius:99px;min-width:26px;height:24px;padding:4px 7px;text-align:center;font-size:11px;line-height:16px}
+.crm-nav-item.is-active .crm-nav-count{background:#a7c6a8;color:#17301e}
+.crm-sidebar-bottom{margin-top:auto;font-size:11px;display:flex;align-items:center;gap:8px;padding:16px 13px 6px;color:#a5b8aa;border-top:1px solid #34483d}
+.crm-sidebar-status-dot{width:7px;height:7px;border-radius:50%;background:#a9d5ad;box-shadow:0 0 0 3px #2f4737}
+.crm-content{min-width:0;width:100%;max-width:1600px;margin:0 auto;padding:48px clamp(22px,4vw,64px) 68px}
+.crm-view .heading h1{margin:8px 0 6px}
+.crm-view .heading p{margin:0}
+.crm-view .eyebrow{letter-spacing:.15em}
+.crm-view .metrics{margin:32px 0}
+.crm-recent{background:#1c2924;border:1px solid #34483d;border-radius:12px;margin-top:30px;overflow:hidden}
+.crm-section-heading{padding:22px 24px 16px;display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid #34483d}
+.crm-section-heading h2{font:400 26px Georgia,serif;margin:6px 0 0;color:#f1f5ef}
+.crm-subtle-button{background:transparent;color:#c8e1cd;padding:8px 10px;border:1px solid #587461;white-space:nowrap}
+.crm-subtle-button:hover{background:#2c4233;color:#f6fff5}
+.crm-recent-list{display:grid}
+.crm-recent-row{border:0;border-radius:0;background:transparent;color:#e7f2e9;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 24px;text-align:left;width:100%;border-bottom:1px solid #34483d;font-weight:400}
+.crm-recent-row:last-child{border-bottom:0}
+.crm-recent-row:hover{background:#2a3b31}
+.crm-recent-info{display:flex;flex-direction:column;gap:5px;min-width:0}
+.crm-recent-info strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crm-recent-info small{color:#a5b9aa;font-size:12px;overflow-wrap:anywhere}
+.crm-stage-tag{font-size:11px;font-weight:600;border-radius:99px;padding:6px 10px;white-space:nowrap;flex-shrink:0;background:#34473d;color:#dbeedc}
+.crm-stage-new{background:#344b5b;color:#d9e8fa}
+.crm-stage-contacted{background:#4b4530;color:#f5e3ae}
+.crm-stage-proposal{background:#423b58;color:#e1d4f9}
+.crm-stage-won{background:#31553d;color:#d5f4d9}
+.crm-stage-lost{background:#504040;color:#ead3d3}
+.crm-empty{padding:20px 24px;margin:0}
+#view-leads .toolbar{margin:25px 0 8px;max-width:720px}
+#view-leads .leads{margin-top:16px}
+body.crm-workspace-open #notice{max-width:none;margin:0;padding:12px clamp(20px,4vw,64px);border-top:1px solid #34483d;background:#17221c;font-size:12px}
+@media(max-width:950px){
+ .crm-shell{grid-template-columns:1fr}
+ .crm-sidebar{border-right:0;border-bottom:1px solid #34483d;padding:15px 20px 14px;gap:12px}
+ .crm-sidebar-identity{border:0;padding:0}
+ .crm-sidebar-label,.crm-sidebar-bottom{display:none}
+ .crm-sidebar-nav{flex-direction:row;gap:8px}
+ .crm-nav-item{width:auto;flex:1;justify-content:center;padding:10px 12px}
+ .crm-nav-count{margin-left:2px}
+ .crm-content{padding:27px 20px 55px}
+}
+@media(max-width:580px){
+ .crm-sidebar-identity small{font-size:10px}
+ .crm-nav-item{font-size:12px}
+ .crm-section-heading{padding:16px;align-items:flex-start}
+ .crm-section-heading h2{font-size:23px}
+ .crm-recent-row{padding:15px 16px}
+ .crm-recent-info strong{font-size:13px}
+ .crm-view .heading h1{font-size:36px}
+}
