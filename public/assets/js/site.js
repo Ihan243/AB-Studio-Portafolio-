@@ -491,7 +491,8 @@ function quoteMarkup(lang,scope="services"){
     function quoteUpdate(root){
  if(!root)return;
  const lang=root.dataset.quoteLang==="es"?"es":"en",d=quoteData[lang],es=lang==="es";
- const selected=root.querySelector("[data-q-plan]:checked")?.value||"professional";
+ const requestedPlan=root.querySelector("[data-q-plan]:checked")?.value;
+ const selected=Object.hasOwn(abPrices.web,requestedPlan)?requestedPlan:"professional";
  const price=abPrices.web[selected] || abPrices.web.professional;
  const admin=root.querySelector("[data-q-admin]").checked,seo=root.querySelector("[data-q-seo]").checked,crm=root.querySelector("[data-q-crm]").value;
  const validCrm = crm in abPrices.crm ? crm : "none";
