@@ -133,4 +133,74 @@ assert.match(read('public/sitemap.xml'), /https:\/\/ab-studio-portafolio\.vercel
 assert.match(read('vercel.json'), /proyectos\/index\.html/);
 assert.match(read('public/robots.txt'), /Sitemap:/);
 assert.ok(fs.existsSync(path.join(root,'public/assets/portfolio/floreria-muniz.webp')));
-console.log('AB Studio smoke tests passed (routes, SEO, bamboo entrance, scroll and portfolio).');
+
+/* Business Management web add-on: checkout estimates remain honest, responsive and bilingual. */
+const servicePage = read('public/servicios/index.html');
+const websitePage = read('public/sitios-web/index.html');
+assert.match(servicePage, /data-copy="nav\.serviceAdmin"/);
+assert.match(websitePage, /data-copy="nav\.serviceAdmin"/);
+assert.match(js, /quoteMarkup\(currentLang,"services"\)/);
+assert.match(js, /quoteMarkup\(lang,"web"\)/);
+assert.match(js, /quoteMarkup\(currentLang,"home"\)/);
+assert.match(js, /servicesChooserMarkup\(currentLang\)/);
+
+assert.match(js, /portfolioCtaMarkup\(currentLang\)/);
+assert.match(js, /savedQuotes\.find/); // language switches preserve selections
+assert.match(js, /data-workflow-status/);
+assert.match(css, /\.portfolio-convert/);
+
+assert.match(js, /data-quote-root/);
+assert.match(js, /data-q-email/);
+assert.match(js, /data-q-wa/);
+assert.match(js, /data-bm-workflow/);
+assert.match(js, /data-inquiry-module/);
+assert.match(js, /inquiryAdmin\.addEventListener/);
+assert.match(css, /\.quote-section/);
+assert.match(css, /\.service-chooser-card/);
+assert.match(css, /\.bm-workflow-board/);
+assert.match(css, /\.inquiry-extra-block/);
+assert.match(read('public/index.html'), /href="\/servicios\/#admin-panel"/);
+for (const name of ['index.html','public/index.html','public/sitios-web/index.html','public/servicios/index.html']) {
+  const page = read(name);
+  for (const price of ['$1,100','$1,500','$2,500']) {
+    assert.ok(page.includes(price), `Website price ${price} missing from ${name}`);
+  }
+}
+const quoteStart=js.indexOf('const quoteData = '),quoteEnd=js.indexOf('const businessAddonData = ',quoteStart);
+assert.ok(quoteStart>-1 && quoteEnd>quoteStart,'Quote builder source not found');
+const quoteTools=new Function(js.slice(quoteStart,quoteEnd)+';return {quoteMarkup,quoteUpdate};')();
+for (const lang of ['en','es']) {
+  const sample=quoteTools.quoteMarkup(lang,'test');
+  assert.equal((sample.match(/data-q-plan/g)||[]).length,3);
+  assert.equal(sample.split('data-q-module ').length-1,6);
+  assert.match(sample,/data-q-email/);
+  assert.match(sample,/data-q-wa/);
+  assert.match(sample,/data-q-crm/);
+}
+function sampleQuote(plan='professional',seo=false,crm='none',admin=false){
+  const fields={
+    '[data-q-plan]:checked':{value:plan},'[data-q-admin]':{checked:admin},'[data-q-seo]':{checked:seo},
+    '[data-q-crm]':{value:crm},'[data-q-initial]':{textContent:''},'[data-q-monthly]':{textContent:''},
+    '[data-q-modules]':{hidden:true},'[data-q-custom]':{textContent:''},
+    '[data-q-name]':{value:'Sample Shop'},'[data-q-notes]':{value:'I need a clear website'},
+    '[data-q-email]':{href:''},'[data-q-wa]':{href:''}
+  };
+  return {dataset:{quoteLang:'en'},querySelector:key=>fields[key],querySelectorAll:()=>[],
+    result:fields};
+}
+const basic=sampleQuote('basic');
+quoteTools.quoteUpdate(basic);
+assert.equal(basic.result['[data-q-initial]'].textContent,'$1,100');
+assert.equal(basic.result['[data-q-monthly]'].textContent,'$0 / mo');
+const growth=sampleQuote('professional',true,'growth',true);
+quoteTools.quoteUpdate(growth);
+assert.equal(growth.result['[data-q-initial]'].textContent,'$3,200 – $4,700');
+assert.equal(growth.result['[data-q-monthly]'].textContent,'$119 / mo');
+assert.equal(growth.result['[data-q-modules]'].hidden,false);
+assert.match(growth.result['[data-q-email]'].href,/mailto:sales\.abstudio@gmail\.com/);
+const enterprise=sampleQuote('basic',false,'enterprise');
+quoteTools.quoteUpdate(enterprise);
+assert.equal(enterprise.result['[data-q-initial]'].textContent,'$4,100+');
+assert.equal(enterprise.result['[data-q-monthly]'].textContent,'$199+ / mo');
+
+console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
