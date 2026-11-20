@@ -7,7 +7,7 @@ const CACHE_KEY='abstudio.crm.public-config.v1';
 let project=null,anon=null,token=null,leads=[],configuredFromServer=false;
 const message=s=>{els.notice.textContent=s};
 const visible=section=>{for(const k of ['boot','setup','login','workspace'])els[k].hidden=k!==section;els.logout.hidden=section!=='workspace'};
-const validUrl=u=>{try{const v=new URL(u);return v.protocol==='https:' && /^[a-z0-9-]+\\.supabase\\.co$/i.test(v.hostname) && v.pathname==='/'}catch{return false}};
+const validUrl=u=>{try{const v=new URL(u);return v.protocol==='https:' && /^[a-z0-9-]+\.supabase\.co$/i.test(v.hostname) && v.pathname==='/'}catch{return false}};
 const validPublicKey=k=>typeof k==='string' && k.startsWith('sb_publishable_') && k.length>20;
 function savePublicSettings(url,key){
   project=url;anon=key;
@@ -50,7 +50,7 @@ async function request(path,options={}){
 }
 $('#setup-form').addEventListener('submit',e=>{
  e.preventDefault();
- const form=e.currentTarget,f=new FormData(form),u=String(f.get('url')).trim().replace(/\\/$/,'');
+ const form=e.currentTarget,f=new FormData(form),u=String(f.get('url')).trim().replace(/\/$/,'');
  const key=String(f.get('anon')).trim();
  if(!validUrl(u)||!validPublicKey(key)){message('Use a valid https://PROJECT.supabase.co URL and sb_publishable_ key.');return}
  savePublicSettings(u,key);
