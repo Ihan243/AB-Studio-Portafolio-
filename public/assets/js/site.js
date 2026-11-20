@@ -42,7 +42,7 @@ const copy = {
         "faq.cta":"Ask about your project ↗",
         "plans.handoff":"Every quote confirms scope, delivery milestones, hosting, ongoing support, content responsibilities and site handoff before work begins.",
         "work.demoNote":"Some projects are interactive concepts or previews. Their availability may vary; only verified outcomes are published.",
-        "inquiry.typeLabel":"What would you like to build?",
+        "inquiry.extraPlan":"Interested in a website plan?","inquiry.planAny":"Not sure yet","inquiry.planBasic":"Basic · $1,100+","inquiry.planProfessional":"Professional · $1,500+","inquiry.planPremium":"Premium · $2,500+","inquiry.adminAddon":"I would also like a Business Management dashboard","inquiry.moduleLegend":"What would you manage? (optional)","inquiry.moduleCatalog":"Catalog / products","inquiry.moduleInventory":"Inventory","inquiry.moduleOrders":"Orders","inquiry.moduleReports":"Sales reports","inquiry.moduleBookings":"Bookings","inquiry.moduleCustomers":"Customer follow-up","inquiry.typeLabel":"What would you like to build?",
         "inquiry.optionDefault":"Choose a service (optional)",
         "inquiry.optionWebsite":"Business website",
         "inquiry.optionBooking":"Booking or admin system",
@@ -162,7 +162,7 @@ const copy = {
         "faq.cta":"Consulta sobre tu proyecto ↗",
         "plans.handoff":"Cada cotización confirma alcance, plazos, alojamiento, soporte, responsabilidades de contenido y entrega del sitio antes de comenzar.",
         "work.demoNote":"Algunos proyectos son conceptos interactivos o vistas previas. Su disponibilidad puede variar; solo publicamos resultados verificados.",
-        "inquiry.typeLabel":"¿Qué te gustaría crear?",
+        "inquiry.extraPlan":"¿Qué plan web te interesa?","inquiry.planAny":"Todavía no estoy seguro","inquiry.planBasic":"Básico · desde $1,100","inquiry.planProfessional":"Profesional · desde $1,500","inquiry.planPremium":"Premium · desde $2,500","inquiry.adminAddon":"También quiero un panel Business Management","inquiry.moduleLegend":"¿Qué necesitas administrar? (opcional)","inquiry.moduleCatalog":"Catálogo / productos","inquiry.moduleInventory":"Inventario","inquiry.moduleOrders":"Pedidos","inquiry.moduleReports":"Reportes de ventas","inquiry.moduleBookings":"Reservas","inquiry.moduleCustomers":"Seguimiento de clientes","inquiry.typeLabel":"¿Qué te gustaría crear?",
         "inquiry.optionDefault":"Elige un servicio (opcional)",
         "inquiry.optionWebsite":"Página web para negocio",
         "inquiry.optionBooking":"Sistema de reservas o administración",
@@ -301,6 +301,7 @@ const copy = {
       setLanguage(currentLang === "en" ? "es" : "en");
       const path = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
       if (routeTargets[path]) showRoute(path, routeTargets[path], false);
+      localizeSpecialOptions();
     });
     try {
       const storedLang = localStorage.getItem("abstudio-lang");
@@ -645,13 +646,51 @@ const copy = {
       homeInquiryMessage.value = currentLang === 'es' ? button.dataset.promptEs : button.dataset.promptEn;
       homeInquiryMessage.focus();
     }));
+
+    // An optional, transparent lead brief on every page; no credentials or hidden network calls.
+    const inquiryExtras = `<div class="inquiry-extra-block">
+      <label for="inquiryPlan" data-copy="inquiry.extraPlan">Interested in a website plan?</label>
+      <select id="inquiryPlan" name="plan"><option value="" data-copy="inquiry.planAny">Not sure yet</option><option value="Basic" data-copy="inquiry.planBasic">Basic · $1,100+</option><option value="Professional" data-copy="inquiry.planProfessional">Professional · $1,500+</option><option value="Premium" data-copy="inquiry.planPremium">Premium · $2,500+</option></select>
+      <label class="inquiry-addon-check"><input type="checkbox" id="inquiryAdmin" name="dashboard"><span data-copy="inquiry.adminAddon">I would also like a Business Management dashboard</span></label>
+      <fieldset class="inquiry-module-fieldset" id="inquiryModules" hidden><legend data-copy="inquiry.moduleLegend">What would you manage? (optional)</legend>
+        <label><input type="checkbox" value="catalog" data-inquiry-module><span data-copy="inquiry.moduleCatalog">Catalog / products</span></label>
+        <label><input type="checkbox" value="inventory" data-inquiry-module><span data-copy="inquiry.moduleInventory">Inventory</span></label>
+        <label><input type="checkbox" value="orders" data-inquiry-module><span data-copy="inquiry.moduleOrders">Orders</span></label>
+        <label><input type="checkbox" value="reports" data-inquiry-module><span data-copy="inquiry.moduleReports">Sales reports</span></label>
+        <label><input type="checkbox" value="bookings" data-inquiry-module><span data-copy="inquiry.moduleBookings">Bookings</span></label>
+        <label><input type="checkbox" value="customers" data-inquiry-module><span data-copy="inquiry.moduleCustomers">Customer follow-up</span></label>
+      </fieldset>
+    </div>`;
+    const inquiryFields = homeInquiryForm.querySelector(".inquiry-fields");
+    inquiryFields.insertAdjacentHTML("beforeend", inquiryExtras);
+    const inquiryPlan = document.getElementById("inquiryPlan");
+    const inquiryAdmin = document.getElementById("inquiryAdmin");
+    const inquiryModules = document.getElementById("inquiryModules");
+    inquiryAdmin.addEventListener("change",()=>{inquiryModules.hidden=!inquiryAdmin.checked;});
+    // New nodes were inserted after the first language pass; translate them immediately.
+    setLanguage(currentLang);
     const inquiryType = document.getElementById('inquiryType');
     const inquiryLabels = {
       website: { en: 'Business website', es: 'Página web para negocio' },
       booking: { en: 'Booking or admin system', es: 'Sistema de reservas o administración' },
       catalog: { en: 'Digital catalog', es: 'Catálogo digital' },
+      management: { en: 'Business Management dashboard', es: 'Panel Business Management' },
+      crm: { en: 'CRM / Customer follow-up', es: 'CRM / Seguimiento de clientes' },
       seo: { en: 'SEO and local visibility', es: 'SEO y visibilidad local' },
       other: { en: 'Other', es: 'Otro' }
+    };
+
+    const managementOption = document.createElement("option");
+    managementOption.value="management";
+    managementOption.textContent=currentLang==="es"?"Panel Business Management":"Business Management dashboard";
+    const crmOption = document.createElement("option");
+    crmOption.value="crm";
+    crmOption.textContent=currentLang==="es"?"CRM / Seguimiento de clientes":"CRM / Customer follow-up";
+    inquiryType.add(managementOption);
+    inquiryType.add(crmOption);
+    const localizeSpecialOptions = () => {
+      managementOption.textContent=currentLang==="es"?"Panel Business Management":"Business Management dashboard";
+      crmOption.textContent=currentLang==="es"?"CRM / Seguimiento de clientes":"CRM / Customer follow-up";
     };
     function jumpToInquiry(event) {
       const isHome = document.body.classList.contains('home-mode');
@@ -661,7 +700,7 @@ const copy = {
       const service = event.currentTarget.dataset.inquiryService;
       const plan = event.currentTarget.dataset.inquiryPlan;
       if (service && isHome) {
-        const option = {systems:'booking',automation:'other',seo:'seo'}[service];
+        const option = {systems:"booking",automation:"other",seo:"seo",management:"management"}[service];
         if (option) inquiryType.value = option;
       }
       if (plan && isHome && !homeInquiryMessage.value.trim()) {
@@ -677,7 +716,17 @@ const copy = {
       const service = inquiryLabels[inquiryType.value]?.[currentLang];
       const description = homeInquiryMessage.value.trim();
       if (!description) { homeInquiryMessage.focus(); return; }
-      const message = [opening,service ? `${currentLang === 'es' ? 'Servicio' : 'Service'}: ${service}` : '', description].filter(Boolean).join('\n\n');
+      const selectedPlan=inquiryPlan.value;
+      const modulesSelected=[...inquiryModules.querySelectorAll('[data-inquiry-module]:checked')].map(input=>input.closest('label')?.querySelector('span')?.textContent.trim()).filter(Boolean);
+      const lineItems=[
+        opening,
+        service ? `${currentLang === 'es' ? 'Servicio' : 'Service'}: ${service}` : '',
+        selectedPlan ? `${currentLang === 'es' ? 'Plan web' : 'Website plan'}: ${selectedPlan}` : '',
+        `${currentLang === 'es' ? 'Panel administrativo opcional' : 'Optional management dashboard'}: ${inquiryAdmin.checked ? (currentLang === 'es' ? 'Sí, cotizar por separado' : 'Yes, quote separately') : (currentLang === 'es' ? 'No' : 'No')}`,
+        inquiryAdmin.checked && modulesSelected.length ? `${currentLang === 'es' ? 'Módulos deseados' : 'Requested modules'}: ${modulesSelected.join(', ')}` : '',
+        description
+      ];
+      const message = lineItems.filter(Boolean).join('\n\n');
       const channel = event.submitter?.dataset.inquiryChannel === 'email' ? 'email' : 'whatsapp';
       if (channel === 'email') {
         const subject = currentLang === 'es' ? 'Solicitud de proyecto web — AB Studio' : 'Website project inquiry — AB Studio';
