@@ -1148,6 +1148,13 @@ function syncPublishedPrices(){
       </div>
     </div>`;
     const inquiryFields = homeInquiryForm.querySelector(".inquiry-fields");
+    inquiryFields.insertAdjacentHTML("afterbegin", `<div class="crm-contact-fields">
+      <label for="crmLeadName">Name / Nombre</label><input id="crmLeadName" name="crmName" autocomplete="name" maxlength="120" required placeholder="Your name / Tu nombre">
+      <label for="crmLeadEmail">Email / Correo electrónico</label><input id="crmLeadEmail" name="crmEmail" type="email" autocomplete="email" maxlength="254" required placeholder="name@example.com">
+      <label class="crm-consent"><input id="crmLeadConsent" type="checkbox" required><span>I agree to AB Studio storing my inquiry to respond to me. / Acepto que AB Studio guarde mi solicitud para responderme. <a href="/privacidad/">Privacy / Privacidad</a></span></label>
+      <div style="display:none" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p id="crmLeadStatus" role="status" aria-live="polite"></p>
+    </div>`);
     inquiryFields.insertAdjacentHTML("beforeend", inquiryExtras);
     const inquiryPlan = document.getElementById("inquiryPlan");
     syncPublishedPrices();
@@ -1248,7 +1255,7 @@ function syncPublishedPrices(){
       if (isHome || isServiceInquiry) homeInquiryMessage.focus({preventScroll:true});
     }
     document.querySelectorAll('a[href="#contact"],a[data-inquiry-service],a[data-inquiry-plan]').forEach(link => link.addEventListener('click', jumpToInquiry));
-    homeInquiryForm.addEventListener('submit', event => {
+    homeInquiryForm.addEventListener('submit', async event => {
       event.preventDefault();
       const page = document.body.dataset.page;
       const opening = page === 'crm'
@@ -1271,6 +1278,35 @@ function syncPublishedPrices(){
       ];
       const message = lineItems.filter(Boolean).join('\n\n');
       const channel = event.submitter?.dataset.inquiryChannel === 'email' ? 'email' : 'whatsapp';
+      const details = new FormData(homeInquiryForm);
+      const leadPayload = {
+        submission_id: crypto.randomUUID(),
+        name: String(details.get('crmName') || '').trim(),
+        email: String(details.get('crmEmail') || '').trim(),
+        description, service: inquiryType.value || page, plan: selectedPlan,
+        channel, modules: [...inquiryModules.querySelectorAll('[data-inquiry-module]:checked')].map(x => x.value),
+        consent: document.getElementById('crmLeadConsent').checked,
+        website: String(details.get('website') || '')
+      };
+      const status = document.getElementById('crmLeadStatus');
+      const submitButtons = [...homeInquiryForm.querySelectorAll('button[type="submit"]')];
+      submitButtons.forEach(button => button.disabled = true);
+      let stored = false;
+      try {
+        status.textContent = currentLang === 'es' ? 'Registrando solicitud...' : 'Saving inquiry...';
+        const response = await fetch('/api/inquiries', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(leadPayload)});
+        stored = response.ok && (await response.json()).ok === true;
+      } catch (error) { stored = false; }
+      finally { submitButtons.forEach(button => button.disabled = false); }
+      if (!stored) {
+        status.textContent = currentLang === 'es' ? 'No se pudo guardar la solicitud en el CRM.' : 'Your inquiry could not be saved in our CRM.';
+        const proceed = window.confirm(currentLang === 'es'
+          ? 'No se guardó tu solicitud. ¿Deseas continuar por WhatsApp o correo de todos modos?'
+          : 'Your inquiry was not saved. Continue to WhatsApp or email anyway?');
+        if (!proceed) return;
+      } else {
+        status.textContent = currentLang === 'es' ? 'Solicitud registrada. Abriendo el canal elegido...' : 'Inquiry recorded. Opening your selected channel...';
+      }
       if (channel === 'email') {
         const subject = page === 'crm' ? (currentLang === 'es' ? 'Consulta sobre CRM — AB Studio' : 'CRM inquiry — AB Studio')
           : page === 'management' ? (currentLang === 'es' ? 'Consulta sobre Business Management — AB Studio' : 'Business Management inquiry — AB Studio')
