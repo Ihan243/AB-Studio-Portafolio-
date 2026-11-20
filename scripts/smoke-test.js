@@ -562,3 +562,16 @@ assert.match(read('vercel.json'), /admin\/index.html/);
 
 // New Supabase projects require explicit Data API grants for server inserts.
 assert.match(read('supabase/migrations/20261120_crm_api_grants.sql'), /grant select, insert on table public\.crm_leads to service_role/i);
+
+
+/* CRM launch safety invariants. Actual Supabase RLS must still be tested live. */
+const crmSecuritySchema = read('supabase/migrations/20261120_crm.sql');
+assert.match(crmSecuritySchema, /alter table public\.crm_leads enable row level security/i);
+assert.match(crmSecuritySchema, /alter table public\.crm_staff enable row level security/i);
+assert.match(crmSecuritySchema, /revoke all on public\.crm_leads from anon/i);
+assert.match(crmSecuritySchema, /revoke all on public\.crm_staff from anon/i);
+assert.match(crmSecuritySchema, /Staff can read leads/);
+assert.match(crmSecuritySchema, /Staff can update leads/);
+assert.match(crmIntake, /CRM_CAPTURE_ENABLED/);
+assert.match(js, /setCrmCaptureMode\(false\)/);
+assert.match(js, /if \(crmCaptureEnabled\)/);
