@@ -4,8 +4,8 @@
 <title>AB Studio | Private CRM</title><link rel="icon" href="/assets/brand/favicon.png">
 <link rel="stylesheet" href="/admin/crm.css"></head>
 <body><header><a href="/" class="brand">AB <span>STUDIO</span></a><span>PRIVATE CRM</span><button id="logout" type="button" hidden>Sign out</button></header>
-<main><section id="setup" class="panel"><h1>Connect your CRM</h1><p>Enter your Supabase project URL and public anon key. These are used only in this tab; the service-role key must never be entered here.</p>
-<form id="setup-form"><label>Project URL<input name="url" type="url" placeholder="https://project.supabase.co" required></label><label>Public anon key<input name="anon" type="password" autocomplete="off" required></label><button>Continue</button></form></section>
+<main><section id="setup" class="panel"><h1>Connect your CRM</h1><p>Enter your Supabase project URL and publishable key. These are used only in this tab; the secret key must never be entered here.</p>
+<form id="setup-form"><label>Project URL<input name="url" type="url" placeholder="https://project.supabase.co" required></label><label>Publishable key<input name="anon" placeholder="sb_publishable_..." type="password" autocomplete="off" required></label><button>Continue</button></form></section>
 <section id="login" class="panel" hidden><h1>Team sign in</h1><p>Only invited, authorized AB Studio team members can view leads.</p><form id="login-form"><label>Email<input name="email" type="email" autocomplete="username" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button>Sign in</button></form><button class="link" id="reset-config">Change project settings</button></section>
 <section id="workspace" hidden><div class="heading"><div><div class="eyebrow">SALES OPERATIONS</div><h1>Lead management</h1><p>Manage inquiries and move opportunities through your sales pipeline.</p></div><button id="refresh">Refresh leads</button></div>
 <div id="metrics" class="metrics"></div>
