@@ -15,14 +15,14 @@ async function request(path,options={}){
 $('#setup-form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const u=String(f.get('url')).trim().replace(/\/$/,'');const key=String(f.get('anon')).trim();if(!validUrl(u)||!key.startsWith('sb_publishable_')){message('Use a valid https://PROJECT.supabase.co URL and sb_publishable_ key.');return;}project=u;anon=key;visible('login');message('Project configured for this tab. Sign in to continue.');});
 $('#reset-config').addEventListener('click',()=>{project=null;anon=null;token=null;visible('setup');message('')});
 $('#login-form').addEventListener('submit',async e=>{
- e.preventDefault();const f=new FormData(e.currentTarget),button=e.currentTarget.querySelector('button');button.disabled=true;message('Signing in...');
+ e.preventDefault();const form=e.currentTarget;const f=new FormData(form),button=form.querySelector('button');button.disabled=true;message('Signing in...');
  try{
    const r=await fetch(project+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:anon,'Content-Type':'application/json'},body:JSON.stringify({email:f.get('email'),password:f.get('password')})});
    if(!r.ok)throw new Error('Sign-in failed. Check your credentials.');
    const data=await r.json();token=data.access_token;
    const staff=await request('/rest/v1/crm_staff?select=user_id&limit=1');
    if(!Array.isArray(staff)||staff.length!==1)throw new Error('This account is not approved for AB Studio CRM.');
-   e.currentTarget.reset();visible('workspace');message('Signed in. Session exists only in this tab.');await load();
+   form.reset();visible('workspace');message('Signed in. Session exists only in this tab.');await load();
  }catch(err){token=null;visible('login');message(err.message)}
  finally{button.disabled=false}
 });
