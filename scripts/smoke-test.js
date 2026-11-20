@@ -281,4 +281,24 @@ for(const component of orderedSections){
   index=pos;
 }
 
+
+/* Separate Business Management and CRM options throughout the Services navigation. */
+for (const prefix of ['','public/']) {
+  for (const page of ['index.html','servicios/index.html','sitios-web/index.html','sistemas/index.html','seo/index.html','automatizacion/index.html','empresa/index.html','proyectos/index.html','blog/index.html','faq/index.html']) {
+    const source=read(prefix+page);
+    const management='<a href="/servicios/#admin-panel" data-copy="nav.serviceAdmin">Business Management</a>';
+    const customerCRM='<a href="/servicios/#crm-plans" data-copy="nav.serviceCrm">Customer CRM</a>';
+    assert.ok(source.includes(management),`Missing Business Management nav link: ${prefix+page}`);
+    assert.ok(source.includes(customerCRM),`Missing Customer CRM nav link: ${prefix+page}`);
+    assert.equal(source.split('data-copy="nav.serviceAdmin"').length-1,1);
+    assert.equal(source.split('data-copy="nav.serviceCrm"').length-1,1);
+  }
+}
+assert.match(js,/"nav\.serviceCrm":"Customer CRM"/);
+assert.match(js,/"nav\.serviceCrm":"CRM · Gestión de clientes"/);
+assert.match(js,/feature\.after\(crm\)/);
+assert.match(js,/\['#admin-panel','#crm-plans'/);
+assert.match(js,/crmPanelMarkup\(currentLang\)/);
+assert.match(css,/\.nav-dropdown \[data-copy="nav\.serviceCrm"\]/);
+
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
