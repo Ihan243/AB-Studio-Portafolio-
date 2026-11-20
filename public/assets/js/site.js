@@ -368,7 +368,49 @@ const copy = {
         buttons:["Conversar sobre mi web","Ver paquetes"], details:"Los precios desde corresponden al desarrollo del sitio. Hosting, dominio, software de pago, redacción extensa, fotografía e integraciones avanzadas se confirman aparte en la propuesta."
       }
     };
-    const businessAddonData = {"en":{"eyebrow":"OPTIONAL ADD-ON · WORKS WITH ALL 3 PLANS","title":"Want to manage your website yourself?","text":"Add Business Management to Basic, Professional or Premium. Your website plan keeps its published price. The private dashboard is quoted separately based on the modules you need, such as product editing, inventory, orders or analytics.","plans":[["Basic","$1,100"],["Professional","$1,500"],["Premium","$2,500"]],"extra":"Optional dashboard","pricing":"Custom module quote","note":"The dashboard is not included in the website price. Hosting, database services, third-party subscriptions and ongoing maintenance may have additional costs.","cta":"Explore Business Management"},"es":{"eyebrow":"EXTRA OPCIONAL · EN LOS 3 PLANES","title":"¿Quieres administrar tu página por tu cuenta?","text":"Añade Business Management a Básico, Profesional o Premium. Tu plan web mantiene el precio anunciado. El panel privado se cotiza por separado según los módulos que necesites: productos, inventario, pedidos o estadísticas.","plans":[["Básico","$1,100"],["Profesional","$1,500"],["Premium","$2,500"]],"extra":"Panel opcional","pricing":"Cotizar por módulos","note":"El panel no está incluido en el precio web. Hosting, base de datos, servicios externos y mantenimiento pueden generar costos adicionales.","cta":"Conocer Business Management"}};
+    const quoteData = {"en":{"tag":"WEBSITE + OPTIONAL EXTRAS","title":"Build your website estimate.","intro":"Choose a web plan and the tools that matter to your business. This is an initial estimate, not a final quotation.","web":"01 / Choose your website plan","extra":"02 / Add optional tools","details":"03 / About your business","basic":"Basic","professional":"Professional","premium":"Premium","admin":"Business Management dashboard","adminHint":"Private dashboard, quoted separately by modules.","modTitle":"Dashboard modules you may need","modules":[["catalog","Product catalog"],["inventory","Inventory"],["orders","Orders"],["reports","Sales reports"],["booking","Reservations"],["crm","Customer follow-up"]],"seo":"SEO + Local Visibility","seoHint":"$200 one-time setup, $30/month","crm":"Dedicated CRM plan (optional)","crmNone":"No separate CRM","starter":"Starter ($900–$1,500 + $39/mo)","growth":"Growth ($1,500–$3,000 + $89/mo)","enterprise":"Enterprise (from $3,000 + $199/mo)","crmHint":"A dedicated customer follow-up system, priced separately from custom dashboard modules. Overlapping needs will be reviewed before quoting.","name":"Business name (optional)","namePH":"Example: Sunrise Florist","notes":"What do you need?","notesPH":"Describe your business, goals and needed features.","summary":"Your initial estimate","initial":"Initial project estimate","monthly":"Published monthly fees","custom":"Custom modules to quote","none":"No custom modules selected","exclude":"Website rates are starting prices. CRM implementation ranges are indicative; custom dashboard modules have no fixed price here. Hosting, domains, external providers, taxes and optional support are quoted separately.","email":"Continue by email","wa":"Continue on WhatsApp","disclose":"We open a prepared message; nothing is sent until you confirm it in that app.","subject":"AB Studio: Website + add-on quote","hello":"Hello AB Studio, please quote this project.","crmLabel":"CRM tier","modulesLabel":"Dashboard modules","business":"Business","message":"Project details","seoSetup":"SEO setup","dash":"Business Management","yes":"Yes","no":"No"},"es":{"tag":"WEB + COMPLEMENTOS OPCIONALES","title":"Configura el presupuesto de tu web.","intro":"Elige un plan y las herramientas que necesita tu negocio. Este es un estimado inicial, no una cotización definitiva.","web":"01 / Elige tu plan web","extra":"02 / Agrega complementos","details":"03 / Cuéntanos de tu negocio","basic":"Básico","professional":"Profesional","premium":"Premium","admin":"Panel Business Management","adminHint":"Panel privado con precio adicional según módulos.","modTitle":"Módulos que podrías necesitar","modules":[["catalog","Catálogo de productos"],["inventory","Inventario"],["orders","Pedidos"],["reports","Reportes de ventas"],["booking","Reservas"],["crm","Seguimiento de clientes"]],"seo":"SEO + visibilidad local","seoHint":"$200 de configuración única y $30/mes","crm":"Plan CRM independiente (opcional)","crmNone":"Sin CRM adicional","starter":"Starter ($900–$1,500 + $39/mes)","growth":"Growth ($1,500–$3,000 + $89/mes)","enterprise":"Enterprise (desde $3,000 + $199/mes)","crmHint":"Sistema para seguimiento comercial, diferente de los módulos personalizados. Revisaremos posibles funciones duplicadas antes de cotizar.","name":"Nombre del negocio (opcional)","namePH":"Ejemplo: Florería Primavera","notes":"¿Qué necesitas?","notesPH":"Describe tu negocio, tus objetivos y las funciones que deseas.","summary":"Inversión inicial estimada","initial":"Costo inicial estimado","monthly":"Mensualidades publicadas","custom":"Módulos por cotizar","none":"No seleccionaste módulos personalizados","exclude":"Las tarifas web son precios iniciales. Los rangos de implementación CRM son orientativos; el panel personalizado no tiene un precio fijo aquí. Hosting, dominio, terceros, impuestos y soporte opcional se cotizan aparte.","email":"Continuar por correo","wa":"Continuar en WhatsApp","disclose":"Abrimos un mensaje preparado; nada se envía hasta que lo confirmes en esa aplicación.","subject":"AB Studio: Cotización web y complementos","hello":"Hola AB Studio, quisiera cotizar este proyecto.","crmLabel":"Versión CRM","modulesLabel":"Módulos del panel","business":"Negocio","message":"Detalles del proyecto","seoSetup":"Configuración SEO","dash":"Business Management","yes":"Sí","no":"No"}};
+    function quoteMarkup(lang,scope="services"){
+ const d=quoteData[lang]||quoteData.en;
+ const p=[["basic",d.basic,"$1,100"],["professional",d.professional,"$1,500"],["premium",d.premium,"$2,500"]];
+ const plans=p.map(([id,name,price])=>`<label class="quote-plan"><input type="radio" name="quote-${scope}" data-q-plan value="${id}" ${id==="professional"?"checked":""}><span><b>${name}</b><small>${price} USD</small></span></label>`).join("");
+ const mods=d.modules.map(([id,label])=>`<label class="quote-module"><input type="checkbox" data-q-module value="${id}"><span>${label}</span></label>`).join("");
+ return `<section class="quote-section" id="quote-builder-${scope}" aria-labelledby="quote-title-${scope}"><div class="wrap"><div class="quote-heading"><div class="eyebrow">${d.tag}</div><h2 id="quote-title-${scope}">${d.title}</h2><p>${d.intro}</p></div>
+ <div class="quote-layout" data-quote-root data-quote-lang="${lang}">
+  <div class="quote-inputs">
+   <fieldset class="quote-group"><legend>${d.web}</legend><div class="quote-plan-grid">${plans}</div></fieldset>
+   <fieldset class="quote-group"><legend>${d.extra}</legend><label class="quote-toggle"><input type="checkbox" data-q-admin><span><b>${d.admin}</b><small>${d.adminHint}</small></span></label><div class="quote-modules" data-q-modules hidden><p>${d.modTitle}</p><div class="quote-module-grid">${mods}</div></div>
+    <label class="quote-toggle"><input type="checkbox" data-q-seo><span><b>${d.seo}</b><small>${d.seoHint}</small></span></label>
+    <label class="quote-label" for="quote-crm-${scope}">${d.crm}</label><p class="quote-help">${d.crmHint}</p><select data-q-crm id="quote-crm-${scope}"><option value="none">${d.crmNone}</option><option value="starter">${d.starter}</option><option value="growth">${d.growth}</option><option value="enterprise">${d.enterprise}</option></select>
+   </fieldset>
+   <fieldset class="quote-group"><legend>${d.details}</legend><label class="quote-label" for="quote-name-${scope}">${d.name}</label><input id="quote-name-${scope}" type="text" data-q-name maxlength="100" placeholder="${d.namePH}"><label class="quote-label" for="quote-notes-${scope}">${d.notes}</label><textarea id="quote-notes-${scope}" data-q-notes maxlength="1200" rows="3" placeholder="${d.notesPH}"></textarea></fieldset>
+  </div>
+  <aside class="quote-result"><div class="eyebrow">AB STUDIO / USD</div><h3>${d.summary}</h3><div aria-live="polite" class="quote-totals"><div><span>${d.initial}</span><strong data-q-initial>$1,500</strong></div><div><span>${d.monthly}</span><strong data-q-monthly>$0 / ${lang==="es"?"mes":"mo"}</strong></div><div class="quote-custom"><b>${d.custom}</b><p data-q-custom>${d.none}</p></div></div><p class="quote-exclusions">${d.exclude}</p><a class="button" data-q-email href="mailto:sales.abstudio@gmail.com">${d.email} ↗</a><a class="button outline" data-q-wa target="_blank" rel="noopener noreferrer" href="https://wa.me/15513129791">${d.wa} ↗</a><small class="quote-send-note">${d.disclose}</small></aside>
+ </div></div></section>`;
+}
+    function quoteUpdate(root){
+ if(!root)return;
+ const lang=root.dataset.quoteLang==="es"?"es":"en",d=quoteData[lang];
+ const selected=root.querySelector("[data-q-plan]:checked")?.value||"professional";
+ const price={basic:1100,professional:1500,premium:2500}[selected];
+ const admin=root.querySelector("[data-q-admin]").checked,seo=root.querySelector("[data-q-seo]").checked,crm=root.querySelector("[data-q-crm]").value;
+ const crmRates={none:[0,0,0],starter:[900,1500,39],growth:[1500,3000,89],enterprise:[3000,null,199]}[crm];
+ const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(n);
+ const low=price+(seo?200:0)+crmRates[0],high=crmRates[1]===null?null:price+(seo?200:0)+crmRates[1];
+ const total=high===null?money(low)+"+":low===high?money(low):money(low)+" – "+money(high);
+ const month=(seo?30:0)+crmRates[2],monthly=money(month)+(crm==="enterprise"?"+":"")+(lang==="es"?" / mes":" / mo");
+ root.querySelector("[data-q-initial]").textContent=total;
+ root.querySelector("[data-q-monthly]").textContent=monthly;
+ root.querySelector("[data-q-modules]").hidden=!admin;
+ const mods=[...root.querySelectorAll("[data-q-module]:checked")].map(input=>d.modules.find(m=>m[0]===input.value)?.[1]).filter(Boolean);
+ root.querySelector("[data-q-custom]").textContent=admin?d.admin+(mods.length?": "+mods.join(", "):""):d.none;
+ const business=root.querySelector("[data-q-name]").value.trim().slice(0,100),details=root.querySelector("[data-q-notes]").value.trim().slice(0,1200);
+ const crmTitle={none:d.crmNone,starter:d.starter,growth:d.growth,enterprise:d.enterprise}[crm];
+ const lines=[d.hello,"",d.web+": "+({basic:d.basic,professional:d.professional,premium:d.premium}[selected])+" ("+money(price)+")",d.dash+": "+(admin?d.yes:d.no),...(admin?[d.modulesLabel+": "+(mods.length?mods.join(", "):d.custom)]:[]),d.seo+": "+(seo?d.yes:d.no),d.crmLabel+": "+crmTitle,d.initial+": "+total,d.monthly+": "+monthly,...(business?["",d.business+": "+business]:[]),...(details?["",d.message+": "+details]:[]),"",d.exclude];
+ const message=lines.join("\n");
+ root.querySelector("[data-q-email]").href="mailto:sales.abstudio@gmail.com?subject="+encodeURIComponent(d.subject)+"&body="+encodeURIComponent(message);
+ root.querySelector("[data-q-wa]").href="https://wa.me/15513129791?text="+encodeURIComponent(message);
+}
+        const businessAddonData = {"en":{"eyebrow":"OPTIONAL ADD-ON · WORKS WITH ALL 3 PLANS","title":"Want to manage your website yourself?","text":"Add Business Management to Basic, Professional or Premium. Your website plan keeps its published price. The private dashboard is quoted separately based on the modules you need, such as product editing, inventory, orders or analytics.","plans":[["Basic","$1,100"],["Professional","$1,500"],["Premium","$2,500"]],"extra":"Optional dashboard","pricing":"Custom module quote","note":"The dashboard is not included in the website price. Hosting, database services, third-party subscriptions and ongoing maintenance may have additional costs.","cta":"Explore Business Management"},"es":{"eyebrow":"EXTRA OPCIONAL · EN LOS 3 PLANES","title":"¿Quieres administrar tu página por tu cuenta?","text":"Añade Business Management a Básico, Profesional o Premium. Tu plan web mantiene el precio anunciado. El panel privado se cotiza por separado según los módulos que necesites: productos, inventario, pedidos o estadísticas.","plans":[["Básico","$1,100"],["Profesional","$1,500"],["Premium","$2,500"]],"extra":"Panel opcional","pricing":"Cotizar por módulos","note":"El panel no está incluido en el precio web. Hosting, base de datos, servicios externos y mantenimiento pueden generar costos adicionales.","cta":"Conocer Business Management"}};
     function businessAddonMarkup(lang,mode="route"){
  const a=businessAddonData[lang]||businessAddonData.en;
  const cards=a.plans.map(([name,price])=>`<article class="addon-plan"><strong>${name}</strong><span>${price}<small> USD</small></span><div class="addon-plan-plus" aria-hidden="true">+</div><div class="addon-plan-extra"><small>${a.extra}</small><b>${a.pricing}</b></div></article>`).join("");
@@ -379,7 +421,7 @@ const copy = {
       const c = websitePageCopy[lang] || websitePageCopy.en;
       const cards = list => list.map(item => `<article class="route-card"><b>${item[0]}</b><p>${item[1]}</p></article>`).join('');
       const list = items => items.map(item => `<li>${item}</li>`).join('');
-      const plans = c.plans.map(plan => `<article class="route-plan"><small>${plan[0]}</small><div class="price">${plan[1]} <small>USD ${lang === 'es' ? 'desde' : 'starting at'}</small></div><p>${plan[2]}</p></article>`).join('');
+      const plans = c.plans.map((plan,i) => `<article class="route-plan"><small>${plan[0]}</small><div class="price">${plan[1]} <small>USD ${lang === 'es' ? 'desde' : 'starting at'}</small></div><p>${plan[2]}</p><a class="route-plan-configure" href="#quote-builder-web" data-quote-pick="${["basic","professional","premium"][i]}">${lang === "es" ? "Configurar este plan" : "Configure this plan"} ↗</a></article>`).join('');
       const faqs = c.faqs.map(faq => `<details><summary>${faq[0]}</summary><p>${faq[1]}</p></details>`).join('');
       return `<section class="route-hero route-hero--visual"><div class="wrap route-hero-split"><div class="route-hero-copy"><div class="eyebrow">${c.eyebrow}</div><h1 class="serif">${c.title}</h1><p>${c.intro}</p><div class="hero-actions"><a class="button" href="#contact">${c.buttons[0]} <span class="arrow">↗</span></a><a class="button outline" href="#route-packages">${c.buttons[1]} <span class="arrow">↓</span></a></div></div><div class="route-hero-showcase" aria-label="AB Studio website portfolio preview">
   <div class="route-showcase-glow"></div><div class="route-showcase-frame">
@@ -393,6 +435,7 @@ const copy = {
         <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">${lang === 'es' ? 'ALCANCE DEL PROYECTO' : 'PROJECT SCOPE'}</div><h2>${c.scopeTitle}</h2><p>${c.scopeIntro}</p></div><ul class="route-list">${list(c.deliverables)}</ul></div></section>
         <section class="route-content" id="route-packages"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'INVERSIÓN' : 'INVESTMENT'}</div><h2>${c.plansTitle}</h2><div class="route-plans">${plans}</div><p class="fineprint">${c.details}</p></div></section>
         ${businessAddonMarkup(lang)}
+        ${quoteMarkup(lang,"web")}
         <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">${lang === 'es' ? 'COTIZACIÓN' : 'ESTIMATE'}</div><h2>${c.factorsTitle}</h2></div><ul class="route-list">${list(c.factors)}</ul></div></section>
         <section class="route-content"><div class="wrap"><div class="eyebrow">${lang === 'es' ? 'PREGUNTAS FRECUENTES' : 'FREQUENT QUESTIONS'}</div><h2>${c.faqTitle}</h2><div class="route-faq">${faqs}</div></div></section>
         <section class="route-content"><div class="wrap route-columns"><div><div class="eyebrow">AB STUDIO</div><h2>${c.cta}</h2><p>${c.ctaText}</p></div><div class="hero-actions"><a class="button" href="#contact">${c.buttons[0]} <span class="arrow">↗</span></a></div></div></section>`;
@@ -461,8 +504,12 @@ const copy = {
       document.body.classList.toggle('route-mode', !isHome);
       document.body.classList.toggle('home-mode', isHome);
       routePage.innerHTML = '';
+      if (isHome) {
+        const homePlans=document.querySelector("main #plans .wrap");
+        if (homePlans) {homePlans.querySelector(".quote-section")?.remove();homePlans.insertAdjacentHTML("beforeend",quoteMarkup(currentLang,"home"));}
+      }
       document.querySelectorAll('#services .service').forEach(card => card.hidden = false);
-      if (path === '/servicios/') routePage.innerHTML = adminPanelMarkup(currentLang) + adminGuideMarkup(currentLang) + crmPanelMarkup(currentLang);
+      if (path === '/servicios/') routePage.innerHTML = quoteMarkup(currentLang,"services") + adminPanelMarkup(currentLang) + adminGuideMarkup(currentLang) + crmPanelMarkup(currentLang);
       if (path === '/sitios-web/') routePage.innerHTML = websitePageMarkup(currentLang);
       else if (path === '/empresa/') {
         document.getElementById('company').style.display = 'block';
@@ -517,10 +564,11 @@ const copy = {
         if (section) section.style.display = 'block';
       }
       if (!isHome) contact.style.display = 'block';
+      document.querySelectorAll("[data-quote-root]").forEach(quoteUpdate);
       const navCta = document.querySelector('.nav-actions a.button.small');
       if (navCta) { navCta.href = 'https://calendar.app.google/DKwYiEnNF2YFDXtq7'; navCta.target = '_blank'; navCta.rel = 'noopener noreferrer'; }
       // Sections inside Services are rendered dynamically; resolve deep links after the DOM is updated.
-      if (path === '/servicios/' && (location.hash === '#admin-panel' || location.hash === '#crm-plans')) {
+      if (['/servicios/','/sitios-web/','/'].includes(path) && ['#admin-panel','#crm-plans','#quote-builder-services','#quote-builder-web','#quote-builder-home','#business-management-guide','#web-dashboard-addon'].includes(location.hash)) {
         const sectionId = location.hash.slice(1);
         requestAnimationFrame(() => document.getElementById(sectionId)?.scrollIntoView({behavior:'instant',block:'start'}));
       }
@@ -542,6 +590,12 @@ const copy = {
     const initialPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '') + '/';
     showRoute(routeTargets[initialPath] ? initialPath : '/', routeTargets[initialPath], false);
 
+
+    // Browser-side estimate and draft links. No message is automatically sent.
+    document.addEventListener("change",event=>{const root=event.target.closest("[data-quote-root]");if(root)quoteUpdate(root);});
+    document.addEventListener("input",event=>{const root=event.target.closest("[data-quote-root]");if(root && event.target.matches("[data-q-name],[data-q-notes]"))quoteUpdate(root);});
+    document.addEventListener("click",event=>{const link=event.target.closest("[data-quote-pick]");if(!link)return;const root=document.querySelector("#quote-builder-web [data-quote-root],#quote-builder-home [data-quote-root],#quote-builder-services [data-quote-root]");if(!root)return;const radio=root.querySelector('[data-q-plan][value="'+link.dataset.quotePick+'"]');if(radio){radio.checked=true;quoteUpdate(root);}});
+    document.querySelectorAll("[data-quote-root]").forEach(quoteUpdate);
     // Interactive illustration only. Changes remain local to this rendered demo.
     routePage.addEventListener("click", event => {
       const save = event.target.closest("[data-bm-save]");
