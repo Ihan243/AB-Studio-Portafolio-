@@ -434,18 +434,20 @@ for (const prefix of ['', 'public/']) {
 
 
 /* Central Pricing hub must load as a standalone route with bilingual comparisons. */
-for(const route of ["pricing/index.html","public/pricing/index.html"]){
+for(const route of ["pricing.html","public/pricing.html","pricing/index.html","public/pricing/index.html"]){
   const html=read(route);
   assert.match(html,/data-page="pricing"/);
-  assert.match(html,/https:\/\/ab-studio-portafolio\.vercel\.app\/pricing\//);
+  assert.match(html,/https:\/\/ab-studio-portafolio\.vercel\.app\/pricing\.html/);
   assert.match(html,/id="route-page"/);
   assert.match(html,/<noscript>/);
   assert.match(html,/data-copy="nav\.pricing"/);
 }
 assert.equal(read("pricing/index.html"),read("public/pricing/index.html"));
+assert.equal(read("pricing.html"),read("public/pricing.html"));
+assert.equal(read("public/pricing.html"),read("public/pricing/index.html"));
 
 /* Pricing must have meaningful HTML even if site.js fails before route hydration. */
-const preRenderedPricing=read("public/pricing/index.html");
+const preRenderedPricing=read("public/pricing.html");
 assert.match(preRenderedPricing, /data-pricing-static="en"/);
 assert.match(preRenderedPricing, /class="ab-pricing-content"/);
 assert.equal((preRenderedPricing.match(/class="ab-pricing-service"/g)||[]).length,4);
@@ -462,11 +464,14 @@ assert.match(preRenderedPricing, /<noscript>[\\s\\S]*?sales\.abstudio@gmail\.com
 assert.match(js, /const hasStaticPricing = path === '\/pricing\/'/);
 assert.match(js, /if \(!hasStaticPricing\) routePage\.innerHTML = ''/);
 assert.match(js, /routePage\.dataset\.pricingStatic = currentLang/);
+assert.match(js,/location\.pathname === '\/pricing\.html' \? '\/pricing\/'/);
+assert.match(js,/path === '\/pricing\/' \? '\/pricing\.html'/);
+
 
 const pricingRoutes=["index.html","public/index.html","servicios/index.html","public/servicios/index.html","crm/index.html","public/crm/index.html","business-management/index.html","public/business-management/index.html","sitios-web/index.html","public/sitios-web/index.html"];
 for(const route of pricingRoutes){
   const html=read(route);
-  assert.match(html,/href="\/pricing\/" data-copy="nav\.pricing"/);
+  assert.match(html,/href="\/pricing\.html" data-copy="nav\.pricing"/);
 }
 assert.match(home,/class="ab-pricing-home-link"/);
 assert.match(js,/"nav\.pricing":"Pricing"/);
@@ -475,9 +480,9 @@ assert.match(js,/"pricing\.compareCta"/);
 assert.match(css,/AB STUDIO \/ PRICING CENTER/);
 assert.match(css,/@media\(max-width:1100px\)/);
 const pricingConfig=JSON.parse(read('vercel.json'));
-assert.ok(pricingConfig.rewrites.some(x=>x.source==='/pricing/'&&x.destination==='/pricing/index.html'));
-assert.ok(pricingConfig.redirects.some(x=>x.source==='/precios/'&&x.destination==='/pricing/'));
-assert.match(read('public/sitemap.xml'),/https:\/\/ab-studio-portafolio\.vercel\.app\/pricing\//);
+assert.ok(pricingConfig.redirects.some(x=>x.source==='/pricing/'&&x.destination==='/pricing.html'));
+assert.ok(pricingConfig.redirects.some(x=>x.source==='/precios/'&&x.destination==='/pricing.html'));
+assert.match(read('public/sitemap.xml'),/https:\/\/ab-studio-portafolio\.vercel\.app\/pricing\.html/);
 const priceEngine=new Function(pricingCore+js.slice(quoteStart,quoteEnd)+js.slice(crmStart,crmEnd)+';return {abPrices,pricingPageMarkup,pricingCalculate};')();
 for(const lang of ["en","es"]){
   const markup=priceEngine.pricingPageMarkup(lang);

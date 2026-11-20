@@ -11,10 +11,6 @@
       "destination": "/servicios/index.html"
     },
     {
-      "source": "/pricing/",
-      "destination": "/pricing/index.html"
-    },
-    {
       "source": "/crm/",
       "destination": "/crm/index.html"
     },
@@ -65,9 +61,14 @@
   ],
   "redirects": [
     {
+      "source": "/pricing/",
+      "destination": "/pricing.html",
+      "permanent": false
+    },
+    {
       "source": "/precios/",
-      "destination": "/pricing/",
-      "permanent": true
+      "destination": "/pricing.html",
+      "permanent": false
     }
   ]
 }
