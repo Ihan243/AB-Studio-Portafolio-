@@ -12,7 +12,7 @@ async function request(path,options={}){
  if(!r.ok){if(r.status===401||r.status===403)throw new Error('Not authorized. Check team membership or sign in again.');throw new Error('Request failed ('+r.status+').')}
  return r.status===204?null:r.json();
 }
-$('#setup-form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const u=String(f.get('url')).trim().replace(/\/$/,'');const key=String(f.get('anon')).trim();if(!validUrl(u)||!key){message('Use a valid https://PROJECT.supabase.co URL and public anon key.');return;}project=u;anon=key;visible('login');message('Project configured for this tab. Sign in to continue.');});
+$('#setup-form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const u=String(f.get('url')).trim().replace(/\/$/,'');const key=String(f.get('anon')).trim();if(!validUrl(u)||!key.startsWith('sb_publishable_')){message('Use a valid https://PROJECT.supabase.co URL and sb_publishable_ key.');return;}project=u;anon=key;visible('login');message('Project configured for this tab. Sign in to continue.');});
 $('#reset-config').addEventListener('click',()=>{project=null;anon=null;token=null;visible('setup');message('')});
 $('#login-form').addEventListener('submit',async e=>{
  e.preventDefault();const f=new FormData(e.currentTarget),button=e.currentTarget.querySelector('button');button.disabled=true;message('Signing in...');
