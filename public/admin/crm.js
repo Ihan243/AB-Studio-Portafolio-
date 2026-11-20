@@ -71,6 +71,23 @@ $('#reset-config').addEventListener('click',()=>{
  project=null;anon=null;token=null;leads=[];
  visible('setup');message('Public settings cleared. Set them once to continue.');
 });
+function explainAuthFailure(status,payload){
+ const code=String(payload?.code||payload?.error_code||payload?.error||'').toLowerCase();
+ const detail=String(payload?.msg||payload?.message||payload?.error_description||'').toLowerCase();
+ if(/api.?key|invalid.?apikey|invalid.?key|unknown.?api.?key/.test(code+' '+detail)){
+   return 'CRM configuration error: the Supabase publishable key is not accepted by this project. Check the Project URL and Publishable key in Supabase.';
+ }
+ if(code.includes('email_not_confirmed') || detail.includes('email not confirmed')){
+   return 'Your email address needs confirmation in Supabase Authentication before you can sign in.';
+ }
+ if(code.includes('invalid_credentials') || detail.includes('invalid login credentials')){
+   return 'Supabase rejected the email or password. Check that this is the administrator account in the configured Supabase project.';
+ }
+ if(status===429 || code.includes('rate_limit')){
+   return 'Too many sign-in attempts. Wait before trying again or reset your password through Supabase.';
+ }
+ return 'Supabase sign-in failed (HTTP '+status+(code?', '+code:'')+'). Check the administrator account and project configuration.';
+}
 $('#login-form').addEventListener('submit',async e=>{
  e.preventDefault();
  const form=e.currentTarget,f=new FormData(form),button=form.querySelector('button');
@@ -78,8 +95,8 @@ $('#login-form').addEventListener('submit',async e=>{
  button.disabled=true;message('Signing in...');
  try{
    const r=await fetch(project+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:anon,'Content-Type':'application/json'},body:JSON.stringify({email:f.get('email'),password:f.get('password')})});
-   if(!r.ok)throw new Error('Sign-in failed. Check your credentials.');
-   const data=await r.json();token=data.access_token;
+   if(!r.ok){const failure=await r.json().catch(()=>null);throw new Error(explainAuthFailure(r.status,failure));}
+   const data=await r.json();if(!data?.access_token)throw new Error('Supabase did not return a valid session token.');token=data.access_token;
    const staff=await request('/rest/v1/crm_staff?select=user_id&limit=1');
    if(!Array.isArray(staff)||staff.length!==1)throw new Error('This account is not approved for AB Studio CRM.');
    form.reset();visible('workspace');message('Signed in. Session stays in this tab only.');await load();
