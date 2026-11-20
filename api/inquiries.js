@@ -6,7 +6,10 @@ function validRequestHost(host) {
   return /^ab-studio-portafolio-[a-z0-9-]+\.vercel\.app$/.test(host);
 }
 function configured() {
-  return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY?.startsWith('sb_secret_'));
+  const hasCredentials = !!(process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY?.startsWith('sb_secret_'));
+  // Do not activate public lead capture just because credentials were copied into Production.
+  // Public launch requires a deliberate opt-in after security, abuse and backup checks.
+  return hasCredentials && (process.env.VERCEL_ENV !== 'production' || process.env.CRM_CAPTURE_ENABLED === 'true');
 }
 const text = (v,n=1000) => typeof v === 'string' ? v.trim().slice(0,n) : '';
 const emailOkay = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length <= 254;
@@ -28,7 +31,7 @@ module.exports = async function inquiry(req,res){
   if(Buffer.byteLength(raw)>MAX_BODY) return response(res,413,{error:'too_large'});
   let data;try{data=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch{return response(res,400,{error:'invalid_json'});}
   if(!data||typeof data!=='object'||Array.isArray(data))return response(res,400,{error:'invalid_body'});
-  if(text(data.website,200))return response(res,200,{ok:true}); // spam honeypot; no DB write
+  if(text(data.website,200))return response(res,422,{ok:false,error:'invalid_fields'}); // Do not claim an unrecorded submission succeeded
   if(data.consent!==true)return response(res,400,{error:'consent_required'});
   const name=text(data.name,120), email=text(data.email,254), description=text(data.description,4000);
   const service=text(data.service,80), plan=text(data.plan,80), channel=text(data.channel,30);
@@ -38,7 +41,7 @@ module.exports = async function inquiry(req,res){
   const submissionId=text(data.submission_id,36);
   if(!/^[0-9a-f]{8}-[0-9a-f-]{27,28}$/i.test(submissionId))return response(res,400,{error:'invalid_submission_id'});
   const url=process.env.SUPABASE_URL, key=process.env.SUPABASE_SECRET_KEY;
-  if(!url||!key||!key.startsWith('sb_secret_'))return response(res,503,{error:'crm_not_configured'});
+  if(!configured()||!url||!key)return response(res,503,{error:'crm_not_configured'});
   let endpoint;try{endpoint=new URL('/rest/v1/crm_leads?on_conflict=submission_id',url);if(endpoint.protocol!=='https:')throw Error('https required');}catch{return response(res,503,{error:'crm_not_configured'});}
   const item={submission_id:submissionId,name,email,description,service,plan,channel,modules,source:'website',status:'new'};
   try{
