@@ -131,6 +131,23 @@ function render(){
  const metric=$('#metrics');metric.replaceChildren();
  const won=leads.filter(l=>l.status==='won').reduce((n,l)=>n+Number(l.estimated_value||0),0);
  [['Total inquiries',leads.length],['New',leads.filter(l=>l.status==='new').length],['In proposals',leads.filter(l=>l.status==='proposal').length],['Won value','$'+won.toLocaleString('en-US')]].forEach(([name,n])=>{const m=el('div','metric');m.append(el('span','',name),el('strong','',String(n)));metric.append(m)});
+ $('#leads-count').textContent=String(leads.length);
+ const recent=$('#recent-leads');recent.replaceChildren();
+ if(!leads.length)recent.append(el('p','crm-empty','No leads yet. New inquiries will appear here.'));
+ leads.slice(0,5).forEach(x=>{
+   const item=el('button','crm-recent-row');item.type='button';
+   const details=el('span','crm-recent-info');
+   details.append(el('strong','',x.name),el('small','',(x.service||'Unspecified service')+' · '+new Date(x.created_at).toLocaleDateString()));
+   const stageName=stages.includes(x.status)?x.status:'new';
+   const status=el('span','crm-stage-tag crm-stage-'+stageName,stageName[0].toUpperCase()+stageName.slice(1));
+   item.append(details,status);
+   item.addEventListener('click',()=>{
+     $('#search').value=x.email||x.name;
+     $('#filter').value='';
+     setActiveView('leads');render();
+   });
+   recent.append(item);
+ });
  if(!shown.length)box.append(el('p','', 'No inquiries match your filters.'));
  shown.forEach(x=>{
   const card=el('article','lead');card.append(el('div','muted',new Date(x.created_at).toLocaleString()),el('h2','',x.name),el('div','meta',x.email+' · '+(x.service||'Unspecified service')+' · '+x.channel),el('p','description',x.description));
