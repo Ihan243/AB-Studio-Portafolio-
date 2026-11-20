@@ -2101,3 +2101,166 @@ body[data-page="management"] #home-inquiry .home-inquiry-actions .button{flex:1 
 @media(max-width:1100px){.social-nav-instagram{display:none}}
 @media(max-width:680px){.navlinks .social-nav-mobile{display:flex;align-items:center;gap:10px;padding:12px 5px;border-bottom:1px solid var(--line);font-size:.82rem}}
 @media(prefers-reduced-motion:reduce){.social-nav-instagram{transition:none}}
+
+/* ===================================================
+   AB STUDIO / PRICING CENTER — unified editorial design
+   =================================================== */
+html{scroll-padding-top:110px}
+.ab-pricing-content{color:var(--ink)}
+.ab-pricing-content [hidden]{display:none!important}
+.ab-pricing-content section[id]{scroll-margin-top:110px}
+.ab-pricing-kicker{font-size:.64rem;letter-spacing:.13em;font-weight:800;color:var(--green);text-transform:uppercase}
+.ab-pricing-header{max-width:810px;margin-bottom:45px}
+.ab-pricing-header h2,.ab-pricing-section-header h2,.ab-pricing-principles h2{font:400 clamp(2.8rem,5vw,5.2rem)/1.04 var(--serif);letter-spacing:-.06em;margin:16px 0 20px;text-wrap:balance}
+.ab-pricing-header p,.ab-pricing-section-header p{max-width:740px;font-size:clamp(.9rem,1.2vw,1.04rem);line-height:1.77;color:var(--ink-soft);margin:0}
+.ab-pricing-intro{padding:clamp(72px,9vw,126px) 0 84px}
+.ab-pricing-services{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ab-pricing-service{min-width:0;display:flex;flex-direction:column;padding:26px 22px;min-height:262px;text-decoration:none;border:1px solid var(--line);background:var(--white);border-radius:9px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.ab-pricing-service:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 12px 26px rgba(27,40,29,.08)}
+.ab-pricing-service .ab-pricing-kicker{display:flex;justify-content:space-between;gap:5px}
+.ab-pricing-service h2{font:400 clamp(1.35rem,2vw,1.8rem)/1.15 var(--serif);letter-spacing:-.035em;margin:22px 0 12px}
+.ab-pricing-service p{font-size:.82rem;color:var(--ink-soft);line-height:1.65;margin:0 0 20px}
+.ab-pricing-price{margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}
+.ab-pricing-price strong{display:block;font-size:1.23rem;letter-spacing:-.04em}
+.ab-pricing-price small{display:block;margin-top:6px;color:var(--ink-soft);font-size:.74rem}
+.ab-pricing-hero-link,.ab-pricing-home-link{display:inline-flex;gap:12px;align-items:center;margin-top:27px;padding:13px 18px;border:1px solid var(--green);border-radius:100px;color:var(--green);font-size:.81rem;font-weight:800;text-decoration:none}
+.ab-pricing-home-link:hover,.ab-pricing-hero-link:hover{background:var(--paper-deep)}
+.ab-pricing-principles{padding:62px 0;background:var(--paper-deep);border-block:1px solid var(--line)}
+.ab-pricing-principles h2{font-size:clamp(2.25rem,4vw,3.6rem);margin:0 0 30px}
+.ab-pricing-principle-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.ab-pricing-principle-grid>div{border-left:1px solid var(--green);padding:5px 20px;min-width:0}
+.ab-pricing-principle-grid b{font-size:.8rem;color:var(--green)}
+.ab-pricing-principle-grid p{color:var(--ink-soft);font-size:.84rem;line-height:1.7;margin:12px 0 0}
+.ab-pricing-section{padding:clamp(70px,8vw,106px) 0}
+.ab-pricing-tint{background:var(--paper-deep)}
+.ab-pricing-section-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:36px}
+.ab-pricing-section-header h2{font-size:clamp(2.5rem,4.4vw,4.6rem);margin:12px 0 17px}
+.ab-pricing-section-header>div{min-width:0}
+.ab-pricing-section-header>.ab-pricing-text-link{flex:none}
+.ab-pricing-text-link{display:inline-flex;align-items:center;gap:9px;color:var(--green);font-size:.77rem;font-weight:800;text-decoration:underline;text-underline-offset:5px}
+.ab-pricing-web-grid,.ab-pricing-crm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ab-pricing-web-plan,.ab-pricing-crm-plan{min-width:0;display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:clamp(22px,2.5vw,32px)}
+.ab-pricing-web-plan.featured,.ab-pricing-crm-plan.featured{border:2px solid var(--green);box-shadow:0 16px 34px rgba(28,46,34,.08)}
+.ab-pricing-web-plan h3,.ab-pricing-crm-plan h3{font:400 clamp(1.95rem,2.9vw,2.7rem)/1.1 var(--serif);letter-spacing:-.045em;margin:18px 0 12px}
+.ab-pricing-plan-tag{font-weight:800;font-size:.81rem;color:var(--green)}
+.ab-pricing-large-price{font:700 clamp(2rem,3.2vw,2.8rem)/1.2 var(--sans);letter-spacing:-.06em;margin-top:16px}
+.ab-pricing-price-sub,.ab-pricing-crm-plan>small{color:var(--ink-soft);font-size:.74rem}
+.ab-pricing-web-plan p,.ab-pricing-crm-plan p{font-size:.82rem;color:var(--ink-soft);line-height:1.72;margin:19px 0}
+.ab-pricing-web-plan ul,.ab-pricing-crm-plan ul{list-style:none;padding:0;margin:4px 0 28px;display:grid;gap:11px}
+.ab-pricing-web-plan li,.ab-pricing-crm-plan li{font-size:.77rem;line-height:1.5;display:flex;gap:9px}
+.ab-pricing-web-plan li::before,.ab-pricing-crm-plan li::before{content:"✓";color:var(--green);font-weight:800}
+.ab-pricing-web-plan .ab-pricing-text-link,.ab-pricing-crm-plan .ab-pricing-text-link{margin-top:auto}
+.ab-pricing-base{display:flex;justify-content:space-between;gap:25px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:25px 30px;margin-bottom:20px}
+.ab-pricing-base h3{font:400 1.8rem/1.2 var(--serif);margin:0 0 8px}
+.ab-pricing-base p{font-size:.81rem;line-height:1.65;color:var(--ink-soft);max-width:630px;margin:0}
+.ab-pricing-base>div:last-child{text-align:right;flex:none}
+.ab-pricing-base b{font-size:1.15rem;display:block}
+.ab-pricing-base small{font-size:.77rem;color:var(--ink-soft)}
+.ab-pricing-module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.ab-pricing-module{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:21px;min-width:0}
+.ab-pricing-module-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ab-pricing-module-row h3{font-size:.94rem;line-height:1.35;margin:0;min-width:0;overflow-wrap:anywhere}
+.ab-pricing-module-row>div{text-align:right;white-space:nowrap;flex:none}
+.ab-pricing-module-row b,.ab-pricing-module-row small{display:block;font-size:.75rem}
+.ab-pricing-module-row b{color:var(--green)}
+.ab-pricing-module-row small{color:var(--ink-soft);margin-top:4px}
+.ab-pricing-module details{margin-top:19px;padding-top:14px;border-top:1px solid var(--line)}
+.ab-pricing-module summary{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.76rem;font-weight:800;color:var(--green);cursor:pointer;list-style:none;min-height:25px}
+.ab-pricing-module summary::-webkit-details-marker{display:none}
+.ab-pricing-module details[open] summary span{transform:rotate(45deg)}
+.ab-pricing-module details p{font-size:.74rem;line-height:1.65;color:var(--ink-soft);margin:10px 0 0}
+.ab-pricing-fine{color:var(--ink-soft);font-size:.81rem;line-height:1.65;margin:20px 0 0}
+.ab-pricing-crm-month{font-size:1.3rem;font-weight:800;color:var(--green);margin-top:11px}
+.ab-pricing-extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.ab-pricing-extras article{background:var(--white);border:1px solid var(--line);padding:28px;border-radius:10px;min-width:0}
+.ab-pricing-extras article>span{font-size:.62rem;font-weight:850;color:var(--green);letter-spacing:.12em}
+.ab-pricing-extras h3{font:400 1.7rem/1.16 var(--serif);letter-spacing:-.03em;margin:15px 0}
+.ab-pricing-extras strong{font-size:1.05rem}
+.ab-pricing-extras p{font-size:.81rem;color:var(--ink-soft);line-height:1.75;margin:19px 0}
+.ab-pricing-builder{background:var(--paper);padding:clamp(75px,8vw,115px) 0}
+.ab-pricing-builder-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(320px,.75fr);gap:clamp(20px,3vw,38px);align-items:start}
+.ab-pricing-fields{min-width:0;display:grid;gap:15px}
+.ab-pricing-fieldset{min-width:0;border:1px solid var(--line);border-radius:12px;padding:24px;background:var(--white);display:grid;gap:13px}
+.ab-pricing-fieldset legend{float:left;width:100%;font:400 clamp(1.25rem,2vw,1.65rem)/1.2 var(--serif);letter-spacing:-.035em;margin-bottom:18px}
+.ab-pricing-fieldset legend span{font:800 .7rem/1 var(--sans);color:var(--green);margin-right:8px;vertical-align:middle}
+.ab-pricing-choice{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:14px 15px;cursor:pointer;min-width:0;font-size:.8rem;line-height:1.55;font-weight:750}
+.ab-pricing-choice:has(input:checked){border-color:var(--green);background:var(--paper-deep)}
+.ab-pricing-choice:has(input:disabled){opacity:.58;cursor:not-allowed}
+.ab-pricing-choice input{height:19px;width:19px;accent-color:var(--green);flex:none;margin:0}
+.ab-pricing-choice span{flex:1;min-width:150px}
+.ab-pricing-choice small{color:var(--green);font-size:.72rem;font-weight:800}
+.ab-pricing-choice--main{margin-top:2px}
+.ab-pricing-conditional{background:var(--paper-deep);border-radius:9px;padding:18px;display:grid;gap:10px;margin-top:4px}
+.ab-pricing-conditional h4{margin:0 0 4px;font-size:.82rem}
+.ab-pricing-module-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.ab-pricing-module-choices .ab-pricing-choice{align-items:flex-start;flex-direction:column;gap:8px}
+.ab-pricing-module-choices .ab-pricing-choice input{float:left}
+.ab-pricing-module-choices .ab-pricing-choice span{min-width:0;flex:unset}
+.ab-pricing-hint{font-size:.73rem;line-height:1.6;color:var(--ink-soft);margin:7px 0 0}
+.ab-pricing-select{display:grid;gap:9px;font-size:.8rem;font-weight:750}
+.ab-pricing-select select,.ab-pricing-inputs input,.ab-pricing-inputs textarea{font:inherit;color:var(--ink);width:100%;max-width:100%;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-height:47px}
+.ab-pricing-inputs label{font-size:.8rem;font-weight:800;margin-top:6px}
+.ab-pricing-inputs textarea{min-height:120px;resize:vertical}
+.ab-pricing-summary{position:sticky;top:95px;background:#29382d;color:#f7f5ec;border:1px solid #485949;border-radius:12px;overflow:hidden;min-width:0}
+.ab-pricing-summary-heading{padding:30px 28px;border-bottom:1px solid rgba(255,255,255,.17)}
+.ab-pricing-summary-heading>span{font-size:.62rem;letter-spacing:.13em;color:#bad5b6}
+.ab-pricing-summary-heading h3{font:400 clamp(1.9rem,2.5vw,2.6rem)/1.15 var(--serif);letter-spacing:-.05em;margin:22px 0 0}
+.ab-pricing-totals,.ab-pricing-summary-breakdown,.ab-pricing-summary-actions{padding:22px 28px}
+.ab-pricing-totals{display:grid;gap:22px;border-bottom:1px solid rgba(255,255,255,.14)}
+.ab-pricing-totals>div{display:grid;gap:7px}
+.ab-pricing-totals small{font-size:.8rem;color:#d7e1d2}
+.ab-pricing-totals strong{font-size:clamp(1.85rem,2.8vw,2.5rem);letter-spacing:-.055em;line-height:1.18;color:#fff;overflow-wrap:anywhere}
+.ab-pricing-summary-breakdown{border-bottom:1px solid rgba(255,255,255,.14)}
+.ab-pricing-summary-breakdown h4{font-size:.84rem;margin:0 0 13px}
+.ab-pricing-summary-breakdown ul{padding:0;margin:0;list-style:none;display:grid;gap:10px}
+.ab-pricing-summary-breakdown li{display:flex;justify-content:space-between;gap:10px;font-size:.75rem;line-height:1.5;color:#d9e4d2}
+.ab-pricing-summary-breakdown li span:last-child{text-align:right;font-weight:750;color:white}
+.ab-pricing-summary-actions{display:grid;gap:10px}
+.ab-pricing-summary-actions .button{display:flex;justify-content:space-between;min-height:51px;text-align:left;border-radius:8px;background:#f4f0e7;color:#26382b;border-color:#f4f0e7}
+.ab-pricing-summary-actions .button.outline{background:transparent;color:#f5f2e8;border-color:#9bb29b}
+.ab-pricing-summary-actions small{font-size:.69rem;line-height:1.55;color:#d1e0cb}
+.ab-pricing-disclaimer{font-size:.77rem;line-height:1.78;color:var(--ink-soft);max-width:1000px;margin:28px 0 0}
+.ab-pricing-home-link{margin:18px 0 5px}
+body.theme-dark .ab-pricing-summary{background:#1e3025}
+@media(max-width:1100px){
+ .ab-pricing-services{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ab-pricing-module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ab-pricing-builder-grid{grid-template-columns:1fr}
+ .ab-pricing-summary{position:static}
+}
+@media(min-width:1181px){.nav{width:min(1150px,calc(100% - 40px))}.navlinks{gap:clamp(10px,1.1vw,21px)}}
+@media(min-width:681px) and (max-width:1180px){
+ .nav{width:calc(100% - 24px);gap:8px}
+ .nav-actions .button{display:none}
+ .menu-toggle{display:grid;place-items:center}
+ .navlinks{display:none;position:absolute;left:0;right:0;top:calc(100% + 9px);width:calc(100% - 24px);margin:auto;padding:12px 18px 18px;background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 15px 35px rgba(37,37,34,.13);flex-direction:column;align-items:stretch;gap:0}
+ .navlinks.open{display:flex}
+ .navlinks>a,.navlinks summary{display:block;padding:12px 5px;border-bottom:1px solid var(--line);font-size:.82rem}
+ .service-nav{display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}
+ .service-nav>a{flex:1;padding:12px 5px}
+ .service-nav .nav-dropdown summary{width:40px;height:44px;padding:0;border:0}
+ .nav-menu{position:static;min-width:0;box-shadow:none;border:0;border-bottom:1px solid var(--line);padding:4px 0 7px 12px;background:transparent}
+ .nav-menu a{padding:10px 5px;font-size:.78rem}
+}
+@media(max-width:850px){
+ .ab-pricing-web-grid,.ab-pricing-crm-grid{grid-template-columns:1fr}
+ .ab-pricing-extras{grid-template-columns:1fr}
+ .ab-pricing-section-header{display:block}
+ .ab-pricing-section-header>.ab-pricing-text-link{margin-top:16px}
+}
+@media(max-width:640px){
+ .ab-pricing-services,.ab-pricing-module-grid,.ab-pricing-principle-grid,.ab-pricing-module-choices{grid-template-columns:1fr}
+ .ab-pricing-intro,.ab-pricing-section{padding:58px 0}
+ .ab-pricing-service{min-height:210px;padding:24px}
+ .ab-pricing-header h2,.ab-pricing-section-header h2{font-size:clamp(2.5rem,11vw,3.6rem)}
+ .ab-pricing-base{display:block}
+ .ab-pricing-base>div:last-child{text-align:left;margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+ .ab-pricing-principle-grid>div{padding:8px 0 10px 14px}
+ .ab-pricing-module-row{display:block}
+ .ab-pricing-module-row>div{text-align:left;margin-top:11px}
+ .ab-pricing-fieldset{padding:18px}
+ .ab-pricing-choice{align-items:flex-start}
+ .ab-pricing-choice span{min-width:0}
+ .ab-pricing-summary-heading,.ab-pricing-totals,.ab-pricing-summary-breakdown,.ab-pricing-summary-actions{padding-inline:21px}
+}
+@media(prefers-reduced-motion:reduce){.ab-pricing-service{transition:none}}

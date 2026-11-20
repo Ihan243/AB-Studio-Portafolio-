@@ -175,9 +175,10 @@ for (const name of ['index.html','public/index.html','public/sitios-web/index.ht
     assert.ok(page.includes(price), `Website price ${price} missing from ${name}`);
   }
 }
+const pricingCore=js.slice(0,js.indexOf('const copy = '));
 const quoteStart=js.indexOf('const quoteData = '),quoteEnd=js.indexOf('const businessAddonData = ',quoteStart);
 assert.ok(quoteStart>-1 && quoteEnd>quoteStart,'Quote builder source not found');
-const quoteTools=new Function(js.slice(quoteStart,quoteEnd)+';return {quoteMarkup,quoteUpdate,bmModuleRates};')();
+const quoteTools=new Function(pricingCore+js.slice(quoteStart,quoteEnd)+';return {quoteMarkup,quoteUpdate,bmModuleRates};')();
 for (const lang of ['en','es']) {
   const sample=quoteTools.quoteMarkup(lang,'test');
   assert.equal((sample.match(/data-q-plan/g)||[]).length,3);
@@ -265,7 +266,7 @@ assert.match(css,/\.quote-breakdown/);
 /* CRM education, actual examples and prices must work in both languages. */
 const crmStart=js.indexOf('const crmText = '),crmEnd=js.indexOf('function showRoute(',crmStart);
 assert.ok(crmStart>=0 && crmEnd>crmStart,'CRM source missing');
-const crmRuntime=new Function(js.slice(crmStart,crmEnd)+';return {crmText,crmPanelMarkup};')();
+const crmRuntime=new Function(pricingCore+js.slice(crmStart,crmEnd)+';return {crmText,crmPanelMarkup};')();
 for(const lang of ['en','es']){
   const model=crmRuntime.crmText[lang];
   const markup=crmRuntime.crmPanelMarkup(lang);
@@ -430,5 +431,64 @@ for (const prefix of ['', 'public/']) {
     assert.ok(page.includes('href="/assets/portfolio/refaccionaria-curiel.jpg"'));
   }
 }
+
+
+/* Central Pricing hub must load as a standalone route with bilingual comparisons. */
+for(const route of ["pricing/index.html","public/pricing/index.html"]){
+  const html=read(route);
+  assert.match(html,/data-page="pricing"/);
+  assert.match(html,/https:\/\/ab-studio-portafolio\.vercel\.app\/pricing\//);
+  assert.match(html,/id="route-page"/);
+  assert.match(html,/<noscript>/);
+  assert.match(html,/data-copy="nav\.pricing"/);
+}
+assert.equal(read("pricing/index.html"),read("public/pricing/index.html"));
+const pricingRoutes=["index.html","public/index.html","servicios/index.html","public/servicios/index.html","crm/index.html","public/crm/index.html","business-management/index.html","public/business-management/index.html","sitios-web/index.html","public/sitios-web/index.html"];
+for(const route of pricingRoutes){
+  const html=read(route);
+  assert.match(html,/href="\/pricing\/" data-copy="nav\.pricing"/);
+}
+assert.match(home,/class="ab-pricing-home-link"/);
+assert.match(js,/"nav\.pricing":"Pricing"/);
+assert.match(js,/"nav\.pricing":"Precios"/);
+assert.match(js,/"pricing\.compareCta"/);
+assert.match(css,/AB STUDIO \/ PRICING CENTER/);
+assert.match(css,/@media\(max-width:1100px\)/);
+const pricingConfig=JSON.parse(read('vercel.json'));
+assert.ok(pricingConfig.rewrites.some(x=>x.source==='/pricing/'&&x.destination==='/pricing/index.html'));
+assert.ok(pricingConfig.redirects.some(x=>x.source==='/precios/'&&x.destination==='/pricing/'));
+assert.match(read('public/sitemap.xml'),/https:\/\/ab-studio-portafolio\.vercel\.app\/pricing\//);
+const priceEngine=new Function(pricingCore+js.slice(quoteStart,quoteEnd)+js.slice(crmStart,crmEnd)+';return {abPrices,pricingPageMarkup,pricingCalculate};')();
+for(const lang of ["en","es"]){
+  const markup=priceEngine.pricingPageMarkup(lang);
+  assert.equal((markup.match(/class="ab-pricing-service"/g)||[]).length,4);
+  assert.equal((markup.match(/class="ab-pricing-module"/g)||[]).length,6);
+  assert.equal((markup.match(/class="ab-pricing-web-plan/g)||[]).length,3);
+  assert.equal((markup.match(/class="ab-pricing-crm-plan/g)||[]).length,3);
+  assert.match(markup,/data-pricing-root/);
+  assert.match(markup,/data-p-website/);
+  assert.match(markup,/data-p-email/);
+  assert.match(markup,/data-p-wa/);
+  assert.ok(markup.includes('$1,100'));
+  assert.ok(markup.includes('$450'));
+}
+for(const [state,initial,max,monthly] of [
+ [{website:'existing',plan:'basic',management:true,modules:[],crm:'none',seo:false},450,450,25],
+ [{website:'new',plan:'professional',management:true,modules:['catalog','inventory','orders'],crm:'none',seo:false},3050,3050,75],
+ [{website:'new',plan:'basic',management:true,modules:['crm','catalog'],crm:'starter',seo:true},2900,3500,104],
+ [{website:'existing',plan:'professional',management:false,modules:['orders'],crm:'none',seo:false},0,0,0],
+ [{website:'existing',plan:'premium',management:false,modules:[],crm:'enterprise',seo:false},3000,null,199]
+]){
+ const estimate=priceEngine.pricingCalculate(state);
+ assert.equal(estimate.min,initial);
+ assert.equal(estimate.max,max);
+ assert.equal(estimate.monthly,monthly);
+ if(state.crm==='starter')assert.ok(!estimate.items.some(x=>x.id==='crm'),'CRM should not be double-charged');
+}
+assert.match(js,/pricingReadState/);
+assert.match(js,/pricingRestore/);
+assert.match(js,/pricingUpdate/);
+assert.match(js,/savedPricing/);
+assert.match(js,/syncPublishedPrices/);
 
 console.log('AB Studio smoke tests passed (routes, SEO, portfolio, bilingual quote builder, extras and CRM pricing).');
