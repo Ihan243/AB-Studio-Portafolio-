@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node scripts/smoke-test.js && node scripts/crm-api-test.js && node scripts/crm-public-config-test.js && node scripts/crm-static-config-test.js && node scripts/crm-layout-test.js"
+    "test": "node scripts/smoke-test.js && node scripts/crm-api-test.js && node scripts/crm-public-config-test.js && node scripts/crm-static-config-test.js && node scripts/crm-layout-test.js && node scripts/crm-delete-test.js"
   },
   "keywords": [
     "ab-studio",
