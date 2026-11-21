@@ -44,16 +44,10 @@
       document.head.appendChild(preload);
     })();
   </script>
-  <!-- The first visit renders the entrance; site-wide CSS can download off
-       the critical path while the doors are visible. Other visits retain
-       normal blocking CSS so the homepage never flashes unstyled. -->
-  <link rel="stylesheet" id="ab-main-styles" href="/assets/css/site.css" media="print" onload="this.media='all';this.onload=null">
-  <script>
-    if (!document.documentElement.classList.contains('ab-entry-active')) {
-      document.getElementById('ab-main-styles').media = 'all';
-    }
-  </script>
-  <noscript><link rel="stylesheet" href="/assets/css/site.css"></noscript>
+  <!-- Block first paint on the layout stylesheet: the previous media="print"
+       async swap produced CLS ~1.0 on desktop when the unstyled body reflowed.
+       Entrance imagery is still preloaded early and third-party embeds stay deferred. -->
+  <link rel="stylesheet" href="/assets/css/site.css">
   <link rel="stylesheet" href="/assets/css/entrance.css">
   <script src="/assets/js/entrance.js" defer></script>
 </head>
