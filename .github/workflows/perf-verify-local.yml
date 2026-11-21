@@ -1,0 +1,34 @@
+name: Verify CLS On Main Before Vercel Redeploy
+on:
+  push:
+    branches: [perf/first-load-verified-2026-11-21]
+    paths: [.github/workflows/perf-verify-local.yml]
+permissions:
+  contents: read
+jobs:
+  lighthouse-main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Serve corrected main branch on localhost
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 --directory public >/tmp/site-server.log 2>&1 &
+          for i in $(seq 1 40); do if curl -sf http://127.0.0.1:8787/ -o /tmp/testhome.html; then break; fi; sleep .3; done
+          grep -q '<link rel="stylesheet" href="/assets/css/site.css">' /tmp/testhome.html
+          if grep -q 'id="ab-main-styles"' /tmp/testhome.html; then echo "OLD CSS FOUND"; exit 1; fi
+      - name: Lighthouse corrected main source
+        shell: bash
+        run: |
+          npx --yes lighthouse@12.8.2 "http://127.0.0.1:8787/" --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --preset=desktop --quiet --output=json --output-path=/tmp/local-desktop.json
+          npx --yes lighthouse@12.8.2 "http://127.0.0.1:8787/" --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --form-factor=mobile --screenEmulation.mobile=true --throttling-method=simulate --quiet --output=json --output-path=/tmp/local-mobile.json
+          node - <<'NODE'
+          const fs=require('fs');
+          for(const n of ['desktop','mobile']){
+            const x=JSON.parse(fs.readFileSync('/tmp/local-'+n+'.json'));
+            console.log('CORRECTED_MAIN '+n+' SCORE '+Math.round(100*x.categories.performance.score));
+            for(const id of ['first-contentful-paint','largest-contentful-paint','cumulative-layout-shift','total-blocking-time','speed-index'])console.log('CORRECTED_MAIN '+n+' '+id+' '+x.audits[id].displayValue);
+          }
+          NODE
