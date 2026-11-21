@@ -1,0 +1,20 @@
+name: Verify Published Pricing on AB Studio Phi
+on:
+  push:
+    branches: [perf/first-load-verified-2026-11-21]
+    paths: [.github/workflows/verify-pricing-live.yml]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Confirm public pricing matches published rates
+        run: |
+          curl -fLsS --max-time 20 "https://ab-studio-portafolio-phi.vercel.app/pricing.html?check=20261121" -o /tmp/pricing.html
+          if grep -q 'Choose what your business needs. Know what it costs.' /tmp/pricing.html; then echo 'NEW_PRICING=YES'; else echo 'NEW_PRICING=NO'; fi
+          if grep -q 'From \$750' /tmp/pricing.html; then echo 'DASHBOARD_BASE_750=YES'; else echo 'DASHBOARD_BASE_750=NO'; fi
+          if grep -q 'data-p-management checked' /tmp/pricing.html; then echo 'UNWANTED_AUTO_ADDON=YES'; else echo 'UNWANTED_AUTO_ADDON=NO'; fi
+          if grep -q 'data-p-website value="new" checked' /tmp/pricing.html; then echo 'NEW_WEBSITE_DEFAULT=YES'; else echo 'NEW_WEBSITE_DEFAULT=NO'; fi
+          if grep -q 'From \$450</b><small>+ \$25/mo' /tmp/pricing.html; then echo 'OLD_BASE_PRICE=YES'; else echo 'OLD_BASE_PRICE=NO'; fi
