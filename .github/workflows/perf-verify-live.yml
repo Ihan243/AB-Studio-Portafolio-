@@ -19,6 +19,7 @@ jobs:
           if grep -q 'rel="stylesheet" href="/assets/css/site.css"' /tmp/site.html; then echo "LIVE_BLOCKING_STYLE=YES"; else echo "LIVE_BLOCKING_STYLE=NO"; fi
           if grep -q 'floreria-muniz-480.webp' /tmp/site.html; then echo "LIVE_RESPONSIVE_IMAGE=YES"; else echo "LIVE_RESPONSIVE_IMAGE=NO"; fi
           if grep -q 'data-src="https://lapatarata.vercel.app/"' /tmp/site.html; then echo "LIVE_DEFERRED_IFRAME=YES"; else echo "LIVE_DEFERRED_IFRAME=NO"; fi
+          if grep -q 'name="ab-studio-release" content="2026-11-21-stable-cls-v2"' /tmp/site.html; then echo "LIVE_RELEASE=NEW_CLS_FIX"; else echo "LIVE_RELEASE=OLD"; fi
       - name: Run Lighthouse on live desktop and mobile
         shell: bash
         continue-on-error: true
