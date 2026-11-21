@@ -16,8 +16,8 @@
     ];
     const candidates = [...new Set(selectors.flatMap(s => [...document.querySelectorAll(s)]))];
     // IntersectionObserver reports visibility after layout. Avoid the previous
-    // synchronous getClientRects/getBoundingClientRect loop, which forced ~93ms
-    // of style/layout recalculation on Lighthouse desktop.
+    // synchronous geometry measurement loop, which forced ~93ms
+    // of layout recalculation on the desktop Lighthouse baseline.
     const observer = new IntersectionObserver((entries, instance) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
