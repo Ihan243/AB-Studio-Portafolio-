@@ -210,8 +210,8 @@ assert.equal(basic.result['[data-q-initial]'].textContent,'$1,100');
 assert.equal(basic.result['[data-q-monthly]'].textContent,'$0 / mo');
 const growth=sampleQuote('professional',true,'growth',true);
 quoteTools.quoteUpdate(growth);
-assert.equal(growth.result['[data-q-initial]'].textContent,'$3,650 – $5,150');
-assert.equal(growth.result['[data-q-monthly]'].textContent,'$144 / mo');
+assert.equal(growth.result['[data-q-initial]'].textContent,'$3,950 – $5,450');
+assert.equal(growth.result['[data-q-monthly]'].textContent,'$168 / mo');
 assert.equal(growth.result['[data-q-modules]'].hidden,false);
 assert.match(growth.result['[data-q-email]'].href,/mailto:sales\.abstudio@gmail\.com/);
 const enterprise=sampleQuote('basic',false,'enterprise');
@@ -220,7 +220,7 @@ assert.equal(enterprise.result['[data-q-initial]'].textContent,'$4,100+');
 assert.equal(enterprise.result['[data-q-monthly]'].textContent,'$199+ / mo');
 
 /* Public Business Management prices, calculated totals, and standalone CRM links. */
-const publishedRates={base:[450,25],catalog:[250,10],inventory:[400,20],orders:[450,20],reports:[250,10],booking:[450,20],crm:[300,15]};
+const publishedRates={base:[750,49],catalog:[250,10],inventory:[400,20],orders:[450,20],reports:[250,10],booking:[450,20],crm:[300,15]};
 for(const [code,amounts] of Object.entries(publishedRates)){
   const rate=quoteTools.bmModuleRates[code];
   assert.deepEqual([rate.setup,rate.monthly],amounts,'Unexpected module rate '+code);
@@ -233,7 +233,7 @@ for(const lang of ['en','es']){
   assert.equal((normal.match(/data-bm-module="/g)||[]).length,6);
   assert.match(markup,/data-q-breakdown/);
   assert.match(markup,/quote-bm-base/);
-  assert.ok(markup.includes(lang==='es'?'Desde $450':'From $450'));
+  assert.ok(markup.includes(lang==='es'?'Desde $750':'From $750'));
   for(const [code,[setup,monthly]] of Object.entries(publishedRates)){
     if(code==='base')continue;
     const at=markup.indexOf('data-bm-module="'+code+'"');
@@ -247,15 +247,15 @@ for(const lang of ['en','es']){
 }
 const threeModules=sampleQuote('professional',false,'none',true,['catalog','inventory','orders'],'es');
 quoteTools.quoteUpdate(threeModules);
-assert.equal(threeModules.result['[data-q-initial]'].textContent,'$3,050');
-assert.equal(threeModules.result['[data-q-monthly]'].textContent,'$75 / mes');
+assert.equal(threeModules.result['[data-q-initial]'].textContent,'$3,350');
+assert.equal(threeModules.result['[data-q-monthly]'].textContent,'$99 / mes');
 const emailDraft=decodeURIComponent(threeModules.result['[data-q-email]'].href);
 assert.ok(emailDraft.includes('Catálogo de productos: $250 + $10/mes'));
-assert.ok(emailDraft.includes('Base del panel: $450 + $25/mes'));
+assert.ok(emailDraft.includes('Base del panel: $750 + $49/mes'));
 const allModules=sampleQuote('professional',false,'none',true,['catalog','inventory','orders','reports','booking','crm']);
 quoteTools.quoteUpdate(allModules);
-assert.equal(allModules.result['[data-q-initial]'].textContent,'$4,050');
-assert.equal(allModules.result['[data-q-monthly]'].textContent,'$120 / mo');
+assert.equal(allModules.result['[data-q-initial]'].textContent,'$4,350');
+assert.equal(allModules.result['[data-q-monthly]'].textContent,'$144 / mo');
 const ignoredModules=sampleQuote('professional',false,'none',false,['catalog','inventory']);
 quoteTools.quoteUpdate(ignoredModules);
 assert.equal(ignoredModules.result['[data-q-initial]'].textContent,'$1,500');
@@ -499,12 +499,12 @@ for(const lang of ["en","es"]){
   assert.match(markup,/data-p-email/);
   assert.match(markup,/data-p-wa/);
   assert.ok(markup.includes('$1,100'));
-  assert.ok(markup.includes('$450'));
+  assert.ok(markup.includes('$750'));
 }
 for(const [state,initial,max,monthly] of [
- [{website:'existing',plan:'basic',management:true,modules:[],crm:'none',seo:false},450,450,25],
- [{website:'new',plan:'professional',management:true,modules:['catalog','inventory','orders'],crm:'none',seo:false},3050,3050,75],
- [{website:'new',plan:'basic',management:true,modules:['crm','catalog'],crm:'starter',seo:true},2900,3500,104],
+ [{website:'existing',plan:'basic',management:true,modules:[],crm:'none',seo:false},750,750,49],
+ [{website:'new',plan:'professional',management:true,modules:['catalog','inventory','orders'],crm:'none',seo:false},3350,3350,99],
+ [{website:'new',plan:'basic',management:true,modules:['crm','catalog'],crm:'starter',seo:true},3200,3800,128],
  [{website:'existing',plan:'professional',management:false,modules:['orders'],crm:'none',seo:false},0,0,0],
  [{website:'existing',plan:'premium',management:false,modules:[],crm:'enterprise',seo:false},3000,null,199]
 ]){
