@@ -33,6 +33,33 @@
     }
   }
 
+  // A native loading="lazy" iframe may still prefetch up to ~1,250px before
+  // the viewport on a slow mobile connection. Keep La Patarata's full site
+  // completely off the critical path, but restore the live preview when
+  // the actual project card approaches the viewport.
+  const liveDemos=[...document.querySelectorAll('.case-live-website iframe[data-src]')];
+  function activateLiveDemo(frame){
+    if(!frame.dataset.src)return;
+    frame.addEventListener('load',()=>frame.classList.add('is-loaded'),{once:true});
+    frame.src=frame.dataset.src;
+    delete frame.dataset.src;
+  }
+  if('IntersectionObserver' in window){
+    const demosObserver=new IntersectionObserver((entries,observer)=>{
+      for(const entry of entries){
+        if(!entry.isIntersecting)continue;
+        const frame=entry.target.querySelector('iframe[data-src]');
+        if(frame)activateLiveDemo(frame);
+        observer.unobserve(entry.target);
+      }
+    },{rootMargin:'120px 0px',threshold:0});
+    liveDemos.forEach(frame=>demosObserver.observe(frame.parentElement));
+    // Observing the card avoids the scaled iframe's 240%-size layout box.
+  }else{
+    // On older browsers the original demo remains available immediately.
+    liveDemos.forEach(activateLiveDemo);
+  }
+
   const projectPage = document.body?.dataset.page === 'projects';
   const allCards = [...document.querySelectorAll('.case-grid .case-card')];
   const bar = document.getElementById('portfolio-filters');
