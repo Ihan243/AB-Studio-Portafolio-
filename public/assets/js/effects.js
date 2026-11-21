@@ -48,7 +48,8 @@
     const demosObserver=new IntersectionObserver((entries,observer)=>{
       for(const entry of entries){
         if(!entry.isIntersecting)continue;
-        activateLiveDemo(entry.target);
+        const frame=entry.target.querySelector('iframe[data-src]');
+        if(frame)activateLiveDemo(frame);
         observer.unobserve(entry.target);
       }
     },{rootMargin:'120px 0px',threshold:0});
