@@ -1,0 +1,40 @@
+name: Verify Live AB Studio Deployment
+on:
+  push:
+    branches: [perf/first-load-verified-2026-11-21]
+    paths: [.github/workflows/perf-verify-live.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Check live HTML and current CSS delivery mode
+        shell: bash
+        run: |
+          curl -fLsS --max-time 18 -A "Mozilla/5.0" "https://ab-studio-portafolio-phi.vercel.app/?perfcheck=20261121" -o /tmp/site.html
+          echo "bytes="$(wc -c </tmp/site.html)
+          if grep -q 'id="ab-main-styles"' /tmp/site.html; then echo "LIVE_STYLE=OLD_ASYNC"; else echo "LIVE_STYLE=BLOCKING_OR_UNKNOWN"; fi
+          if grep -q 'rel="stylesheet" href="/assets/css/site.css"' /tmp/site.html; then echo "LIVE_BLOCKING_STYLE=YES"; else echo "LIVE_BLOCKING_STYLE=NO"; fi
+          if grep -q 'floreria-muniz-480.webp' /tmp/site.html; then echo "LIVE_RESPONSIVE_IMAGE=YES"; else echo "LIVE_RESPONSIVE_IMAGE=NO"; fi
+          if grep -q 'data-src="https://lapatarata.vercel.app/"' /tmp/site.html; then echo "LIVE_DEFERRED_IFRAME=YES"; else echo "LIVE_DEFERRED_IFRAME=NO"; fi
+      - name: Run Lighthouse on live desktop and mobile
+        shell: bash
+        continue-on-error: true
+        run: |
+          npx --yes lighthouse@12.8.2 "https://ab-studio-portafolio-phi.vercel.app/" --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --preset=desktop --quiet --output=json --output-path=/tmp/desktop.json
+          npx --yes lighthouse@12.8.2 "https://ab-studio-portafolio-phi.vercel.app/" --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --only-categories=performance --form-factor=mobile --screenEmulation.mobile=true --throttling-method=simulate --quiet --output=json --output-path=/tmp/mobile.json
+          node - <<'NODE'
+          const fs=require('fs');
+          for(const n of ['desktop','mobile']){
+            const path='/tmp/'+n+'.json';
+            if(!fs.existsSync(path)){console.log(n+' Lighthouse not available');continue}
+            const x=JSON.parse(fs.readFileSync(path));
+            const ids=['first-contentful-paint','largest-contentful-paint','cumulative-layout-shift','total-blocking-time','speed-index'];
+            console.log(n+' SCORE '+Math.round(100*x.categories.performance.score));
+            for(const id of ids)console.log(n,id,x.audits[id].displayValue);
+            const shifts=x.audits['layout-shift-elements']?.details?.items||[];
+            for(const shift of shifts.slice(0,3))console.log(n,'SHIFT',JSON.stringify(shift).slice(0,500));
+          }
+          NODE
