@@ -7,6 +7,7 @@ const homepage=read('public/index.html');
 const projects=read('public/proyectos/index.html');
 const effects=read('public/assets/js/effects.js');
 assert.equal(homepage,read('index.html'),'Homepage mirrors must match');
+assert.match(homepage,/<meta name="ab-studio-release" content="2026-11-21-stable-cls-v2">/,'Production HTML must identify the corrected release');
 assert.equal(projects,read('proyectos/index.html'),'Project mirrors must match');
 assert.match(homepage,/<link rel="stylesheet" href="\/assets\/css\/site\.css">/);
 assert.doesNotMatch(homepage,/media="print" onload=/);
