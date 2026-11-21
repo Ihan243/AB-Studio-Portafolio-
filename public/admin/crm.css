@@ -64,3 +64,11 @@ body.crm-workspace-open #notice{max-width:none;margin:0;padding:12px clamp(20px,
  .crm-recent-info strong{font-size:13px}
  .crm-view .heading h1{font-size:36px}
 }
+
+/* Staff-only lead deletion. Visually separate the irreversible action. */
+.crm-lead-actions{grid-column:1/-1;display:flex;align-items:stretch;gap:10px}
+.crm-lead-actions button:first-child{flex:1}
+.crm-delete-button{flex:0 0 auto;background:transparent;border:1px solid #ba7474;color:#ffd0d0;min-height:42px}
+.crm-delete-button:hover{background:#5a3030;color:#fff0f0}
+.crm-delete-button:focus-visible{outline:3px solid #eaa1a1;outline-offset:2px}
+@media(max-width:480px){.crm-lead-actions{flex-direction:column}.crm-lead-actions button{width:100%}}
