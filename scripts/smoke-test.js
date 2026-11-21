@@ -514,6 +514,31 @@ for(const [state,initial,max,monthly] of [
  assert.equal(estimate.monthly,monthly);
  if(state.crm==='starter')assert.ok(!estimate.items.some(x=>x.id==='crm'),'CRM should not be double-charged');
 }
+// Customer-friendly pricing: no hidden preselected extras, all routes match one source.
+for (const lang of ['en','es']) {
+  const html = priceEngine.pricingPageMarkup(lang);
+  assert.match(html,/data-p-website value="new" checked/,'Website example must be clearly selected');
+  assert.match(html,/data-p-management><span>/,'Management must be opt-in');
+  assert.doesNotMatch(html,/data-p-management checked/,'Do not silently charge dashboard');
+  assert.match(html,/data-p-initial>\$1,500/);
+  assert.match(html,/data-p-monthly>\$0/);
+  assert.match(html,/\$750/);
+  assert.match(html,/\$49/);
+  assert.match(html,/\$1,000/,'Include real module bundle example');
+}
+for (const p of ['public/pricing.html','pricing.html','public/pricing/index.html','pricing/index.html']) {
+ const html=read(p);
+ assert.equal(html,read('public/pricing.html'),'Pricing HTML mirror must be identical: '+p);
+ assert.match(html,/data-p-website value="new" checked/);
+ assert.doesNotMatch(html,/data-p-management checked/);
+ assert.match(html,/data-p-management><span>Dashboard base<\/span><small>\$750 \+ \$49\/mo/);
+ assert.match(html,/\$1,000 setup \+ \$59\/mo/);
+ assert.doesNotMatch(html,/From \$450<\/b><small>\+ \$25\/mo/);
+}
+for(const p of ['public/index.html','index.html','public/servicios/index.html','servicios/index.html']) {
+ assert.match(read(p),/Recommended for growing businesses/);
+ assert.doesNotMatch(read(p),/Most requested starting point/);
+}
 assert.match(js,/pricingReadState/);
 assert.match(js,/pricingRestore/);
 assert.match(js,/pricingUpdate/);
