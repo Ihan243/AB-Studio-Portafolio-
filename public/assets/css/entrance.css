@@ -179,3 +179,14 @@ html.ab-entry-active .ab-entry-overlay { display:block; }
  .ab-entry-rays span,.ab-entry-mist span,.ab-entry-falling-leaves span {animation:none!important;}
  .ab-entry-rays,.ab-entry-mist,.ab-entry-falling-leaves {transition:none!important;}
 }
+
+/* Smaller portrait bitmap for slow mobile connections. Desktop preserves the
+   original bamboo artwork; only one image variant is requested by CSS. */
+@media (max-width:680px){
+  .ab-entry-garden {
+    background-image:url('/assets/brand/abstudio-bamboo-entry-mobile.webp');
+  }
+  .ab-entry-window {
+    background-image:linear-gradient(120deg,rgba(13,27,16,.64),rgba(48,75,48,.28),rgba(8,24,10,.67)),url('/assets/brand/abstudio-bamboo-entry-mobile.webp');
+  }
+}
