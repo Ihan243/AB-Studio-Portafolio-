@@ -156,7 +156,28 @@ function render(){
   const amount=document.createElement('input');amount.type='number';amount.min='0';amount.max='9999999999';amount.step='0.01';amount.value=x.estimated_value||0;
   const notes=document.createElement('textarea');notes.maxLength=3000;notes.value=x.notes||'';
   const save=el('button','', 'Save changes');save.type='submit';
-  edit.append(field('Stage',stage),field('Estimated USD',amount),field('Private notes',notes),save);
+  const remove=el('button','crm-delete-button','Delete lead');remove.type='button';
+  const actions=el('div','crm-lead-actions');actions.append(save,remove);
+  edit.append(field('Stage',stage),field('Estimated USD',amount),field('Private notes',notes),actions);
+  remove.addEventListener('click',async()=>{
+    if(!window.confirm('Permanently delete '+x.name+'? This action cannot be undone.'))return;
+    remove.disabled=true;save.disabled=true;
+    message('Deleting '+x.name+'...');
+    try{
+      const deleted=await request('/rest/v1/crm_leads?id=eq.'+encodeURIComponent(x.id)+'&select=id',{
+        method:'DELETE',headers:{Prefer:'return=representation'}
+      });
+      if(!Array.isArray(deleted)||!deleted.some(row=>String(row.id)===String(x.id))){
+        throw new Error('The lead was not deleted. Check staff permissions or refresh the list.');
+      }
+      leads=leads.filter(row=>String(row.id)!==String(x.id));
+      render();
+      message('Lead deleted: '+x.name);
+    }catch(err){
+      remove.disabled=false;save.disabled=false;
+      message('Could not delete '+x.name+': '+err.message);
+    }
+  });
   edit.addEventListener('submit',async ev=>{ev.preventDefault();save.disabled=true;try{
    const payload={status:stage.value,estimated_value:Number(amount.value),notes:notes.value.slice(0,3000),updated_at:new Date().toISOString()};
    if(!stages.includes(payload.status)||!Number.isFinite(payload.estimated_value)||payload.estimated_value<0)throw Error('Invalid values.');
