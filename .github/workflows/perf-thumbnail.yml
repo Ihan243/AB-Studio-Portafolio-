@@ -27,5 +27,7 @@ jobs:
             echo "No changes"
           else
             git commit -m "perf: add 480px thumbnail of Floreria Muniz"
+            git fetch origin fix/desktop-cls-2026-11-20
+            git rebase origin/fix/desktop-cls-2026-11-20
             git push origin HEAD:fix/desktop-cls-2026-11-20
           fi
