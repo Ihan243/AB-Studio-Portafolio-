@@ -85,7 +85,11 @@
   if (active) {
     gate.setAttribute('aria-hidden','false');
     inertBackground(true);
-    openButton.focus({preventScroll:true});
+    // Move initial keyboard focus after first paint so activating inert
+    // does not force a synchronous style/layout flush during mobile LCP.
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if(active && !opening)openButton.focus({preventScroll:true});
+    }));
   } else {
     gate.setAttribute('aria-hidden','true');
   }
