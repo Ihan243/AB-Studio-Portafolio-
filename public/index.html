@@ -37,7 +37,9 @@
       const preload = document.createElement('link');
       preload.rel = 'preload';
       preload.as = 'image';
-      preload.href = '/assets/brand/abstudio-bamboo-entry.webp';
+      preload.href = window.matchMedia('(max-width: 680px)').matches
+        ? '/assets/brand/abstudio-bamboo-entry-mobile.webp'
+        : '/assets/brand/abstudio-bamboo-entry.webp';
       preload.fetchPriority = 'high';
       document.head.appendChild(preload);
     })();
