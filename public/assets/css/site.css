@@ -2149,7 +2149,7 @@ html{scroll-padding-top:110px}
 .ab-pricing-price-sub,.ab-pricing-crm-plan>small{color:var(--ink-soft);font-size:.74rem}
 .ab-pricing-web-plan p,.ab-pricing-crm-plan p{font-size:.82rem;color:var(--ink-soft);line-height:1.72;margin:19px 0}
 .ab-pricing-web-plan ul,.ab-pricing-crm-plan ul{list-style:none;padding:0;margin:4px 0 28px;display:grid;gap:11px}
-.ab-pricing-web-plan li,.ab-pricing-crm-plan li{font-size:.77rem;line-height:1.5;display:flex;gap:9px}
+.ab-pricing-web-plan li,.ab-pricing-crm-plan li{font-size:.82rem;line-height:1.55;display:flex;gap:9px;color:#374151;opacity:1}
 .ab-pricing-web-plan li::before,.ab-pricing-crm-plan li::before{content:"✓";color:var(--green);font-weight:800}
 .ab-pricing-web-plan .ab-pricing-text-link,.ab-pricing-crm-plan .ab-pricing-text-link{margin-top:auto}
 .ab-pricing-base{display:flex;justify-content:space-between;gap:25px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:25px 30px;margin-bottom:20px}
